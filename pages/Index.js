@@ -1,18 +1,13 @@
 import React from "react";
 import { Link as LinkScroll, Element } from "react-scroll";
+
 import Head from "next/head";
 
-import AboutMe from "../comps/AboutMe";
-import DemoBlog from "../comps/DemoBlog";
-import Footer from "../comps/Footer";
-import Gallery from "../comps/Gallery";
-import Header from "../comps/Header";
-import Home from "../comps/Home";
-
-export default function Index() {
-  return (
-    <div>
-      <Head>
+class Index extends React.Component {
+  render() {
+    return (
+      <div>
+        <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="stylesheet"
@@ -36,7 +31,25 @@ export default function Index() {
         ></script>
       </Head>
       <Header></Header>
-      <Home> </Home>
-    </div>
-  );
+
+        <div id="home" style={{ paddingTop: "10vh" }}>
+          <Home />
+        </div>
+        <div id="about-me">
+          <AboutMe />
+        </div>
+        <div id="gallery">
+          <Gallery />
+        </div>
+        <div id="demoBlog">
+          <DemoBlog />
+        </div>
+        <div id="contact">
+          <Footer />
+        </div>
+      </div>
+    );
+  }
 }
+
+export default Index;
