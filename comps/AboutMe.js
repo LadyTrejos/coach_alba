@@ -1,3 +1,9 @@
+import Home from "./Home";
+
 export default function AboutMe() {
-  return <div> </div>;
+  return (
+    <div>
+      <p>AboutMe</p>
+    </div>
+  );
 }

@@ -4,15 +4,10 @@ const linkStyle = {
   marginRight: 15
 };
 
-const Header = () => (
-  <div>
-    <Link href="/">
-      <a style={linkStyle}>Home</a>
-    </Link>
-    <Link href="/about">
-      <a style={linkStyle}>About</a>
-    </Link>
-  </div>
-);
+class Header extends React.Component {
+  render() {
+    return <div></div>;
+  }
+}
 
 export default Header;

@@ -1,9 +1,13 @@
-import Home from "../comps/Home";
-import Head from "next/head";
-
 import React from "react";
 import { Link as LinkScroll, Element } from "react-scroll";
+import Head from "next/head";
+
+import AboutMe from "../comps/AboutMe";
+import DemoBlog from "../comps/DemoBlog";
+import Footer from "../comps/Footer";
+import Gallery from "../comps/Gallery";
 import Header from "../comps/Header";
+import Home from "../comps/Home";
 
 export default function Index() {
   return (
@@ -18,7 +22,7 @@ export default function Index() {
         <script
           src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
           integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         ></script>
         <script
           src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -32,7 +36,7 @@ export default function Index() {
         ></script>
       </Head>
       <Header></Header>
-      <Home> </Home>{" "}
+      <Home> </Home>
     </div>
   );
 }

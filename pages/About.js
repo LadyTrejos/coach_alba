@@ -1,10 +1,7 @@
-import Home from '../comps/Home';
-
 export default function About() {
   return (
-    <Home>
+    <div>
       <p>This is the about page</p>
-    </Home>
-    
+    </div>
   );
 }
