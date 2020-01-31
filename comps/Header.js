@@ -9,126 +9,68 @@ const linkStyle = {
 class Header extends React.Component {
   render() {
     return (
-      <header>
-        <nav>
-          <ul>
-            <li className="nav-item">
-              <LinkScroll
-                activeClass="active"
-                to="home"
-                spy={true}
-                smooth={true}
-                offset={50}
-                duration={500}
-              >
-                Inicio
-              </LinkScroll>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <a class="navbar-brand" href="#">
+          Logo
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#home">
+                Inicio <span class="sr-only">(current)</span>
+              </a>
             </li>
-            <li className="nav-item">
-              <LinkScroll
-                activeClass="active"
-                to="sobre_mi"
-                spy={true}
-                smooth={true}
-                offset={50}
-                duration={500}
-              >
+            <li class="nav-item">
+              <a class="nav-link" href="#about-me">
                 Sobre mí
-              </LinkScroll>
+              </a>
             </li>
-            <li className="nav-item">
-              <LinkScroll
-                activeClass="active"
-                to="galeria"
-                spy={true}
-                smooth={true}
-                offset={50}
-                duration={500}
-              >
+            <li class="nav-item">
+              <a class="nav-link" href="#gallery">
                 Galería
-              </LinkScroll>
+              </a>
             </li>
-            <li className="nav-item">
-              <LinkScroll
-                activeClass="active"
-                to="blog"
-                spy={true}
-                smooth={true}
-                offset={50}
-                duration={500}
-              >
+            <li class="nav-item">
+              <a class="nav-link" href="#demoBlog">
                 Blog
-              </LinkScroll>
+              </a>
             </li>
-            <li className="nav-item">
-              <LinkScroll
-                activeClass="active"
-                to="contacto"
-                spy={true}
-                smooth={true}
-                offset={50}
-                duration={500}
-              >
+
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">
                 Contacto
-              </LinkScroll>
+              </a>
             </li>
           </ul>
-
-          <Link href="/login">
-            <button>Ingresar / Registrarse</button>
-          </Link>
-        </nav>
-        <style jsx>
-          {`
-            button {
-              background: #3f98e6;
-              color: #fff;
-              border: 3px solid #3f98e6;
-              border-radius: 1px;
-              padding: 0.3rem 1rem;
-              font: 1.2rem "Poppins", sans-serif;
-              outline: none;
-              cursor: pointer;
-              position: relative;
-              transition: 0.2s ease-in-out;
-              font-family: "Delius";
-              letter-spacing: 1px;
-              float: right;
-            }
-            header {
-              color: #fff;
-              background: #5ac6c6; /* fallback for old browsers */
-              padding: 15px;
-              text-align: center;
-              position: fixed;
-              top: 0;
-              height: 7vh;
-              width: 95vw;
-              z-index: 99;
-              marging-top: 10vh;
-            }
-            nav {
-              background: none;
-              height: 100px;
-              width: 100%;
-            }
-            nav li {
-              display: inline-block;
-              color: black;
-              cursor: pointer;
-              text-decoration: none;
-              text-align: center;
-              padding: 7px 10px;
-              font-family: "Delius";
-              font-size: 1.1rem;
-            }
-
-            nav ul {
-              float: left;
-            }
-          `}
-        </style>
-      </header>
+          <form class="form-inline my-2 my-lg-0">
+            <a
+              style={{
+                background: "#fff",
+                border: "2px solid #fff",
+                borderRadius: "5px",
+                color: "blue",
+                margin: "0 8px",
+                padding: "5px 10px"
+              }}
+              href="/RegisterLogin"
+            >
+              Inicia sesión / Regístrate
+            </a>
+          </form>
+        </div>
+      </nav>
     );
   }
 }
