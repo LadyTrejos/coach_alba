@@ -1,6 +1,4 @@
-import React from "react";
 import Link from "next/link";
-import { Link as LinkScroll, Element } from "react-scroll";
 
 const linkStyle = {
   marginRight: 15
