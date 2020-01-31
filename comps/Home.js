@@ -1,19 +1,20 @@
-import Header from './Header';
+import styles from "../styles/styles.scss";
 
-const homeStyle = {
-  margin: 20,
-  padding: 20,
-  background:'#2A9AD2',
-  border: '1px solid #DDD',
-  borderRadius:'10px'
-
-};
-
-const Home = props => (
-  <div style={homeStyle}>
-    <Header />
-    {props.children}
-  </div>
-);
-
-export default Home;
+export default function Home() {
+  return (
+    <div className="container-fluid">
+      <div className="row align-items-center">
+        <div className="offset-1 col-10 col-sm-10 col-md-6 col-lg-6 col-xl-6">
+          <div className={styles.description}>
+            Velit voluptate ea officia qui deserunt occaecat. Ipsum veniam qui
+            aliquip cillum deserunt sint aliquip sint elit aliquip exercitation
+            consequat fugiat.
+          </div>
+        </div>
+        <div className="offset-1 col-3">
+          <img src="/tatiana.png" className={styles.coverimg} />
+        </div>
+      </div>
+    </div>
+  );
+}
