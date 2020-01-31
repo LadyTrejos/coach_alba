@@ -1,10 +1,10 @@
-import Layout from '../comps/MyLayout';
+import Home from '../comps/Home';
 
 export default function About() {
   return (
-    <Layout>
+    <Home>
       <p>This is the about page</p>
-    </Layout>
+    </Home>
     
   );
 }
