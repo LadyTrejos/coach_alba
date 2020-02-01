@@ -1,4 +1,6 @@
+import React from "react";
 import Link from "next/link";
+import { Link as LinkScroll, Element } from "react-scroll";
 
 const linkStyle = {
   marginRight: 15
@@ -52,6 +54,7 @@ class Header extends React.Component {
               </a>
             </li>
           </ul>
+
           <form class="form-inline my-2 my-lg-0">
             <a
               style={{
