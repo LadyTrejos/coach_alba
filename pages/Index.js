@@ -40,6 +40,10 @@ class Index extends React.Component {
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossOrigin="anonymous"
           ></script>
+          <link
+            href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+            rel="stylesheet"
+          />
         </Head>
         <Header></Header>
 
@@ -53,9 +57,7 @@ class Index extends React.Component {
         <div id="gallery" className="pt-5">
           <Gallery />
         </div>
-        <div id="demoBlog" className="pt-5">
-          <DemoBlog />
-        </div>
+
         <div id="contact" className="pt-5">
           <Footer />
         </div>
