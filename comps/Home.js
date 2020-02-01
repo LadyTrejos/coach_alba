@@ -11,7 +11,7 @@ export default function Home() {
             consequat fugiat.
           </div>
         </div>
-        <div className="col-3">
+        <div className="offset-1 col-10 col-sm-10 col-md-4 col-lg-4 col-xl-4">
           <img src="/tatiana.png" className={styles.coverimg} />
         </div>
       </div>

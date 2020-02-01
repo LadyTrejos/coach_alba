@@ -1,13 +1,13 @@
 import React from "react";
 import { Link as LinkScroll, Element } from "react-scroll";
-import Header from "../comps/Header";
-import Home from "../comps/Home";
-import Footer from "../comps/Footer";
-import AboutMe from "../comps/AboutMe";
-import DemoBlog from "../comps/DemoBlog";
-import Gallery from "../comps/Gallery";
-
 import Head from "next/head";
+
+import Header from "../comps/Header";
+import AboutMe from "../comps/AboutMe";
+import Gallery from "../comps/Gallery";
+import DemoBlog from "../comps/DemoBlog";
+import Footer from "../comps/Footer";
+import Home from "../comps/Home";
 
 class Index extends React.Component {
   render() {
