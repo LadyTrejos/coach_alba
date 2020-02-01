@@ -1,38 +1,54 @@
 export default function Footer() {
   return (
-    <div>
-      <p>
-        Footer---------------------Aute aute ex ad veniam velit exercitation et
-        nulla non labore fugiat tempor in voluptate. Mollit dolore sit deserunt
-        quis ea ipsum dolore sunt sunt ea amet reprehenderit aute. Nostrud minim
-        reprehenderit dolor enim do fugiat excepteur cillum. Esse adipisicing
-        incididunt mollit mollit cillum ad. Ex Lorem laborum Lorem non fugiat
-        irure enim do anim tempor eu aliquip. Qui esse id sint duis amet
-        proident eiusmod eu sit velit. Adipisicing proident non nostrud in et
-        sunt consectetur in in eiusmod reprehenderit elit elit eiusmod. Anim
-        elit dolore eiusmod cupidatat dolore qui. Minim labore cupidatat duis
-        laborum commodo Lorem veniam id. Cillum sint Lorem elit proident sunt
-        sunt Lorem dolor elit ad. Et ullamco ea id irure sunt laboris aliqua
-        minim aliqua ipsum nisi eiusmod ea anim. Occaecat aliquip eu nisi aute
-        duis eiusmod dolore laboris ea ut aliquip irure aliqua. Ipsum esse
-        occaecat mollit excepteur elit est commodo velit incididunt cillum.
-        Adipisicing ea do sit est aute. Consequat proident esse consequat id
-        aliquip commodo irure qui aute. Sint sunt excepteur velit dolore veniam
-        elit esse. Aliquip aute ad proident culpa veniam. Velit cillum laboris
-        adipisicing laborum ad aliquip ea aliqua exercitation. Magna enim ad
-        nulla aliqua veniam ullamco exercitation aute sit nisi reprehenderit.
-        Officia labore adipisicing sunt do ipsum laboris. Laborum ad laboris ex
-        ullamco duis. Dolor qui voluptate culpa tempor id aliquip. Adipisicing
-        qui cillum consequat in in minim dolor Lorem nostrud sit. Tempor duis
-        dolor nulla nostrud incididunt. Enim laboris ut qui est dolor.
-        Consectetur in pariatur elit enim pariatur qui amet incididunt ad esse
-        nulla. Dolor aute dolor qui tempor duis dolor ea dolore do exercitation
-        proident adipisicing laboris in. Sint laboris magna veniam reprehenderit
-        mollit aute exercitation. Adipisicing excepteur reprehenderit mollit
-        enim adipisicing proident nostrud eu culpa. Veniam in incididunt laborum
-        minim id non proident laborum eiusmod enim proident duis sint. Anim amet
-        consectetur nulla ex.
-      </p>
-    </div>
+    <footer class="row text-center" style={{ backgroundColor: "#959595" }}>
+      <div className="col-sm-0 col-md-9 col-lg-9 col-xl-10">
+        <a href="https://web.whatsapp.com">
+          <i
+            class="fa fa-whatsapp"
+            aria-hidden="true"
+            data-text="Whatsapp"
+            style={{
+              fontSize: "5vh",
+              textAlign: "center",
+              margin: "20px",
+              color: "#fff"
+            }}
+          ></i>
+        </a>
+        <a href="https://www.facebook.com">
+          <i
+            class="fa fa-facebook"
+            aria-hidden="true"
+            data-text="Facebook"
+            style={{
+              fontSize: "5vh",
+              textAlign: "center",
+              margin: "20px",
+              color: "#fff"
+            }}
+          ></i>
+        </a>
+        <a href="https://www.instagram.com">
+          <i
+            class="fa fa-instagram"
+            aria-hidden="true"
+            data-text="Instagram"
+            style={{
+              fontSize: "5vh",
+              textAlign: "center",
+              margin: "20px",
+              color: "#fff"
+            }}
+          ></i>
+        </a>
+      </div>
+      <div class="col-sm-0 col-md-1 col-lg-2 col-xl-2">
+        Cr 12 cs 45 Pereira
+        <br />
+        +57 321456789
+        <br />
+        example@gmail.com
+      </div>
+    </footer>
   );
 }
