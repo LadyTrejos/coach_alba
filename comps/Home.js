@@ -15,7 +15,6 @@ export default function Home() {
           <img src="/tatiana.png" className={styles.coverimg} />
         </div>
       </div>
-
     </div>
   );
 }
