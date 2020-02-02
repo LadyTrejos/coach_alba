@@ -1,17 +1,11 @@
+import styles from "../styles/styles.scss";
+import Footer from "./Footer";
 class Gallery extends React.Component {
-  imagen(img) {
-    return (
-      <figure class="col-md-4 d-md-inline-block">
-        <img src={img} class="img-fluid" />
-      </figure>
-    );
-  }
-
   render() {
-    const photos = ["/logo192.png", "/tatiana.png", "/image.png"];
+    let foto = ["/tatiana.png", "/logo192.png"];
     return (
       <div className="container-fluid">
-        <h1 style={{ textAlign: "center" }}>Galería</h1>
+        <h1 className={styles.title}>Galería</h1>
         <div
           id="carousel-with-lb"
           class="carousel slide carousel-multi-item"
@@ -19,18 +13,28 @@ class Gallery extends React.Component {
         >
           <div class="controls-top">
             <a
+              class="carousel-control-prev"
               href="#carousel-with-lb"
+              role="button"
               data-slide="prev"
-              style={{ fontSize: "2rem" }}
             >
-              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Previous</span>
             </a>
             <a
+              class="carousel-control-next"
               href="#carousel-with-lb"
+              role="button"
               data-slide="next"
-              style={{ fontSize: "2rem" }}
             >
-              <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Next</span>
             </a>
           </div>
           <ol class="carousel-indicators">
@@ -53,19 +57,13 @@ class Gallery extends React.Component {
 
           <div class="carousel-inner mdb-lightbox" role="listbox">
             <div id="mdb-lightbox-ui"></div>
-            <div class=" carousel-item active text-center">
+            <div class=" carousel-item active text-center w-100">
               <figure class="col-md-4 d-md-inline-block">
-                <img
-                  src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(2).jpg"
-                  class="img-fluid"
-                />
+                <img src="/paisaje2.jpg" class="img-fluid" />
               </figure>
 
               <figure class="col-md-4 d-md-inline-block">
-                <img
-                  src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(4).jpg"
-                  class="img-fluid"
-                />
+                <img src="/paisaje.jpg" class="img-fluid" />
               </figure>
 
               <figure class="col-md-4 d-md-inline-block">
