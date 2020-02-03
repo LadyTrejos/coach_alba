@@ -1,5 +1,4 @@
 import React from "react";
-import { Link as LinkScroll, Element } from "react-scroll";
 import Head from "next/head";
 
 import Header from "../comps/Header";
@@ -60,7 +59,6 @@ class Index extends React.Component {
         <div id="demoBlog" className="pt-5">
           <DemoBlog />
         </div>
-
         <div id="contact" className="pt-5">
           <Footer />
         </div>

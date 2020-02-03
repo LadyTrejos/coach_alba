@@ -1,7 +1,9 @@
+import styles from "../styles/styles.scss";
+
 export default function Footer() {
   return (
-    <footer className="row text-center" style={{ backgroundColor: "#959595" }}>
-      <div className="col-sm-6 col-md-9 col-lg-9 col-xl-10">
+    <footer className={`row justify-content-center ${styles.footer}`}>
+      <div className="col-sm-6 col-md-8 col-lg-8 col-xl-6">
         <a href="https://web.whatsapp.com">
           <i
             class="fa fa-whatsapp"
@@ -42,7 +44,7 @@ export default function Footer() {
           ></i>
         </a>
       </div>
-      <div className="col-sm-3 col-md-2 col-lg-2 col-xl-2">
+      <div className="col-sm-5 col-md-3 col-lg-3 col-xl-3">
         Cr 12 cs 45 Pereira
         <br />
         +57 321456789
