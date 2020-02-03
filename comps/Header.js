@@ -65,7 +65,7 @@ class Header extends React.Component {
                 margin: "0 8px",
                 padding: "5px 10px"
               }}
-              href="/RegisterLogin"
+              href="/ingresar"
             >
               Inicia sesión / Regístrate
             </a>

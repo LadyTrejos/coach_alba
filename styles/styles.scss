@@ -1,6 +1,20 @@
+// Variables
+$regal-blue: #034378;
+$san-juan: #2d4e68;
+$bermuda: #77d7b9;
+$white: #fff;
+$black: #000;
 $primary-color: #238293;
-
+$secondary-color: #5a7c9c;
 $title: blue;
+
+.coverimg {
+    width: 100%;
+    height: auto;
+    max-height: 90vh;
+    max-width: 90vw;
+    object-fit: cover;
+}
 
 .description {
     box-shadow: 0px 8px 30px rgba(34, 35, 58, 0.2);
@@ -10,12 +24,11 @@ $title: blue;
     margin-top: 2rem;
 }
 
-.coverimg {
-    width: 100%;
-    height: auto;
-    max-height: 90vh;
-    max-width: 90vw;
-    object-fit: cover;
+.footer {
+    background-color: $secondary-color;
+    padding: 2rem 0;
+    color: $white;
+
 }
 
 img {
@@ -32,16 +45,6 @@ img {
 }
 
 // PostPreview styles
-
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
-// Variables
-$regal-blue: #034378;
-$san-juan: #2d4e68;
-$bermuda: #77d7b9;
-$white: #fff;
-$black: #000;
-$open-sans: 'Open Sans',
-sans-serif;
 
 // clear-fix mixin
 @mixin cf {
