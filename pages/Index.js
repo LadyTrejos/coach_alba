@@ -1,5 +1,4 @@
 import React from "react";
-import { Link as LinkScroll, Element } from "react-scroll";
 import Head from "next/head";
 
 import Header from "../comps/Header";

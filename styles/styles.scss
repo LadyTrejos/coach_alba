@@ -18,6 +18,14 @@ $title: blue;
     object-fit: cover;
 }
 
+img {
+    max-height: 50vh;
+    max-width: 50vw;
+    min-height: 50vh;
+    min-width: 30vw;
+    object-fit: fill;
+}
+
 .title {
     text-align: center;
     font-size: 1.5rem;
@@ -256,3 +264,109 @@ a {
 }
 
 // End PostPreview styles
+
+//video background
+header {
+    position: relative;
+    background-color: black;
+    min-height: 25rem;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+header video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100vw;
+    min-height: 100vw;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+header .container {
+    position: relative;
+    z-index: 2;
+}
+
+header .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: url('/video.jpg');
+    opacity: 0.8;
+    z-index: 1;
+}
+
+//login
+.login-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.login-form-1 {
+    padding: 5%;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-form-1 h3 {
+    text-align: center;
+    color: #fff;
+}
+
+.login-form-2 {
+    padding: 5%;
+    background: #0062cc;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-form-2 h3 {
+    text-align: center;
+    color: #fff;
+}
+
+.login-container form {
+    padding: 10%;
+}
+
+.btnSubmit {
+
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+
+.login-form-1 .btnSubmit {
+    font-weight: 600;
+    color: #fff;
+    background-color: #0062cc;
+    align-items: center;
+}
+
+.login-form-2 .btnSubmit {
+    font-weight: 600;
+    color: #0062cc;
+    background-color: #fff;
+}
+
+.login-form-2 .ForgetPwd {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-form-1 .ForgetPwd {
+    color: #0062cc;
+    font-weight: 600;
+    text-decoration: none;
+}
