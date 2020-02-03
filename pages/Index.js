@@ -57,7 +57,9 @@ class Index extends React.Component {
         <div id="gallery" className="pt-5">
           <Gallery />
         </div>
-
+        <div id="demoBlog" className="pt-5">
+          <DemoBlog />
+        </div>
         <div id="contact" className="pt-5">
           <Footer />
         </div>
