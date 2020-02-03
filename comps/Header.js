@@ -44,7 +44,7 @@ class Header extends React.Component {
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#demoBlog">
+              <a class="nav-link" href="#blog">
                 Blog
               </a>
             </li>
@@ -64,7 +64,8 @@ class Header extends React.Component {
                 borderRadius: "5px",
                 color: "blue",
                 margin: "0 8px",
-                padding: "5px 10px"
+                padding: "5px 10px",
+                textDecoration: "none"
               }}
               href="/ingresar"
             >

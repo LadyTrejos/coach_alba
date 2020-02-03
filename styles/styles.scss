@@ -1,14 +1,13 @@
+// Variables
+$regal-blue: #034378;
+$san-juan: #2d4e68;
+$bermuda: #77d7b9;
+$white: #fff;
+$black: #000;
 $primary-color: #238293;
-
+$secondary-color: #5a7c9c;
 $title: blue;
-
-.description {
-  box-shadow: 0px 8px 30px rgba(34, 35, 58, 0.2);
-  padding: 25px;
-  border-radius: 25px;
-  height: fit-content;
-  margin-top: 2rem;
-}
+$section-title: #057a97;
 
 .coverimg {
   width: 100%;
@@ -18,28 +17,35 @@ $title: blue;
   object-fit: cover;
 }
 
-img {
-  max-height: 50vh;
-  max-width: 50vw;
-  min-height: 50vh;
-  min-width: 30vw;
-  object-fit: fill;
+.description {
+  box-shadow: 0px 8px 30px rgba(34, 35, 58, 0.2);
+  padding: 25px;
+  border-radius: 25px;
+  height: fit-content;
+  margin-top: 2rem;
+}
+
+.footer {
+  background-color: $secondary-color;
+  padding: 2rem 0;
+  color: $white;
+}
+
+.galleryimg {
+  max-width: 30vw;
+  width: auto;
+  height: 70vh;
+  object-fit: contain;
+  overflow: hidden;
 }
 
 .title {
   text-align: center;
   font-size: 1.5rem;
+  color: $section-title;
 }
 
 // PostPreview styles
-
-// Variables
-$regal-blue: #034378;
-$san-juan: #2d4e68;
-$bermuda: #77d7b9;
-$white: #fff;
-$black: #000;
-$open-sans: "Open Sans", sans-serif;
 
 // clear-fix mixin
 @mixin cf {
