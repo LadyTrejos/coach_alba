@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Link as LinkScroll, Element } from "react-scroll";
+import Footer from "./Footer";
 
 const linkStyle = {
   marginRight: 15
@@ -65,7 +66,7 @@ class Header extends React.Component {
                 margin: "0 8px",
                 padding: "5px 10px"
               }}
-              href="/RegisterLogin"
+              href="/ingresar"
             >
               Inicia sesión / Regístrate
             </a>

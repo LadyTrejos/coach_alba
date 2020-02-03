@@ -5,7 +5,7 @@ import Header from "../comps/Header";
 class RegisterLogin extends React.Component {
   render() {
     return (
-      <header>
+      <header className={styles.header_ingresar}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link
@@ -21,111 +21,94 @@ class RegisterLogin extends React.Component {
           <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
           <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         </Head>
+        <Header></Header>
+        <div></div>
 
-        <div className="overlay"></div>
-        <video
-          playsInline="playsinline"
-          autoPlay="autoplay"
-          loop="loop"
-          poster="/video.jpg"
-          muted
-        >
-          <source src="/video.mp4" type="video/mp4" />
-        </video>
-
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6 login-form-1">
-              <h3 style={{ textAlign: "center" }}>Inicio de sesión</h3>
+        <div className={`container ${styles.login_container}`}>
+          <div className="row">
+            <div className={`col-md-6 ${styles.login_form_1}`}>
+              <h3>Inicio de sesión</h3>
               <form>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Correo electrónico"
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Contraseña"
-                    value=""
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="submit"
-                    class="btnSubmit"
+                    className={styles.btnSubmit}
                     value="Iniciar sesión"
                   />
                 </div>
-                <div class="form-group">
-                  <a href="#" class="ForgetPwd">
+                <div className="form-group">
+                  <a href="#" className={styles.ForgetPwd}>
                     ¿Olvidaste tu contraseña?
                   </a>
                 </div>
               </form>
             </div>
-            <div class="col-md-6 login-form-2">
-              <h3 style={{ textAlign: "center" }}>Registro</h3>
+            <div className={`col-md-6 ${styles.login_form_2}`}>
+              <h3>Registro</h3>
               <form>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Nombre"
-                    value=""
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Correo electrónico"
-                    value=""
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Celular"
-                    value=""
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Lugar de residencia"
-                    value=""
                   />
                 </div>
 
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Contraseña"
-                    value=""
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Confirmar contraseña"
-                    value=""
                   />
                 </div>
-                <div class="form-group">
-                  <input type="submit" class="btnSubmit" value="Registrarme" />
-                </div>
-                <div class="form-group">
-                  <a href="#" class="ForgetPwd" value="Login">
-                    ¿Olvidaste tu contraseña?
-                  </a>
+                <div className="form-group">
+                  <input
+                    type="submit"
+                    className={styles.btnSubmit}
+                    value="Registrarme"
+                  />
                 </div>
               </form>
             </div>
