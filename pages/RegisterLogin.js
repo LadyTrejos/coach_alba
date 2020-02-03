@@ -33,7 +33,7 @@ class RegisterLogin extends React.Component {
           <source src="/video.mp4" type="video/mp4" />
         </video>
 
-        <div class="container login-container">
+        <div class="container">
           <div class="row">
             <div class="col-md-6 login-form-1">
               <h3 style={{ textAlign: "center" }}>Inicio de sesión</h3>
@@ -43,7 +43,6 @@ class RegisterLogin extends React.Component {
                     type="text"
                     class="form-control"
                     placeholder="Correo electrónico"
-                    value=""
                   />
                 </div>
                 <div class="form-group">
