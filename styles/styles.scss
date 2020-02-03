@@ -7,6 +7,7 @@ $black: #000;
 $primary-color: #238293;
 $secondary-color: #5a7c9c;
 $title: blue;
+$section-title: #057a97;
 
 .coverimg {
     width: 100%;
@@ -28,20 +29,20 @@ $title: blue;
     background-color: $secondary-color;
     padding: 2rem 0;
     color: $white;
-
 }
 
-img {
-    max-height: 50vh;
-    max-width: 50vw;
-    min-height: 50vh;
-    min-width: 30vw;
-    object-fit: fill;
+.galleryimg {
+    max-width: 30vw;
+    width: auto;
+    height: 70vh;
+    object-fit: contain;
+    overflow: hidden;
 }
 
 .title {
     text-align: center;
     font-size: 1.5rem;
+    color: $section-title;
 }
 
 // PostPreview styles
