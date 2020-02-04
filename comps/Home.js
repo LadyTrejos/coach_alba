@@ -2,7 +2,7 @@ import styles from "../styles/styles.scss";
 
 export default function Home() {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid ">
       <div className="row align-items-center">
         <div className="offset-1 col-9 col-sm-10 col-md-6 col-lg-6 col-xl-6">
           <div className={styles.description}>
