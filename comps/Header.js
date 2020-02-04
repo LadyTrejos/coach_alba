@@ -1,10 +1,21 @@
 import React from "react";
+import Link from "next/link";
+import { Link as LinkScroll, Element } from "react-scroll";
+import Footer from "./Footer";
+
+const linkStyle = {
+  marginRight: 15
+};
 
 class Header extends React.Component {
+  /*componentDidMount() {
+    localStorage.setItem("user", "ivan");
+    console.log(localStorage.getItem("user"));
+  }*/
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/#">
           Logo
         </a>
         <button
@@ -22,31 +33,41 @@ class Header extends React.Component {
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="#home">
+              <a className="nav-link" href="/#home">
                 Inicio <span className="sr-only">(current)</span>
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#about-me">
+              <a className="nav-link" href="/#about-me">
                 Sobre mí
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#gallery">
+              <a className="nav-link" href="/#gallery">
                 Galería
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#blog">
+              <a className="nav-link" href="/#blog">
                 Blog
               </a>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#contact">
+              <a className="nav-link" href="/#contact">
                 Contacto
               </a>
             </li>
+
+            {/*localStorage.getItem("user") == "ivan" ? (
+              <li className="nav-item">
+                <a className="nav-link" href="/#contact">
+                  Contacto
+                </a>
+              </li>
+            ) : (
+              <div></div>
+            )*/}
           </ul>
 
           <form className="form-inline my-2 my-lg-0">

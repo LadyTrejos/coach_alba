@@ -44,6 +44,7 @@ class Index extends React.Component {
             rel="stylesheet"
           />
         </Head>
+
         <Header></Header>
 
         <div id="home" className="pt-5">
@@ -53,12 +54,14 @@ class Index extends React.Component {
         <div id="about-me" className="pt-5">
           <AboutMe />
         </div>
+
         <div id="gallery" className="pt-5">
           <Gallery />
         </div>
         <div id="blog" className="pt-5">
           <DemoBlog />
         </div>
+
         <div id="contact" className="pt-5">
           <Footer />
         </div>
