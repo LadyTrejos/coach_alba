@@ -7,7 +7,7 @@ export default function AboutMe() {
       <div class="overlay"></div>
       <video
         playsinline="playsinline"
-        autoplay="autoplay"
+        autoPlay="autoplay"
         muted="muted"
         loop="loop"
       >

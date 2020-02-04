@@ -8,14 +8,18 @@ const linkStyle = {
 };
 
 class Header extends React.Component {
+  /*componentDidMount() {
+    localStorage.setItem("user", "ivan");
+    console.log(localStorage.getItem("user"));
+  }*/
   render() {
     return (
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <a class="navbar-brand" href="#">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <a className="navbar-brand" href="/#">
           Logo
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarColor01"
@@ -23,40 +27,50 @@ class Header extends React.Component {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor01">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#home">
-                Inicio <span class="sr-only">(current)</span>
+        <div className="collapse navbar-collapse" id="navbarColor01">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item active">
+              <a className="nav-link" href="/#home">
+                Inicio <span className="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#about-me">
+            <li className="nav-item">
+              <a className="nav-link" href="/#about-me">
                 Sobre mí
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#gallery">
+            <li className="nav-item">
+              <a className="nav-link" href="/#gallery">
                 Galería
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#blog">
+            <li className="nav-item">
+              <a className="nav-link" href="/#blog">
                 Blog
               </a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="#contact">
+            <li className="nav-item">
+              <a className="nav-link" href="/#contact">
                 Contacto
               </a>
             </li>
+
+            {/*localStorage.getItem("user") == "ivan" ? (
+              <li className="nav-item">
+                <a className="nav-link" href="/#contact">
+                  Contacto
+                </a>
+              </li>
+            ) : (
+              <div></div>
+            )*/}
           </ul>
 
-          <form class="form-inline my-2 my-lg-0">
+          <form className="form-inline my-2 my-lg-0">
             <a
               style={{
                 background: "#fff",
