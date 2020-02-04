@@ -49,6 +49,7 @@ $section-title: #057a97;
 
 // clear-fix mixin
 @mixin cf {
+
   &::before,
   &::after {
     content: "";
@@ -324,8 +325,7 @@ a {
   color: #fff;
 }
 
-.login_container form {
-}
+.login_container form {}
 
 .btnSubmit {
   width: 50%;
@@ -346,6 +346,7 @@ a {
   font-weight: 600;
   color: #0062cc;
   background-color: #fff;
+  align-items: center;
 }
 
 .login_form_1 .ForgetPwd {

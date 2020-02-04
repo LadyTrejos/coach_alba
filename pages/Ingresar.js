@@ -3,11 +3,6 @@ import Head from "next/head";
 import Header from "../comps/Header";
 import Router from "next/router";
 
-const initialLogin = {
-  emailError: "",
-  passwordError: ""
-};
-
 class RegisterLogin extends React.Component {
   constructor(props) {
     super(props);
@@ -24,20 +19,24 @@ class RegisterLogin extends React.Component {
         phone: "",
         address: "",
         password: "",
-        con_password: ""
+        con_password: "",
+        nameError: "",
+        emailError: "",
+        phoneError: "",
+        addressError: "",
+        passwordError: "",
+        con_passwordError: ""
       }
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  validate = () => {
+  validateLogin = () => {
     let emailError = "";
     let passwordError = "";
-    console.log("validate");
     let regx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!regx.test(this.state.login.email)) {
-      emailError = "Correo electrónico inválido";
+      emailError = "Correo electrónico no válido";
     }
 
     if (this.state.login.password == "") {
@@ -58,11 +57,39 @@ class RegisterLogin extends React.Component {
     return true;
   };
 
-  handleSubmit(event) {
+  validateRegister = () => {
+    let nameError = "";
+    let emailError = "";
+    let phoneError = "";
+    let addressError = "";
+    let passwordError = "";
+    let con_passwordError = "";
+    let regx = /^(?=.{6,25}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
+    if (regx.test(this.state.register.name)) {
+      nameError = "Nombre no válido";
+      console.log("nombre malo");
+    }
+
+    if (nameError) {
+      this.setState({
+        register: {
+          ...this.state.register,
+          nameError,
+          emailError,
+          phoneError,
+          addressError,
+          passwordError,
+          con_passwordError
+        }
+      });
+      return false;
+    }
+    return true;
+  };
+
+  OnClickLogin(event) {
     event.preventDefault();
-    console.log("submit");
-    const isValid = this.validate();
-    console.log(this.state);
+    const isValid = this.validateLogin();
     if (isValid) {
       this.setState({
         login: {
@@ -71,8 +98,26 @@ class RegisterLogin extends React.Component {
           emailError: ""
         }
       });
-      let id = "";
       Router.push("/");
+    }
+  }
+
+  OnClickRegister(event) {
+    event.preventDefault();
+    const isValid = this.validateRegister();
+    if (isValid) {
+      this.setState({
+        register: {
+          ...this.state.register,
+          nameError: "",
+          emailError: "",
+          phoneError: "",
+          addressError: "",
+          passwordError: "",
+          con_passwordError: ""
+        }
+      });
+      Router.push("/#contacto");
     }
   }
   render() {
@@ -146,7 +191,10 @@ class RegisterLogin extends React.Component {
                   ) : null}
                 </div>
                 <div className="form-group">
-                  <button type="submit" className={styles.btnSubmit}>
+                  <button
+                    onClick={ev => this.OnClickLogin(ev)}
+                    className={styles.btnSubmit}
+                  >
                     Iniciar sesión
                   </button>
                 </div>
@@ -174,6 +222,11 @@ class RegisterLogin extends React.Component {
                       });
                     }}
                   />
+                  {this.state.register.nameError ? (
+                    <div style={{ color: "red", fontSize: 12 }}>
+                      {this.state.register.nameError}
+                    </div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <input
@@ -252,11 +305,12 @@ class RegisterLogin extends React.Component {
                   />
                 </div>
                 <div className="form-group">
-                  <input
-                    type="submit"
+                  <button
+                    onClick={ev => this.OnClickRegister(ev)}
                     className={styles.btnSubmit}
-                    value="Registrarme"
-                  />
+                  >
+                    Registrarme
+                  </button>
                 </div>
               </form>
             </div>
