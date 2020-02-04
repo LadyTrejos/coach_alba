@@ -13,7 +13,7 @@ export default function PostPreview() {
         <div className={styles.data}>
           <div className={styles.content}>
             <span className={styles.author}>Jane Doe</span>
-            <h1 className={styles.title}>
+            <h1 className={styles.postTitle}>
               <a href="#">Boxing icon has the will for a couple more fights</a>
             </h1>
             <p className={styles.text}>

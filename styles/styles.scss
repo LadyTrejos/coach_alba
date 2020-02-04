@@ -8,7 +8,21 @@ $primary-color: #238293;
 $secondary-color: #5a7c9c;
 $title: blue;
 $section-title: #057a97;
+// Fonts
+$lobster: "Lobster", cursive;
 
+// Common styles
+a {
+  text-decoration: none;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 1.5rem;
+  color: $section-title;
+}
+
+// Home styles
 .coverimg {
   width: 100%;
   height: auto;
@@ -25,80 +39,63 @@ $section-title: #057a97;
   margin-top: 2rem;
 }
 
-.footer {
-  background-color: $secondary-color;
-  padding: 2rem 0;
-  color: $white;
+// About me styles
+.aboutbg {
+  width: 100vw;
+  height: fit-content;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  -webkit-box-shadow: 0 7px 30px 3px rgba(94, 96, 186, 0.35);
+  box-shadow: 0 7px 30px 3px rgba(94, 96, 186, 0.35);
+  /* fallback for old browsers */
+  background-image: #4ac29a;
+  /* Chrome 10-25, Safari 5.1-6 */
+  background-image: -webkit-linear-gradient(to right, #bdfff3, #4ac29a);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-image: linear-gradient(to right, #bdfff3, #4ac29a);
 }
 
+.bio {
+  background-color: $white;
+  margin: 10vh 0;
+  border-radius: 40px 0 0 40px;
+  box-shadow: 0 7px 30px 3px rgba(94, 96, 186, 0.35);
+  padding: 2rem;
+}
+
+.biotitle {
+  font-family: $lobster;
+  text-align: center;
+  font-size: 2rem;
+}
+
+// Gallery styles
 .galleryimg {
   max-width: 30vw;
   width: auto;
-  height: 70vh;
+  height: 800px;
   object-fit: contain;
-  overflow: hidden;
 }
 
-.title {
-  text-align: center;
-  font-size: 1.5rem;
-  color: $section-title;
+.carouselcontrolprevicon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2306c7b7' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+  width: 8vh;
+  height: 8vh;
+}
+
+.carouselcontrolnexticon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2306c7b7' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+  width: 8vh;
+  height: 8vh;
 }
 
 // PostPreview styles
 
-// clear-fix mixin
-@mixin cf {
-
-  &::before,
-  &::after {
-    content: "";
-    display: table;
-  }
-
-  &::after {
-    clear: both;
-  }
-}
-
-a {
-  text-decoration: none;
-}
-
-.row {
-  max-width: 900px;
-  margin: 50px auto 0;
-}
-
-// Base styles
 .card {
   float: left;
   padding: 1rem 1.7rem;
-
-  .menucontent {
-    @include cf;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-
-    li {
-      display: inline-block;
-    }
-
-    a {
-      color: $white;
-    }
-
-    span {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      font-size: 10px;
-      font-weight: 700;
-      font-family: "Open Sans";
-      transform: translate(-50%, 0);
-    }
-  }
 
   .wrapper {
     background-color: $white;
@@ -132,7 +129,7 @@ a {
     font-size: 12px;
   }
 
-  .title {
+  .postTitle {
     margin: 14px 0;
     overflow-wrap: break-word;
     font-size: 1.1rem;
@@ -145,7 +142,6 @@ a {
   }
 }
 
-// First example styles
 .postcard {
   .thumbnail {
     width: 100%;
@@ -325,7 +321,8 @@ a {
   color: #fff;
 }
 
-.login_container form {}
+.login_container form {
+}
 
 .btnSubmit {
   width: 50%;
