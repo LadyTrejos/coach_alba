@@ -2,6 +2,9 @@ import styles from "../styles/styles.scss";
 import Head from "next/head";
 import Header from "../comps/Header";
 import Router from "next/router";
+import api from "../api";
+
+const alertColor = "yellow";
 
 class RegisterLogin extends React.Component {
   constructor(props) {
@@ -10,27 +13,43 @@ class RegisterLogin extends React.Component {
     this.state = {
       login: {
         email: "",
-        password: "",
-        emailError: "",
-        passwordError: ""
+        password: ""
       },
       register: {
         name: "",
         email: "",
-        phone: "",
-        address: "",
+        phone: 3214567890,
+        location: {
+          country: "colombia",
+          state: "risaralda",
+          city: "pereira"
+        },
         password: "",
-        confirmPassword: "",
+        confirmPassword: ""
+      },
+
+      loginError: {
+        emailError: "",
+        passwordError: ""
+      },
+      registerError: {
         nameError: "",
         emailError: "",
         phoneError: "",
-        addressError: "",
+        locationError: "",
         passwordError: "",
         confirmPasswordError: ""
       },
 
       isPasswordVisible: "password",
-      eye: "fa fa-eye-slash icon"
+      isConfirmationPasswordVisible: "password",
+      isLoginPasswordVisible: "password",
+      eye: "fa fa-eye-slash icon",
+      eyeConfirmationPassword: "fa fa-eye-slash icon",
+      eyeLoginPassword: "fa fa-eye-slash icon",
+      checkBoxValidate: false,
+      checkBoxValidateSubmit: "",
+      counter: 0
     };
   }
 
@@ -44,6 +63,34 @@ class RegisterLogin extends React.Component {
       this.setState({
         isPasswordVisible: "password",
         eye: "fa fa-eye-slash"
+      });
+    }
+  }
+
+  viewConfirmationPassword() {
+    if (this.state.isConfirmationPasswordVisible == "password") {
+      this.setState({
+        isConfirmationPasswordVisible: "text",
+        eyeConfirmationPassword: "fa fa-eye icon"
+      });
+    } else {
+      this.setState({
+        isConfirmationPasswordVisible: "password",
+        eyeConfirmationPassword: "fa fa-eye-slash"
+      });
+    }
+  }
+
+  viewLoginPassword() {
+    if (this.state.isLoginPasswordVisible == "password") {
+      this.setState({
+        isLoginPasswordVisible: "text",
+        eyeLoginPassword: "fa fa-eye icon"
+      });
+    } else {
+      this.setState({
+        isLoginPasswordVisible: "password",
+        eyeLoginPassword: "fa fa-eye-slash"
       });
     }
   }
@@ -63,8 +110,8 @@ class RegisterLogin extends React.Component {
 
     if (emailError || passwordError) {
       this.setState({
-        login: {
-          ...this.state.login,
+        loginError: {
+          ...this.state.loginError,
           emailError,
           passwordError
         }
@@ -79,9 +126,10 @@ class RegisterLogin extends React.Component {
     let nameError = "";
     let emailError = "";
     let phoneError = "";
-    let addressError = "";
+    let locationError = "";
     let passwordError = "";
     let confirmPasswordError = "";
+    let checkBoxValidateSubmit = "";
     let regxName = /^(?=.{3,25}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z._]+(?<![_.])$/;
     if (!regxName.test(this.state.register.name)) {
       nameError = "Nombre no válido";
@@ -100,19 +148,25 @@ class RegisterLogin extends React.Component {
       passwordError = "La contraseña debe contener al menos 6 caracteres";
     }
 
-    if (nameError || emailError || passwordError) {
+    if (!this.state.checkBoxValidate) {
+      checkBoxValidateSubmit = "Debes aceptar la política de privacidad";
+    }
+
+    if (nameError || emailError || passwordError || checkBoxValidateSubmit) {
       this.setState({
-        register: {
-          ...this.state.register,
+        registerError: {
+          ...this.state.registerError,
           nameError,
           emailError,
           phoneError,
-          addressError,
+          locationError,
           passwordError
-        }
+        },
+        checkBoxValidateSubmit
       });
       return false;
     }
+
     return true;
   };
 
@@ -121,8 +175,8 @@ class RegisterLogin extends React.Component {
     const isValid = this.validateLogin();
     if (isValid) {
       this.setState({
-        login: {
-          ...this.state.login,
+        loginError: {
+          ...this.state.loginError,
           passwordError: "",
           emailError: ""
         }
@@ -134,25 +188,46 @@ class RegisterLogin extends React.Component {
   OnClickRegister(event) {
     event.preventDefault();
     const isValid = this.validateRegister();
-    if (isValid) {
+    if (isValid && this.state.checkBoxValidate) {
       this.setState({
-        register: {
-          ...this.state.register,
+        registerError: {
+          ...this.state.registerError,
           nameError: "",
           emailError: "",
           phoneError: "",
-          addressError: "",
+          locationError: "",
           passwordError: ""
-        }
+        },
+        checkBoxValidateSubmit: ""
       });
-      Router.push("/");
+      const userData = JSON.stringify(this.state.register);
+      console.log("userData: ", userData);
+
+      api
+        .post(`/api/users/`, userData, {
+          headers: { "Content-type": "application/json" }
+        })
+
+        .catch(err => {})
+        .then(() => {
+          Router.push("/");
+        });
     }
   }
 
   noSpaces = word => {
     return word.replace(/\s/g, "");
   };
+
+  checkBox = () => {
+    this.state.checkBoxValidate
+      ? this.setState({ checkBoxValidate: false })
+      : this.setState({ checkBoxValidate: true });
+
+    this.state.counter += 1;
+  };
   render() {
+    console.log(this.state.counter);
     return (
       <header className={styles.header_ingresar}>
         <Head>
@@ -174,8 +249,6 @@ class RegisterLogin extends React.Component {
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
           />
-          <link rel="stylesheet" href="style.css" />
-          <script type="text/javascript" src="script.js"></script>
         </Head>
         <Header></Header>
         <div></div>
@@ -188,10 +261,11 @@ class RegisterLogin extends React.Component {
             <div className={`col-md-6 ${styles.login_form_1}`}>
               <h3>Inicio de sesión</h3>
               <form>
+                <label>Correo electrónico*</label>
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control `}
                     value={this.state.login.email}
                     placeholder="Correo electrónico"
                     onChange={e => {
@@ -203,35 +277,42 @@ class RegisterLogin extends React.Component {
                       });
                     }}
                   />
-                  {this.state.login.emailError ? (
-                    <div
-                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
-                    >
-                      {this.state.login.emailError}
+                  {this.state.loginError.emailError ? (
+                    <div className={styles.errorTextColorLogin}>
+                      {this.state.loginError.emailError}
                     </div>
                   ) : null}
                 </div>
                 <div className="form-group">
-                  <input
-                    type="password"
-                    value={this.state.login.password}
-                    className="form-control"
-                    placeholder="Contraseña"
-                    onChange={e => {
-                      this.setState({
-                        login: {
-                          ...this.state.login,
-                          password: this.noSpaces(e.target.value)
-                        }
-                      });
-                    }}
-                  />
-
-                  {this.state.login.passwordError ? (
-                    <div
-                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
+                  <label>Contraseña*</label>
+                  <div className="input-group">
+                    <input
+                      className="form-control"
+                      type={this.state.isLoginPasswordVisible}
+                      data-toggle="password"
+                      placeholder="Contraseña"
+                      onChange={e => {
+                        this.setState({
+                          login: {
+                            ...this.state.login,
+                            password: this.noSpaces(e.target.value)
+                          }
+                        });
+                      }}
+                    />
+                    <a
+                      onClick={e => this.viewLoginPassword(e)}
+                      className="input-group-append"
                     >
-                      {this.state.login.passwordError}
+                      <div className="input-group-text">
+                        <i className={`${this.state.eyeLoginPassword} `}></i>
+                      </div>
+                    </a>
+                  </div>
+
+                  {this.state.loginError.passwordError ? (
+                    <div className={styles.errorTextColorLogin}>
+                      {this.state.loginError.passwordError}
                     </div>
                   ) : null}
                 </div>
@@ -254,6 +335,7 @@ class RegisterLogin extends React.Component {
               <h3>Registro</h3>
               <form>
                 <div className="form-group">
+                  <label>Nombre*</label>
                   <input
                     type="text"
                     className="form-control"
@@ -267,15 +349,14 @@ class RegisterLogin extends React.Component {
                       });
                     }}
                   />
-                  {this.state.register.nameError ? (
-                    <div
-                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
-                    >
-                      {this.state.register.nameError}
+                  {this.state.registerError.nameError ? (
+                    <div className={styles.errorTextColorRegister}>
+                      {this.state.registerError.nameError}
                     </div>
                   ) : null}
                 </div>
                 <div className="form-group">
+                  <label>Correo electrónico*</label>
                   <input
                     type="text"
                     className="form-control"
@@ -290,15 +371,14 @@ class RegisterLogin extends React.Component {
                       });
                     }}
                   />
-                  {this.state.register.emailError ? (
-                    <div
-                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
-                    >
-                      {this.state.register.emailError}
+                  {this.state.registerError.emailError ? (
+                    <div className={styles.errorTextColorRegister}>
+                      {this.state.registerError.emailError}
                     </div>
                   ) : null}
                 </div>
                 <div className="form-group">
+                  <label>Celular*</label>
                   <input
                     type="text"
                     className="form-control"
@@ -314,6 +394,7 @@ class RegisterLogin extends React.Component {
                   />
                 </div>
                 <div className="form-group">
+                  <label>Lugar de residencia*</label>
                   <input
                     type="text"
                     className="form-control"
@@ -322,7 +403,7 @@ class RegisterLogin extends React.Component {
                       this.setState({
                         register: {
                           ...this.state.register,
-                          address: e.target.value
+                          location: e.target.value
                         }
                       });
                     }}
@@ -330,11 +411,21 @@ class RegisterLogin extends React.Component {
                 </div>
 
                 <div className="form-group">
+                  <label>Contraseña*</label>
                   <div className="input-group">
                     <input
                       className="form-control"
                       type={this.state.isPasswordVisible}
                       data-toggle="password"
+                      placeholder="Contraseña"
+                      onChange={e => {
+                        this.setState({
+                          register: {
+                            ...this.state.register,
+                            password: this.noSpaces(e.target.value)
+                          }
+                        });
+                      }}
                     />
                     <a
                       onClick={e => this.viewPassword(e)}
@@ -345,38 +436,76 @@ class RegisterLogin extends React.Component {
                       </div>
                     </a>
                   </div>
+                  {this.state.registerError.passwordError ? (
+                    <div className={styles.errorTextColorRegister}>
+                      {this.state.registerError.passwordError}
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="form-group">
-                  <input
-                    type="password"
-                    value={this.state.register.confirmPassword}
-                    className="form-control"
-                    placeholder="Confirmar contraseña"
-                    onChange={e => {
-                      this.setState({
-                        register: {
-                          ...this.state.register,
-                          confirmPassword: this.noSpaces(e.target.value)
-                        }
-                      });
-                    }}
-                  />
+                  <label>Confirmar contraseña*</label>
+                  <div className="input-group">
+                    <input
+                      className="form-control"
+                      type={this.state.isConfirmationPasswordVisible}
+                      data-toggle="password"
+                      placeholder="Confirmar contraseña"
+                      onChange={e => {
+                        this.setState({
+                          register: {
+                            ...this.state.register,
+                            confirmPassword: this.noSpaces(e.target.value)
+                          }
+                        });
+                      }}
+                    />
+                    <a
+                      onClick={e => this.viewConfirmationPassword(e)}
+                      className="input-group-append"
+                    >
+                      <div className="input-group-text">
+                        <i
+                          className={`${this.state.eyeConfirmationPassword} `}
+                        ></i>
+                      </div>
+                    </a>
+                  </div>
+
                   {this.state.register.password.length >= 1 ? (
                     this.state.register.confirmPassword !==
                     this.state.register.password ? (
-                      <div
-                        style={{
-                          color: "red",
-                          fontSize: 12,
-                          fontWeight: "bold"
-                        }}
-                      >
+                      <div className={styles.errorTextColorRegister}>
                         Las contraseñas no coinciden
                       </div>
                     ) : null
                   ) : null}
                 </div>
+                <div className="form-check">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="exampleCheck1"
+                    onClick={e => this.checkBox(e)}
+                  />
+
+                  <label className="form-check-label" htmlFor="exampleCheck1">
+                    <p>
+                      Acepto
+                      <a
+                        style={{ color: "#5CE707", fontWeight: "bold" }}
+                        href="/"
+                      >
+                        política de privacidad
+                      </a>
+                    </p>
+                  </label>
+                </div>
+                {this.state.checkBoxValidateSubmit ? (
+                  <div className={styles.errorTextColorRegister}>
+                    {this.state.checkBoxValidateSubmit}
+                  </div>
+                ) : null}
                 <div className="form-group">
                   <button
                     onClick={ev => this.OnClickRegister(ev)}
