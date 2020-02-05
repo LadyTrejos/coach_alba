@@ -10,7 +10,12 @@
     "@zeit/next-sass": "^1.0.1",
     "admin-lte": "^3.0.0-alpha.2",
     "bootstrap": "^4.4.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.11",
+    "morgan": "^1.9.1",
     "next": "^9.2.1",
+    "node-pre-gyp": "^0.14.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
@@ -23,7 +28,8 @@
     "eject": "react-scripts eject",
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "devnode": "nodemon server/index.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
