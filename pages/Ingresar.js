@@ -4,7 +4,7 @@ import Header from "../comps/Header";
 import Router from "next/router";
 import api from "../api";
 
-const alertColor = "yellow";
+import country from "country-state-city";
 
 class RegisterLogin extends React.Component {
   constructor(props) {
@@ -224,10 +224,12 @@ class RegisterLogin extends React.Component {
       ? this.setState({ checkBoxValidate: false })
       : this.setState({ checkBoxValidate: true });
 
-    this.state.counter += 1;
+    this.state.counter == 0
+      ? this.setState({ counter: 1 })
+      : this.setState({ counter: 0 });
   };
   render() {
-    console.log(this.state.counter);
+    console.log(this.state.counter, " ", this.state.checkBoxValidateSubmit);
     return (
       <header className={styles.header_ingresar}>
         <Head>
@@ -501,7 +503,8 @@ class RegisterLogin extends React.Component {
                     </p>
                   </label>
                 </div>
-                {this.state.checkBoxValidateSubmit ? (
+                {this.state.checkBoxValidateSubmit &&
+                this.state.counter == 0 ? (
                   <div className={styles.errorTextColorRegister}>
                     {this.state.checkBoxValidateSubmit}
                   </div>
