@@ -3,14 +3,10 @@ import Head from "next/head";
 import Header from "../comps/Header";
 import Router from "next/router";
 
-const initialLogin = {
-  emailError: "",
-  passwordError: ""
-};
-
 class RegisterLogin extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       login: {
         email: "",
@@ -24,20 +20,41 @@ class RegisterLogin extends React.Component {
         phone: "",
         address: "",
         password: "",
-        con_password: ""
-      }
+        confirmPassword: "",
+        nameError: "",
+        emailError: "",
+        phoneError: "",
+        addressError: "",
+        passwordError: "",
+        confirmPasswordError: ""
+      },
+
+      isPasswordVisible: "password",
+      eye: "fa fa-eye-slash icon"
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  validate = () => {
+  viewPassword() {
+    if (this.state.isPasswordVisible == "password") {
+      this.setState({
+        isPasswordVisible: "text",
+        eye: "fa fa-eye icon"
+      });
+    } else {
+      this.setState({
+        isPasswordVisible: "password",
+        eye: "fa fa-eye-slash"
+      });
+    }
+  }
+
+  validateLogin = () => {
     let emailError = "";
     let passwordError = "";
-    console.log("validate");
     let regx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!regx.test(this.state.login.email)) {
-      emailError = "Correo electrónico inválido";
+      emailError = "Correo electrónico no válido";
     }
 
     if (this.state.login.password == "") {
@@ -58,11 +75,50 @@ class RegisterLogin extends React.Component {
     return true;
   };
 
-  handleSubmit(event) {
+  validateRegister = () => {
+    let nameError = "";
+    let emailError = "";
+    let phoneError = "";
+    let addressError = "";
+    let passwordError = "";
+    let confirmPasswordError = "";
+    let regxName = /^(?=.{3,25}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z._]+(?<![_.])$/;
+    if (!regxName.test(this.state.register.name)) {
+      nameError = "Nombre no válido";
+      if (this.state.register.name.length < 3) {
+        nameError = nameError + ", debe contener mínimo tres letras";
+      }
+    }
+
+    let regxEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!regxEmail.test(this.state.register.email)) {
+      emailError = "Correo electrónico no válido";
+    }
+
+    if (this.state.register.password.length < 6) {
+      passwordError = "La contraseña debe contener al menos 6 caracteres";
+    }
+
+    if (nameError || emailError || passwordError) {
+      this.setState({
+        register: {
+          ...this.state.register,
+          nameError,
+          emailError,
+          phoneError,
+          addressError,
+          passwordError
+        }
+      });
+      return false;
+    }
+    return true;
+  };
+
+  OnClickLogin(event) {
     event.preventDefault();
-    console.log("submit");
-    const isValid = this.validate();
-    console.log(this.state);
+    const isValid = this.validateLogin();
     if (isValid) {
       this.setState({
         login: {
@@ -71,10 +127,31 @@ class RegisterLogin extends React.Component {
           emailError: ""
         }
       });
-      let id = "";
       Router.push("/");
     }
   }
+
+  OnClickRegister(event) {
+    event.preventDefault();
+    const isValid = this.validateRegister();
+    if (isValid) {
+      this.setState({
+        register: {
+          ...this.state.register,
+          nameError: "",
+          emailError: "",
+          phoneError: "",
+          addressError: "",
+          passwordError: ""
+        }
+      });
+      Router.push("/");
+    }
+  }
+
+  noSpaces = word => {
+    return word.replace(/\s/g, "");
+  };
   render() {
     return (
       <header className={styles.header_ingresar}>
@@ -92,6 +169,13 @@ class RegisterLogin extends React.Component {
           />
           <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
           <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+          />
+          <link rel="stylesheet" href="style.css" />
+          <script type="text/javascript" src="script.js"></script>
         </Head>
         <Header></Header>
         <div></div>
@@ -108,18 +192,21 @@ class RegisterLogin extends React.Component {
                   <input
                     type="text"
                     className="form-control"
+                    value={this.state.login.email}
                     placeholder="Correo electrónico"
                     onChange={e => {
                       this.setState({
                         login: {
                           ...this.state.login,
-                          email: e.target.value
+                          email: this.noSpaces(e.target.value)
                         }
                       });
                     }}
                   />
                   {this.state.login.emailError ? (
-                    <div style={{ color: "red", fontSize: 12 }}>
+                    <div
+                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
+                    >
                       {this.state.login.emailError}
                     </div>
                   ) : null}
@@ -127,26 +214,32 @@ class RegisterLogin extends React.Component {
                 <div className="form-group">
                   <input
                     type="password"
+                    value={this.state.login.password}
                     className="form-control"
                     placeholder="Contraseña"
                     onChange={e => {
                       this.setState({
                         login: {
                           ...this.state.login,
-                          password: e.target.value
+                          password: this.noSpaces(e.target.value)
                         }
                       });
                     }}
                   />
 
                   {this.state.login.passwordError ? (
-                    <div style={{ color: "red", fontSize: 12 }}>
+                    <div
+                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
+                    >
                       {this.state.login.passwordError}
                     </div>
                   ) : null}
                 </div>
                 <div className="form-group">
-                  <button type="submit" className={styles.btnSubmit}>
+                  <button
+                    onClick={ev => this.OnClickLogin(ev)}
+                    className={styles.btnSubmit}
+                  >
                     Iniciar sesión
                   </button>
                 </div>
@@ -174,21 +267,36 @@ class RegisterLogin extends React.Component {
                       });
                     }}
                   />
+                  {this.state.register.nameError ? (
+                    <div
+                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
+                    >
+                      {this.state.register.nameError}
+                    </div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <input
                     type="text"
                     className="form-control"
+                    value={this.state.register.email}
                     placeholder="Correo electrónico"
                     onChange={e => {
                       this.setState({
                         register: {
                           ...this.state.register,
-                          email: e.target.value
+                          email: this.noSpaces(e.target.value)
                         }
                       });
                     }}
                   />
+                  {this.state.register.emailError ? (
+                    <div
+                      style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
+                    >
+                      {this.state.register.emailError}
+                    </div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <input
@@ -222,41 +330,60 @@ class RegisterLogin extends React.Component {
                 </div>
 
                 <div className="form-group">
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Contraseña"
-                    onChange={e => {
-                      this.setState({
-                        register: {
-                          ...this.state.register,
-                          password: e.target.value
-                        }
-                      });
-                    }}
-                  />
+                  <div className="input-group">
+                    <input
+                      className="form-control"
+                      type={this.state.isPasswordVisible}
+                      data-toggle="password"
+                    />
+                    <a
+                      onClick={e => this.viewPassword(e)}
+                      className="input-group-append"
+                    >
+                      <div className="input-group-text">
+                        <i className={`${this.state.eye} `}></i>
+                      </div>
+                    </a>
+                  </div>
                 </div>
+
                 <div className="form-group">
                   <input
                     type="password"
+                    value={this.state.register.confirmPassword}
                     className="form-control"
                     placeholder="Confirmar contraseña"
                     onChange={e => {
                       this.setState({
                         register: {
                           ...this.state.register,
-                          con_password: e.target.value
+                          confirmPassword: this.noSpaces(e.target.value)
                         }
                       });
                     }}
                   />
+                  {this.state.register.password.length >= 1 ? (
+                    this.state.register.confirmPassword !==
+                    this.state.register.password ? (
+                      <div
+                        style={{
+                          color: "red",
+                          fontSize: 12,
+                          fontWeight: "bold"
+                        }}
+                      >
+                        Las contraseñas no coinciden
+                      </div>
+                    ) : null
+                  ) : null}
                 </div>
                 <div className="form-group">
-                  <input
-                    type="submit"
+                  <button
+                    onClick={ev => this.OnClickRegister(ev)}
                     className={styles.btnSubmit}
-                    value="Registrarme"
-                  />
+                  >
+                    Registrarme
+                  </button>
                 </div>
               </form>
             </div>
