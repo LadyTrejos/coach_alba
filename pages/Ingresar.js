@@ -1,10 +1,10 @@
+import React from "react";
 import styles from "../styles/styles.scss";
 import Head from "next/head";
 import Header from "../comps/Header";
 import Router from "next/router";
+import CountrySelector from "../comps/CountrySelector";
 import api from "../api";
-
-import country from "country-state-city";
 
 class RegisterLogin extends React.Component {
   constructor(props) {
@@ -20,9 +20,9 @@ class RegisterLogin extends React.Component {
         email: "",
         phone: 3214567890,
         location: {
-          country: "colombia",
-          state: "risaralda",
-          city: "pereira"
+          country: "",
+          state: "",
+          city: ""
         },
         password: "",
         confirmPassword: ""
@@ -51,6 +51,7 @@ class RegisterLogin extends React.Component {
       checkBoxValidateSubmit: "",
       counter: 0
     };
+    this.countryRef = React.createRef();
   }
 
   viewPassword() {
@@ -128,8 +129,8 @@ class RegisterLogin extends React.Component {
     let phoneError = "";
     let locationError = "";
     let passwordError = "";
-    let confirmPasswordError = "";
     let checkBoxValidateSubmit = "";
+
     let regxName = /^(?=.{3,25}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z._]+(?<![_.])$/;
     if (!regxName.test(this.state.register.name)) {
       nameError = "Nombre no válido";
@@ -151,8 +152,20 @@ class RegisterLogin extends React.Component {
     if (!this.state.checkBoxValidate) {
       checkBoxValidateSubmit = "Debes aceptar la política de privacidad";
     }
-
-    if (nameError || emailError || passwordError || checkBoxValidateSubmit) {
+    if (
+      !this.state.register.location.country ||
+      !this.state.register.location.state ||
+      !this.state.register.location.city
+    ) {
+      locationError = "Lugar de residencia incompleto";
+    }
+    if (
+      nameError ||
+      emailError ||
+      passwordError ||
+      checkBoxValidateSubmit ||
+      locationError
+    ) {
       this.setState({
         registerError: {
           ...this.state.registerError,
@@ -187,32 +200,45 @@ class RegisterLogin extends React.Component {
 
   OnClickRegister(event) {
     event.preventDefault();
-    const isValid = this.validateRegister();
-    if (isValid && this.state.checkBoxValidate) {
-      this.setState({
-        registerError: {
-          ...this.state.registerError,
-          nameError: "",
-          emailError: "",
-          phoneError: "",
-          locationError: "",
-          passwordError: ""
-        },
-        checkBoxValidateSubmit: ""
-      });
-      const userData = JSON.stringify(this.state.register);
-      console.log("userData: ", userData);
 
-      api
-        .post(`/api/users/`, userData, {
-          headers: { "Content-type": "application/json" }
-        })
+    this.selector = this.countryRef.current;
+    const { country, state, city } = this.selector.state;
+    this.setState(
+      {
+        register: {
+          ...this.state.register,
+          location: { country, state, city }
+        }
+      },
+      () => {
+        const isValid = this.validateRegister();
+        if (isValid && this.state.checkBoxValidate) {
+          this.setState({
+            registerError: {
+              ...this.state.registerError,
+              nameError: "",
+              emailError: "",
+              phoneError: "",
+              locationError: "",
+              passwordError: ""
+            },
+            checkBoxValidateSubmit: ""
+          });
+          const userData = JSON.stringify(this.state.register);
+          console.log("userData: ", userData);
 
-        .catch(err => {})
-        .then(() => {
-          Router.push("/");
-        });
-    }
+          api
+            .post(`/api/users/`, userData, {
+              headers: { "Content-type": "application/json" }
+            })
+
+            .catch(err => {})
+            .then(() => {
+              Router.push("/");
+            });
+        }
+      }
+    );
   }
 
   noSpaces = word => {
@@ -229,7 +255,7 @@ class RegisterLogin extends React.Component {
       : this.setState({ counter: 0 });
   };
   render() {
-    console.log(this.state.counter, " ", this.state.checkBoxValidateSubmit);
+    console.log("--> ", this.state.register.location);
     return (
       <header className={styles.header_ingresar}>
         <Head>
@@ -397,19 +423,12 @@ class RegisterLogin extends React.Component {
                 </div>
                 <div className="form-group">
                   <label>Lugar de residencia*</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Lugar de residencia"
-                    onChange={e => {
-                      this.setState({
-                        register: {
-                          ...this.state.register,
-                          location: e.target.value
-                        }
-                      });
-                    }}
-                  />
+                  <CountrySelector ref={this.countryRef}></CountrySelector>
+                  {this.state.registerError.locationError ? (
+                    <div className={styles.errorTextColorRegister}>
+                      {this.state.registerError.locationError}
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="form-group">
