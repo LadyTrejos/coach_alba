@@ -5,8 +5,10 @@ import Header from "../comps/Header";
 import Router from "next/router";
 import CountrySelector from "../comps/CountrySelector";
 import api from "../api";
+import { Select, Form } from "antd";
+import NumericInput from "../comps/NumericInput";
 
-class RegisterLogin extends React.Component {
+class Register_login extends React.Component {
   constructor(props) {
     super(props);
 
@@ -18,7 +20,8 @@ class RegisterLogin extends React.Component {
       register: {
         name: "",
         email: "",
-        phone: 3214567890,
+        phone: "",
+        idPhone: "",
         location: {
           country: "",
           state: "",
@@ -49,9 +52,18 @@ class RegisterLogin extends React.Component {
       eyeLoginPassword: "fa fa-eye-slash icon",
       checkBoxValidate: false,
       checkBoxValidateSubmit: "",
-      counter: 0
+      counter: 0,
+      phonecodeItems: []
     };
     this.countryRef = React.createRef();
+  }
+
+  componentDidMount() {
+    const selector = this.countryRef.current;
+    console.log("selector: ", selector.state);
+    this.setState({
+      phonecodeItems: selector.state.phonecodeItems
+    });
   }
 
   viewPassword() {
@@ -228,7 +240,7 @@ class RegisterLogin extends React.Component {
           console.log("userData: ", userData);
 
           api
-            .post(`/api/users/`, userData, {
+            .post(`/api/users/register`, userData, {
               headers: { "Content-type": "application/json" }
             })
 
@@ -255,7 +267,26 @@ class RegisterLogin extends React.Component {
       : this.setState({ counter: 0 });
   };
   render() {
-    console.log("--> ", this.state.register.location);
+    const { getFieldDecorator } = this.props.form;
+
+    const prefixSelector = getFieldDecorator("prefix", {
+      initialValue: "Indicativo",
+      rules: [{ required: true, message: "Ingresa indicativo" }]
+    })(
+      <Select
+        showSearch
+        size="large"
+        style={{ minWidth: "10vw" }}
+        onChange={value =>
+          this.setState({
+            register: { ...this.state.register, idPhone: value }
+          })
+        }
+      >
+        {this.state.phonecodeItems}
+      </Select>
+    );
+    console.log(this.state.register);
     return (
       <header className={styles.header_ingresar}>
         <Head>
@@ -281,7 +312,7 @@ class RegisterLogin extends React.Component {
         <Header></Header>
         <div></div>
 
-        <div
+        <Form
           className={`container ${styles.login_container}`}
           onSubmit={this.handleSubmit}
         >
@@ -289,7 +320,7 @@ class RegisterLogin extends React.Component {
             <div className={`col-md-6 ${styles.login_form_1}`}>
               <h3>Inicio de sesión</h3>
               <form>
-                <label>Correo electrónico*</label>
+                <label>Correo electrónico *:</label>
                 <div className="form-group">
                   <input
                     type="text"
@@ -312,7 +343,7 @@ class RegisterLogin extends React.Component {
                   ) : null}
                 </div>
                 <div className="form-group">
-                  <label>Contraseña*</label>
+                  <label>Contraseña *:</label>
                   <div className="input-group">
                     <input
                       className="form-control"
@@ -363,7 +394,7 @@ class RegisterLogin extends React.Component {
               <h3>Registro</h3>
               <form>
                 <div className="form-group">
-                  <label>Nombre*</label>
+                  <label>Nombre *:</label>
                   <input
                     type="text"
                     className="form-control"
@@ -384,7 +415,7 @@ class RegisterLogin extends React.Component {
                   ) : null}
                 </div>
                 <div className="form-group">
-                  <label>Correo electrónico*</label>
+                  <label>Correo electrónico *:</label>
                   <input
                     type="text"
                     className="form-control"
@@ -405,24 +436,34 @@ class RegisterLogin extends React.Component {
                     </div>
                   ) : null}
                 </div>
+                <Form.Item label="Número de celular *" className="form-group">
+                  {getFieldDecorator("phone", {
+                    rules: [
+                      {
+                        pattern: /^[0-9]{10}$/gi,
+                        message: "El número debe contener 10 dígitos"
+                      }
+                    ]
+                  })(
+                    <NumericInput
+                      size="large"
+                      addonBefore={prefixSelector}
+                      onChange={value =>
+                        this.setState({
+                          register: { ...this.state.register, phone: value }
+                        })
+                      }
+                      placeholder="Ej: 1234567890"
+                      style={{
+                        backgroundColor: "#fff",
+                        borderColor: "#fff",
+                        borderRadius: 10
+                      }}
+                    />
+                  )}
+                </Form.Item>
                 <div className="form-group">
-                  <label>Celular*</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Celular"
-                    onChange={e => {
-                      this.setState({
-                        register: {
-                          ...this.state.register,
-                          phone: e.target.value
-                        }
-                      });
-                    }}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Lugar de residencia*</label>
+                  <label>Lugar de residencia *:</label>
                   <CountrySelector ref={this.countryRef}></CountrySelector>
                   {this.state.registerError.locationError ? (
                     <div className={styles.errorTextColorRegister}>
@@ -432,7 +473,7 @@ class RegisterLogin extends React.Component {
                 </div>
 
                 <div className="form-group">
-                  <label>Contraseña*</label>
+                  <label>Contraseña *:</label>
                   <div className="input-group">
                     <input
                       className="form-control"
@@ -465,7 +506,7 @@ class RegisterLogin extends React.Component {
                 </div>
 
                 <div className="form-group">
-                  <label>Confirmar contraseña*</label>
+                  <label>Confirmar contraseña *:</label>
                   <div className="input-group">
                     <input
                       className="form-control"
@@ -539,9 +580,11 @@ class RegisterLogin extends React.Component {
               </form>
             </div>
           </div>
-        </div>
+        </Form>
       </header>
     );
   }
 }
+
+const RegisterLogin = Form.create({ name: "register" })(Register_login);
 export default RegisterLogin;

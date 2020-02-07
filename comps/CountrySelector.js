@@ -25,16 +25,21 @@ class CountrySelector extends React.Component {
 
   UNSAFE_componentWillMount() {
     let data = country.getAllCountries();
+
     this.countryData.countries = data;
+    // console.log("countryData: ", this.countryData.countries);
 
     let c = data.map(x => {
       return x.phonecode;
     });
+
     this.countryData.phonecodes = [...new Set(c.sort((a, b) => a - b))];
 
     let phonecodeItems = this.countryData.phonecodes.map(item => (
       <Option key={item}> {`+${item}`} </Option>
     ));
+
+    // console.log("countryData: ", phonecodeItems);
 
     this.setState({
       phonecodeItems: phonecodeItems
@@ -75,6 +80,7 @@ class CountrySelector extends React.Component {
   };
 
   render() {
+    // console.log("CS phoneCodeItems", this.state.phonecodeItems);
     let countryItems = this.countryData.countries.map(count => (
       <Option key={count.id} value={`${count.id}>${count.name}`}>
         {" "}
@@ -105,6 +111,7 @@ class CountrySelector extends React.Component {
         <div className="row">
           <div className="col-12">
             <Select
+              style={{ width: "100%" }}
               showSearch
               size="large"
               placeholder="País"
@@ -115,6 +122,7 @@ class CountrySelector extends React.Component {
           </div>
           <div className="col-12">
             <Select
+              style={{ width: "100%" }}
               showSearch
               disabled={this.state.stateDisabled}
               size="large"
@@ -126,6 +134,7 @@ class CountrySelector extends React.Component {
           </div>
           <div className="col-12">
             <Select
+              style={{ width: "100%" }}
               showSearch
               disabled={this.state.cityDisabled}
               size="large"
