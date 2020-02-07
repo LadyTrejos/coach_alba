@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap");
 // Variables
 $regal-blue: #034378;
 $san-juan: #2d4e68;
@@ -9,9 +9,11 @@ $primary-color: #238293;
 $secondary-color: #5a7c9c;
 $title: blue;
 $section-title: #057a97;
+$label-color: $black;
+$alert-color-register: yellow;
+$alert-color-login: red;
 // Fonts
-$font-stack: 'Shadows Into Light',
-cursive; // Common styles
+$font-stack: "Shadows Into Light", cursive; // Common styles
 
 a {
   text-decoration: none;
@@ -78,7 +80,7 @@ a {
   max-width: 30vw;
   width: auto;
   height: 800px;
-  object-fit: contain;
+  object-fit: in;
 }
 
 .carouselcontrolprevicon {
@@ -349,4 +351,20 @@ a {
   color: #0062cc;
   font-weight: 600;
   text-decoration: none;
+}
+
+label {
+  font-weight: normal;
+  color: $label-color;
+}
+
+.errorTextColorRegister {
+  color: $alert-color-register;
+  font-size: 8;
+  font-weight: bold;
+}
+.errorTextColorLogin {
+  color: $alert-color-login;
+  font-size: 8;
+  font-weight: bold;
 }
