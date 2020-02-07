@@ -17,8 +17,6 @@ app.set("port", process.env.PORT || 5000);
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Express session middleware
 app.use(
@@ -28,6 +26,9 @@ app.use(
     saveUninitialized: false
   })
 );
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 app.use("/api/users", require("./routes/user.routes"));

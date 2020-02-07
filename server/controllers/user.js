@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const passport = require("../passport/index");
 
 async function getAllUsers(req, res) {
   const users = await User.find();
@@ -55,4 +56,29 @@ async function deleteUser(req, res) {
     status: "User deleted."
   });
 }
-module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser };
+
+function userLogin(req, res, next) {
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.json(info);
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.json({ id: user._id });
+    });
+  })(req, res, next);
+}
+
+module.exports = {
+  getAllUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  userLogin
+};
