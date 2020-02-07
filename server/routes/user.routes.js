@@ -1,72 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const {
-    userValidationRules,
-    validate
-} = require('../validator')
-const User = require("../models/user.model");
+const { userValidationRules, validate } = require("../validator");
+const UserController = require("../controllers/user");
 
-router.get("/", async (req, res) => {
-    const users = await User.find();
-    res.json(users);
-});
+router.get("/", UserController.getAllUsers);
 
-router.get("/:id", async (req, res) => {
-    const user = await User.findById(req.params.id);
-    res.json(user);
-});
+router.get("/:id", UserController.getUser);
 
-router.post("/register", userValidationRules(), validate, (req, res) => {
-    const {
-        email,
-        name,
-        phone,
-        location,
-        password,
-        password_confirmation,
-        isUser
-    } = req.body;
+router.put("/:id", UserController.updateUser);
 
-    const user = new User({
-        email,
-        name,
-        phone,
-        location,
-        password,
-        isUser
-    });
-    user.save()
-        .then(() => res.json("User saved."));
-});
+router.delete("/:id", UserController.deleteUser);
 
-router.put("/:id", async (req, res) => {
-    const {
-        email,
-        name,
-        phone,
-        location,
-        password,
-        isUser
-    } = req.body;
-    const newUser = {
-        email,
-        name,
-        phone,
-        location,
-        password,
-        isUser
-    };
-    await User.findByIdAndUpdate(req.params.id, newUser);
-    res.json({
-        status: "User updated."
-    });
-});
+router.post("/login");
 
-router.delete("/:id", async (req, res) => {
-    await User.findByIdAndRemove(req.params.id);
-    res.json({
-        status: "User deleted."
-    });
-});
+router.post(
+  "/register",
+  userValidationRules(),
+  validate,
+  UserController.createUser
+);
 
 module.exports = router;
