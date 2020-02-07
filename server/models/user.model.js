@@ -22,7 +22,7 @@ const UserSchema = new Schema(
       city: { type: String, required: true }
     },
     password: { type: String, required: true },
-    isUser: Boolean
+    isUser: { type: Boolean, default: true }
   },
   {
     timestamps: true
