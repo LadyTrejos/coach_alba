@@ -1,9 +1,15 @@
 const User = require("../models/user.model");
-const passport = require("../passport/index");
+const passport = require("../middleware/passport");
+
+require("dotenv").config();
 
 async function getAllUsers(req, res) {
   const users = await User.find();
+  // if (req.user.isAdmin) {
   res.json(users);
+  // } else {
+  //   res.status(401).send({ message: "Not authorized." });
+  // }
 }
 
 async function getUser(req, res) {
@@ -68,8 +74,9 @@ function userLogin(req, res, next) {
     req.logIn(user, function(err) {
       if (err) {
         return next(err);
+      } else {
+        return res.json({ id: user._id });
       }
-      return res.json({ id: user._id });
     });
   })(req, res, next);
 }

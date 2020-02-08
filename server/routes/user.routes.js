@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("../passport/index");
 const { userValidationRules, validate } = require("../validator");
+const isAuthenticated = require("../middleware/isAuthenticated");
 const UserController = require("../controllers/user");
 
 router.get("/", UserController.getAllUsers);
