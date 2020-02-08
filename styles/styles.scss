@@ -13,7 +13,8 @@ $label-color: $black;
 $alert-color-register: yellow;
 $alert-color-login: red;
 // Fonts
-$font-stack: "Shadows Into Light", cursive; // Common styles
+$font-stack: "Shadows Into Light",
+cursive; // Common styles
 
 a {
   text-decoration: none;
@@ -268,36 +269,12 @@ a {
 // End PostPreview styles
 
 //video background
-.header_ingresar {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  min-height: inherit;
-  top: 0;
-  left: 0;
-  background-color: url("/video.jpg");
-  z-index: 0;
-}
 
-.header_ingresar video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100vw;
-  min-height: 100vw;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  -ms-transform: translateX(-50%) translateY(-50%);
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-}
+
+
 
 //login
-.login_container {
-  margin-bottom: 2%;
-}
+
 
 .login_form_1 {
   padding: 7%;
@@ -305,6 +282,7 @@ a {
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
   background: #fff;
   opacity: 0.9;
+  border-radius: 10px;
 }
 
 .login_form_1 h3 {
@@ -318,6 +296,16 @@ a {
   background: #0062cc;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
   opacity: 0.9;
+  border-radius: 10px;
+
+}
+
+.login_form_3 {
+  padding: 5%;
+  margin-top: 10%;
+  background: #fff;
+  opacity: 0.9;
+
 }
 
 .login_form_2 h3 {
@@ -338,6 +326,7 @@ a {
   color: #fff;
   background-color: #0062cc;
   align-items: center;
+  width: 40%;
 }
 
 .login_form_2 .btnSubmit {
@@ -345,6 +334,7 @@ a {
   color: #0062cc;
   background-color: #fff;
   align-items: center;
+  width: 40%;
 }
 
 .login_form_1 .ForgetPwd {
@@ -363,6 +353,7 @@ label {
   font-size: 8;
   font-weight: bold;
 }
+
 .errorTextColorLogin {
   color: $alert-color-login;
   font-size: 8;
