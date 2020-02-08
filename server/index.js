@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const passport = require("passport");
 const path = require("path");
+const session = require("express-session");
 
 const { mongoose } = require("./database");
 const app = express();
@@ -15,6 +17,18 @@ app.set("port", process.env.PORT || 5000);
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+
+// Express session middleware
+app.use(
+  session({
+    secret: "coachingANG",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 app.use("/api/users", require("./routes/user.routes"));
