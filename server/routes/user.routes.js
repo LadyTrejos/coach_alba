@@ -1,72 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const {
-    userValidationRules,
-    validate
-} = require('../validator')
-const User = require("../models/user.model");
+const { userValidationRules, validate } = require("../validator");
+const isAuthenticated = require("../middleware/isAuthenticated");
+const UserController = require("../controllers/user");
 
-router.get("/", async (req, res) => {
-    const users = await User.find();
-    res.json(users);
+router.get("/", UserController.getAllUsers);
+
+router.get("/:id", UserController.getUser);
+
+router.put("/:id", UserController.updateUser);
+
+router.delete("/:id", UserController.deleteUser);
+
+router.post(
+  "/register",
+  userValidationRules(),
+  validate,
+  UserController.createUser
+);
+
+router.post("/login", UserController.userLogin);
+
+router.post("/logout", (req, res) => {
+  if (req.user) {
+    req.logout();
+    res.send({ msg: "User logged out." });
+  } else {
+    res.send({ msg: "No user to log out." });
+  }
 });
-
-router.get("/:id", async (req, res) => {
-    const user = await User.findById(req.params.id);
-    res.json(user);
-});
-
-router.post("/register", userValidationRules(), validate, (req, res) => {
-    const {
-        email,
-        name,
-        phone,
-        location,
-        password,
-        password_confirmation,
-        isUser
-    } = req.body;
-
-    const user = new User({
-        email,
-        name,
-        phone,
-        location,
-        password,
-        isUser
-    });
-    user.save()
-        .then(() => res.json("User saved."));
-});
-
-router.put("/:id", async (req, res) => {
-    const {
-        email,
-        name,
-        phone,
-        location,
-        password,
-        isUser
-    } = req.body;
-    const newUser = {
-        email,
-        name,
-        phone,
-        location,
-        password,
-        isUser
-    };
-    await User.findByIdAndUpdate(req.params.id, newUser);
-    res.json({
-        status: "User updated."
-    });
-});
-
-router.delete("/:id", async (req, res) => {
-    await User.findByIdAndRemove(req.params.id);
-    res.json({
-        status: "User deleted."
-    });
-});
-
 module.exports = router;
