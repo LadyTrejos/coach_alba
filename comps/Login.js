@@ -15,47 +15,35 @@ class Component_login extends React.Component {
         password: ""
       },
 
-      loginError: {
-        emailError: "",
-        passwordError: ""
-      },
-
-      isLoginPasswordVisible: "password",
-
-      eyeLoginPassword: "fa fa-eye-slash icon",
-
       errors: null
     };
     this.errorsRef = React.createRef();
   }
 
-  viewLoginPassword() {
-    if (this.state.isLoginPasswordVisible == "password") {
-      this.setState({
-        isLoginPasswordVisible: "text",
-        eyeLoginPassword: "fa fa-eye icon"
-      });
-    } else {
-      this.setState({
-        isLoginPasswordVisible: "password",
-        eyeLoginPassword: "fa fa-eye-slash"
-      });
-    }
-  }
-
   handleSubmit = event => {
     event.preventDefault();
 
-    console.log("hola: ", event);
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.onAuth(values.email, values.password);
+        const userData = JSON.stringify(this.state.login);
+        api
+          .post(`/api/users/login`, userData, {
+            headers: { "Content-type": "application/json" }
+          })
+
+          .then(res => {
+            console.log(res);
+            // Router.push("/prueba");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        // this.props.onAuth(values.email, values.password);
       }
     });
   };
 
   noSpaces = word => {
-    console.log("noSpaces");
     return word.replace(/\s/g, "");
   };
 

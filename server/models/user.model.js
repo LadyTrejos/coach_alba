@@ -15,12 +15,12 @@ const UserSchema = new Schema(
       trim: true
     },
     name: { type: String, trim: true, required: true },
-    phone: { type: Number },
-    id_phone: { type: Number },
+    phone: { type: Number, required: true },
+    id_phone: { type: Number, required: true },
     location: {
-      country: { type: String, required: true },
-      state: { type: String, required: true },
-      city: { type: String, required: true }
+      country: { type: String },
+      state: { type: String },
+      city: { type: String }
     },
     password: { type: String, required: true },
     isUser: { type: Boolean, default: true },

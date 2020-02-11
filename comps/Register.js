@@ -29,7 +29,7 @@ class Component_register extends React.Component {
         name: "",
         email: "",
         phone: null,
-        id_phone: null,
+        id_phone: 57,
         location: {
           country: "",
           state: "",
@@ -60,26 +60,21 @@ class Component_register extends React.Component {
     });
   }
 
-  validateRegister = () => {
-    let locationError = "";
-
-    console.log(this.state.register.location);
-
+  validateRegister = selector => {
+    console.log(
+      "validateRegister: ",
+      selector.state.country,
+      " country: ",
+      selector.state.state,
+      " state:",
+      selector.state.city,
+      " city"
+    );
     if (
-      !this.state.register.location.country ||
-      !this.state.register.location.state ||
-      !this.state.register.location.city
+      selector.state.country == "" ||
+      selector.state.state == "" ||
+      selector.state.city == ""
     ) {
-      locationError = "Lugar de residencia incompleto";
-    }
-    if (locationError) {
-      this.setState({
-        registerError: {
-          ...this.state.registerError,
-
-          locationError
-        }
-      });
       return false;
     }
 
@@ -90,9 +85,12 @@ class Component_register extends React.Component {
     event.preventDefault();
 
     this.selector = this.countryRef.current;
+    // const isValid = this.validateRegister(this.selector);
+    // console.log("valido? -> ", isValid);
     const { country, state, city } = this.selector.state;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        console.log("values: ", values);
         this.setState(
           {
             register: {
@@ -101,46 +99,37 @@ class Component_register extends React.Component {
             }
           },
           () => {
-            const isValid = this.validateRegister();
-            if (isValid && this.state.checkBoxValidate) {
-              this.setState({
-                registerError: {
-                  ...this.state.registerError,
+            const userData = JSON.stringify(this.state.register);
+            console.log("userData: ", userData);
 
-                  locationError: ""
-                },
-                checkBoxValidateSubmit: ""
-              });
-              const userData = JSON.stringify(this.state.register);
-              console.log("userData: ", userData);
+            api
+              .post(`/api/users/register`, userData, {
+                headers: { "Content-type": "application/json" }
+              })
 
-              api
-                .post(`/api/users/register`, userData, {
-                  headers: { "Content-type": "application/json" }
-                })
-
-                .then(() => {
-                  Router.push("/");
-                })
-                .catch(err => {
-                  console.log(typeof err.response.data.errors);
-                  let errors = err.response.data.errors.map(item => {
-                    var [key, value] = Object.entries(item)[0];
-                    return value;
-                  });
-                  this.setState(
-                    {
-                      ...this.state,
-                      errors
-                    },
-                    () =>
-                      this.errorsRef.current.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                      })
-                  );
+              .then(() => {
+                Router.push("/");
+              })
+              .catch(err => {
+                /*
+                console.log(typeof err.response.data.errors);
+                let errors = err.response.data.errors.map(item => {
+                  var [key, value] = Object.entries(item)[0];
+                  return value;
                 });
-            }
+                this.setState(
+                  {
+                    ...this.state,
+                    errors
+                  },
+                  () =>
+                    this.errorsRef.current.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start"
+                    })
+                );
+            */
+              });
           }
         );
       }
@@ -189,19 +178,44 @@ class Component_register extends React.Component {
       callback("Acepta la política de privacidad");
     }
   };
+  validateResidence = (rule, value, callback) => {
+    const selector = this.countryRef.current;
+    console.log("rule: ", rule, " ,value: ", value);
+    console.log(
+      "validate residence: country",
+      selector.state.country,
+      " state",
+      selector.state.state,
+      " city ",
+      selector.state.city
+    );
+
+    if (
+      selector.state.city === "" ||
+      selector.state.state === "" ||
+      selector.state.city === ""
+    ) {
+      callback("Selecciona tu lugar de residencia.");
+    }
+    callback();
+  };
+  // onBlurEmail(event) {
+  //   pass;
+  // }
 
   render() {
-    console.log("locationError: ", this.state.registerError.locationError);
+    // console.log("Register: ", this.state.register);
     const { getFieldDecorator } = this.props.form;
 
     const prefixSelector = getFieldDecorator("prefix", {
-      initialValue: "Indicativo",
+      initialValue: "57",
       rules: [{ required: true, message: "Ingresa indicativo" }]
     })(
       <Select
         showSearch
         size="large"
-        style={{ minWidth: "10vw" }}
+        placeholder="hola"
+        style={{ minWidth: "5vw" }}
         onChange={value =>
           this.setState({
             register: { ...this.state.register, id_phone: parseInt(value) }
@@ -293,6 +307,7 @@ class Component_register extends React.Component {
             <Input
               placeholder="Correo electrónico"
               size="large"
+              // onBlur={e => onBlurEmail(e)}
               onChange={e => {
                 this.setState({
                   register: {
@@ -304,46 +319,52 @@ class Component_register extends React.Component {
             />
           )}
         </Form.Item>
-
-        <Form.Item label="Número de celular *">
-          {getFieldDecorator("phone", {
-            rules: [
-              { required: true, message: "Ingresa tu número de celular" },
-              {
-                pattern: /^[0-9]{10}$/gi,
-                message: "El número debe contener 10 dígitos"
-              }
-            ]
-          })(
-            <NumericInput
-              size="large"
-              addonBefore={prefixSelector}
-              onChange={value =>
-                this.setState({
-                  register: {
-                    ...this.state.register,
-                    phone: parseInt(value, 10)
+        <div className="container">
+          <div className="row">
+            <Form.Item
+              className={`col-md-3 col-sm-1`}
+              label="Indicativo"
+              hasFeedback
+            >
+              {prefixSelector}
+            </Form.Item>
+            <Form.Item
+              className={`col-md-9 col-sm-11 `}
+              label="Número celular"
+              hasFeedback
+            >
+              {getFieldDecorator("phone", {
+                rules: [
+                  { required: true, message: "Ingresa tu número de celular" },
+                  {
+                    pattern: /^[0-9]{10}$/gi,
+                    message: "El número debe contener 10 dígitos"
                   }
-                })
-              }
-              placeholder="Ej: 1234567890"
-              style={{
-                backgroundColor: "#fff",
-                borderColor: "#fff",
-                borderRadius: 10
-              }}
-            />
-          )}
-        </Form.Item>
+                ]
+              })(
+                <NumericInput
+                  size="large"
+                  onChange={value =>
+                    this.setState({
+                      register: {
+                        ...this.state.register,
+                        phone: parseInt(value, 10)
+                      }
+                    })
+                  }
+                  placeholder="Ej: 1234567890"
+                  style={{
+                    backgroundColor: "#fff",
+                    borderColor: "#fff",
+                    borderRadius: 10
+                  }}
+                />
+              )}
+            </Form.Item>
+          </div>
+        </div>
         <Form.Item label="Lugar de residencia">
-          {getFieldDecorator("places", {
-            rules: [
-              {
-                required: true,
-                message: "Ingresa tu lugar de residencia"
-              }
-            ]
-          })(<CountrySelector ref={this.countryRef}></CountrySelector>)}
+          <CountrySelector ref={this.countryRef}></CountrySelector>
         </Form.Item>
 
         <Form.Item
