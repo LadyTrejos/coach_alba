@@ -39,8 +39,6 @@ class CountrySelector extends React.Component {
       <Option key={item}> {`+${item}`} </Option>
     ));
 
-    // console.log("countryData: ", phonecodeItems);
-
     this.setState({
       phonecodeItems: phonecodeItems
     });
@@ -48,7 +46,6 @@ class CountrySelector extends React.Component {
 
   handleCountryChange = value => {
     let data = value.split(">");
-    //let Country = country.getCountryById(value)
 
     this.setState({
       country: data[1],
@@ -77,6 +74,13 @@ class CountrySelector extends React.Component {
     this.setState({
       city: data[1]
     });
+  };
+
+  onBlur = () => {
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur();
+    }
   };
 
   render() {
@@ -115,6 +119,7 @@ class CountrySelector extends React.Component {
               showSearch
               size="large"
               placeholder="País"
+              onBlur={this.onBlur}
               onChange={this.handleCountryChange}
             >
               {countryItems}
@@ -127,6 +132,7 @@ class CountrySelector extends React.Component {
               disabled={this.state.stateDisabled}
               size="large"
               placeholder="Estado"
+              onBlur={this.onBlur}
               onChange={this.handleStateChange}
             >
               {stateItems}
@@ -139,6 +145,7 @@ class CountrySelector extends React.Component {
               disabled={this.state.cityDisabled}
               size="large"
               placeholder="Ciudad"
+              onBlur={this.onBlur}
               onChange={this.handleCitiesChange}
             >
               {cityItems}

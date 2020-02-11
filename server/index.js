@@ -20,7 +20,6 @@ require("dotenv").config();
 app.set("port", process.env.PORT || 5000);
 
 // Middlewares
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("dev"));
 
@@ -60,6 +59,7 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(cors(corsOptions));
 // Routes
 app.use("/api/users", require("./routes/user.routes"));
 
