@@ -49,7 +49,16 @@ class Component_login extends React.Component {
     console.log("hola: ", event);
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.onAuth(values.email, values.password);
+        // this.props.onAuth(values.email, values.password);
+        const userData = JSON.stringify(this.state.login);
+        api
+          .post("/api/users/login/", userData, {
+            headers: { "Content-type": "application/json" }
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => console.log(err));
       }
     });
   };
