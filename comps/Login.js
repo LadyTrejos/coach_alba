@@ -27,7 +27,7 @@ class Component_login extends React.Component {
       if (!err) {
         const userData = JSON.stringify(this.state.login);
         api
-          .post(`/api/users/login`, userData, {
+          .post(`/api/users/login/`, userData, {
             headers: { "Content-type": "application/json" }
           })
 
