@@ -13,6 +13,7 @@ const Option = Select.Option;
 
 class Prueba extends React.Component {
   render() {
+    console.log("props prueba ", this.props);
     return (
       <div style={{ marginTop: 100 }}>
         <Form layout="horizontal">

@@ -22,25 +22,35 @@ class Component_login extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    console.log(this.props);
 
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        const userData = JSON.stringify(this.state.login);
-        api
-          .post(`/api/users/login`, userData, {
-            headers: { "Content-type": "application/json" }
-          })
-
-          .then(res => {
-            console.log(res);
-            // Router.push("/prueba");
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        // this.props.onAuth(values.email, values.password);
+    Router.push({
+      pathname: "/prueba",
+      state: {
+        id: 7,
+        color: "green"
       }
     });
+
+    // this.props.form.validateFieldsAndScroll((err, values) => {
+    //   if (!err) {
+    //     const userData = JSON.stringify(this.state.login);
+    //     api
+    //       .post(`/api/users/login`, userData, {
+    //         headers: { "Content-type": "application/json" }
+    //       })
+
+    //       .then(res => {
+    //         console.log(res);
+    //         this.props.Router.push("/prueba", { ...response });
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //       });
+    //     // this.props.onAuth(values.email, values.password);
+    //   }
+
+    // });
   };
 
   noSpaces = word => {

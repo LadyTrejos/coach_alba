@@ -8,8 +8,20 @@ import DemoBlog from "../comps/DemoBlog";
 import Footer from "../comps/Footer";
 import Home from "../comps/Home";
 
+import { ThemeContext, User_info } from "../comps/Contex";
+
 class Index extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: User_info.name
+    };
+  }
   render() {
+    let user = this.context;
+    console.log("user: ", this.state.user);
+    
     return (
       <div>
         <Head>
@@ -65,9 +77,13 @@ class Index extends React.Component {
         <div id="contact" className="pt-5">
           <Footer />
         </div>
+
+        <div style={{ backgroundColor: "#0fb" }}>{user.name}</div>
       </div>
     );
   }
 }
+
+Index.contextType = ThemeContext;
 
 export default Index;
