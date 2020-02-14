@@ -4,7 +4,7 @@ import Head from "next/head";
 import Header from "../comps/Header";
 import CountrySelector from "../comps/CountrySelector";
 import api from "../api";
-import { Form } from "antd";
+import { Form, BackTop } from "antd";
 import Login from "../comps/Login";
 import Register from "../comps/Register";
 
@@ -12,6 +12,7 @@ class Register_login extends React.Component {
   render() {
     return (
       <div>
+        <BackTop />
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link
@@ -65,17 +66,17 @@ class Register_login extends React.Component {
         <Header></Header>
 
         <div className="row">
-          <div className={`col-md-6 ${styles.login_form_3}`}>
+          <div className={`col-md-6 ${styles.container}`}>
             <div className="row">
-              <div className={`col-md-12 ${styles.login_form_1}`}>
+              <div className={`col-md-12 ${styles.login_form}`}>
                 <Login></Login>
               </div>
             </div>
           </div>
 
-          <div className={`col-md-6 ${styles.login_form_3}`}>
+          <div className={`col-md-6 ${styles.container}`}>
             <div className="row">
-              <div className={`col-md-12 ${styles.login_form_2}`}>
+              <div className={`col-md-12 ${styles.register_form}`}>
                 <Register></Register>
               </div>
             </div>

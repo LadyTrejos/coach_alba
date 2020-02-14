@@ -47,10 +47,10 @@ class Component_register extends React.Component {
       checkBoxValidateSubmit: "",
       counter: 0,
       phonecodeItems: [],
-      errors: null
+      errorsRegister: null
     };
     this.countryRef = React.createRef();
-    this.errorsRef = React.createRef();
+    this.errors = React.createRef();
   }
 
   componentDidMount() {
@@ -85,12 +85,10 @@ class Component_register extends React.Component {
     event.preventDefault();
 
     this.selector = this.countryRef.current;
-    // const isValid = this.validateRegister(this.selector);
-    // console.log("valido? -> ", isValid);
     const { country, state, city } = this.selector.state;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log("values: ", values);
+        //console.log("values: ", values);
         this.setState(
           {
             register: {
@@ -100,7 +98,7 @@ class Component_register extends React.Component {
           },
           () => {
             const userData = JSON.stringify(this.state.register);
-            console.log("userData: ", userData);
+            //console.log("userData: ", userData);
 
             api
               .post(`/api/users/register`, userData, {
@@ -111,24 +109,22 @@ class Component_register extends React.Component {
                 Router.push("/");
               })
               .catch(err => {
-                /*
-                console.log(typeof err.response.data.errors);
-                let errors = err.response.data.errors.map(item => {
+                let errorsRegister = err.response.data.errors.map(item => {
                   var [key, value] = Object.entries(item)[0];
                   return value;
                 });
+                console.log("ErrorsRegister: ", errorsRegister);
                 this.setState(
                   {
                     ...this.state,
-                    errors
+                    errorsRegister
                   },
                   () =>
-                    this.errorsRef.current.scrollIntoView({
+                    this.errors.current.scrollIntoView({
                       behavior: "smooth",
                       block: "start"
                     })
                 );
-            */
               });
           }
         );
@@ -207,7 +203,7 @@ class Component_register extends React.Component {
     // console.log("Register: ", this.state.register);
     const { getFieldDecorator } = this.props.form;
 
-    const prefixSelector = getFieldDecorator("prefix", {
+    const prefixSelector = getFieldDecorator("id_phone", {
       initialValue: "57",
       rules: [{ required: true, message: "Ingresa indicativo" }]
     })(
@@ -225,29 +221,13 @@ class Component_register extends React.Component {
         {this.state.phonecodeItems}
       </Select>
     );
+
     return (
       <Form
         className={`${styles.login_container}`}
         onSubmit={this.handleSubmit}
       >
-        <h3>Registro</h3>
-        <div>
-          {this.state.errors ? (
-            <Alert
-              message={this.state.errors.map(line => (
-                <div>
-                  <ul>
-                    <li>
-                      <p>{line}</p>
-                    </li>
-                  </ul>
-                </div>
-              ))}
-              type="error"
-              closable
-            />
-          ) : null}
-        </div>
+        <h3 ref={this.errors}>Registro</h3>
 
         <Form.Item
           label={
@@ -307,17 +287,20 @@ class Component_register extends React.Component {
             <Input
               placeholder="Correo electrónico"
               size="large"
-              // onBlur={e => onBlurEmail(e)}
               onChange={e => {
                 this.setState({
                   register: {
                     ...this.state.register,
                     email: this.noSpaces(e.target.value)
-                  }
+                  },
+                  errorsRegister: null
                 });
               }}
             />
           )}
+          {this.state.errorsRegister ? (
+            <div style={{ color: "red" }}>{this.state.errorsRegister}</div>
+          ) : null}
         </Form.Item>
         <div className="container">
           <div className="row">
@@ -443,7 +426,7 @@ class Component_register extends React.Component {
             <Checkbox style={{ color: "#000" }}>
               Acepto la{" "}
               <a
-                href="/"
+                href="/PrivacyPolicy"
                 style={{ color: "#5CE707", fontWeight: "bold" }}
                 target="_blank"
               >

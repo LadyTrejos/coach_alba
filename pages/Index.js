@@ -8,6 +8,8 @@ import DemoBlog from "../comps/DemoBlog";
 import Footer from "../comps/Footer";
 import Home from "../comps/Home";
 
+import { BackTop } from "antd";
+
 import { ThemeContext, User_info } from "../comps/Contex";
 
 class Index extends React.Component {
@@ -21,9 +23,11 @@ class Index extends React.Component {
   render() {
     let user = this.context;
     console.log("user: ", this.state.user);
-    
+    console.log("this.props: ", this.props);
+
     return (
       <div>
+        <BackTop />
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link

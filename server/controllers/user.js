@@ -17,10 +17,11 @@ async function getUser(req, res) {
   res.json(user);
 }
 
-async function createUser(req, res) {
+async function createUser(req, res, err) {
   const {
     email,
     name,
+    id_phone,
     phone,
     location,
     password,
@@ -31,12 +32,17 @@ async function createUser(req, res) {
   const user = new User({
     email,
     name,
+    id_phone,
     phone,
     location,
     password,
     isUser
   });
-  await user.save();
+  try {
+    user.save();
+  } catch {
+    err => console.log(err);
+  }
   res.json("User saved.");
 }
 
@@ -69,13 +75,14 @@ function userLogin(req, res, next) {
       return next(err);
     }
     if (!user) {
-      return res.json(info);
+      return res.status(400).json(info);
     }
     req.logIn(user, function(err) {
       if (err) {
         return next(err);
       } else {
-        return res.json({ id: user._id });
+        req.session.userId = user._id;
+        return res.json({ user: user });
       }
     });
   })(req, res, next);

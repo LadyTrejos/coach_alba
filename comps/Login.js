@@ -3,7 +3,7 @@ import styles from "../styles/styles.scss";
 
 import Router from "next/router";
 import api from "../api";
-import { Form, Input, Icon, Tooltip, Button } from "antd";
+import { Form, Input, Icon, Tooltip, Button, Alert } from "antd";
 
 class Component_login extends React.Component {
   constructor(props) {
@@ -22,43 +22,50 @@ class Component_login extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.props);
 
-    Router.push({
-      pathname: "/prueba",
-      state: {
-        id: 7,
-        color: "green"
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        const userData = JSON.stringify(this.state.login);
+        console.log("UserData: ", userData);
+        api
+          .post(`/api/users/login/`, userData, {
+            headers: { "Content-type": "application/json" }
+          })
+
+          .then(res => {
+            console.log("res: ", res);
+            let userInfo = res.data.user;
+            console.log(userInfo);
+            Router.push("/");
+          })
+          .catch(err => {
+            this.setState(
+              {
+                errors: err
+              },
+              () => {
+                console.log("err: ", err);
+              }
+            );
+          });
+        // this.props.onAuth(values.email, values.password);
       }
     });
-
-    // this.props.form.validateFieldsAndScroll((err, values) => {
-    //   if (!err) {
-    //     const userData = JSON.stringify(this.state.login);
-    //     api
-    //       .post(`/api/users/login`, userData, {
-    //         headers: { "Content-type": "application/json" }
-    //       })
-
-    //       .then(res => {
-    //         console.log(res);
-    //         this.props.Router.push("/prueba", { ...response });
-    //       })
-    //       .catch(err => {
-    //         console.log(err);
-    //       });
-    //     // this.props.onAuth(values.email, values.password);
-    //   }
-
-    // });
   };
 
   noSpaces = word => {
     return word.replace(/\s/g, "");
   };
 
+  onClose() {
+    this.setState({
+      errors: null
+    });
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log("Errors --> ", this.state.errors);
 
     return (
       <Form
@@ -66,6 +73,14 @@ class Component_login extends React.Component {
         onSubmit={this.handleSubmit}
       >
         <h3>Inicio de sesión</h3>
+        {this.state.errors ? (
+          <Alert
+            message="Correo electrónico y/o contraseña incorrecto(a)"
+            type="error"
+            closable
+            onClose={() => this.onClose()}
+          />
+        ) : null}
 
         <Form.Item label="Correo electrónico" hasFeedback>
           {getFieldDecorator("name", {
