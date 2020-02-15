@@ -1,13 +1,21 @@
 import React from "react";
-import { Form, Card, Typography } from "antd";
-import styles from "../styles/styles.scss";
+import { Card, Typography } from "antd";
 
 const { Text, Title } = Typography;
 
 class PrivacyPolicy extends React.Component {
   render() {
     return (
-      <Card style={{ margin: "2rem" }}>
+      <Card
+        style={{
+          margin: "1rem",
+          marginTop: "2rem",
+          boxShadow:
+            " 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19)",
+          borderTopRightRadius: "30px",
+          borderBottomLeftRadius: "30px"
+        }}
+      >
         <div
           style={{
             textAlign: "center",
@@ -15,8 +23,8 @@ class PrivacyPolicy extends React.Component {
             alignItems: "center"
           }}
         >
-          <Text mark>
-            <Title>Política de privacidad</Title>
+          <Text>
+            <Title mark>Política de privacidad</Title>
           </Text>
         </div>
 
@@ -63,28 +71,3 @@ class PrivacyPolicy extends React.Component {
 }
 
 export default PrivacyPolicy;
-
-// ReactDOM.render(
-//   <div>
-//     <Text>Ant Design</Text>
-//     <br />
-//     <Text type="secondary">Ant Design</Text>
-//     <br />
-//     <Text type="warning">Ant Design</Text>
-//     <br />
-//     <Text type="danger">Ant Design</Text>
-//     <br />
-//     <Text disabled>Ant Design</Text>
-//     <br />
-//     <Text mark>Ant Design</Text>
-//     <br />
-//     <Text code>Ant Design</Text>
-//     <br />
-//     <Text underline>Ant Design</Text>
-//     <br />
-//     <Text delete>Ant Design</Text>
-//     <br />
-//     <Text strong>Ant Design</Text>
-//   </div>,
-//   mountNode,
-// );

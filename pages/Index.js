@@ -1,16 +1,35 @@
 import React from "react";
-import Head from "next/head";
 
-import Header from "../comps/Header";
 import AboutMe from "../comps/AboutMe";
 import Gallery from "../comps/Gallery";
 import DemoBlog from "../comps/DemoBlog";
 import Footer from "../comps/Footer";
 import Home from "../comps/Home";
+import styles from "../styles/styles.scss";
 
-import { BackTop } from "antd";
+import Link from "next/link";
+import Router from "next/router";
+
+import { BackTop, Button, Row, Col } from "antd";
 
 import { ThemeContext, User_info } from "../comps/Contex";
+let a = [
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" },
+  { src: "tatiana.png" }
+];
 
 class Index extends React.Component {
   constructor(props) {
@@ -23,46 +42,12 @@ class Index extends React.Component {
   render() {
     let user = this.context;
     console.log("user: ", this.state.user);
-    console.log("this.props: ", this.props);
+    console.log("Index props: ", this.props);
 
     return (
       <div>
+        <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
         <BackTop />
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link
-            rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-            key="bootstrap"
-          />
-          <link
-            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-            rel="stylesheet"
-          />
-
-          <script
-            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossOrigin="anonymous"
-          ></script>
-          <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossOrigin="anonymous"
-          ></script>
-          <script
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossOrigin="anonymous"
-          ></script>
-          <link
-            href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-            rel="stylesheet"
-          />
-        </Head>
-
-        <Header></Header>
-
         <div id="home" className="pt-5">
           <Home />
         </div>
@@ -74,8 +59,26 @@ class Index extends React.Component {
         <div id="gallery" className="pt-5">
           <Gallery />
         </div>
-        <div id="blog" className="pt-5">
-          <DemoBlog />
+
+        <div id="demo_blog" className="pt-5">
+          <h1 className={styles.sectionTitle}>Blog</h1>
+          <DemoBlog post={a} demo={true} />
+          <Row justify="center" type="flex">
+            <Col>
+              <Button>
+                <Link
+                  href={{
+                    pathname: "/blog",
+                    query: {
+                      object: JSON.stringify(a)
+                    }
+                  }}
+                >
+                  Ver más publicaciones
+                </Link>
+              </Button>
+            </Col>
+          </Row>
         </div>
 
         <div id="contact" className="pt-5">
