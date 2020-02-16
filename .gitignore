@@ -4,6 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+/myvenv
+/backend/backend/__pycache__
+/backend/coach/__pycache__
+/backend/coach/migrations
 
 # testing
 /coverage
