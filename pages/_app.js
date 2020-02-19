@@ -1,6 +1,7 @@
+import React from "react";
 import Head from "next/head";
 import Header from "../comps/Header";
-
+import { StateProvider } from "../store/store";
 function MyApp({ Component, pageProps }) {
   return (
     <div>
@@ -33,8 +34,10 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
       </Head>
-      <Header />
-      <Component {...pageProps} />
+      <StateProvider>
+        <Header />
+        <Component {...pageProps} />
+      </StateProvider>
     </div>
   );
 }
