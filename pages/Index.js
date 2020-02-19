@@ -12,7 +12,6 @@ import Router from "next/router";
 
 import { BackTop, Button, Row, Col } from "antd";
 
-import { ThemeContext, User_info } from "../comps/Contex";
 let a = [
   { src: "tatiana.png" },
   { src: "tatiana.png" },
@@ -36,14 +35,10 @@ class Index extends React.Component {
     super(props);
 
     this.state = {
-      user: User_info.name
+      user: ""
     };
   }
   render() {
-    let user = this.context;
-    console.log("user: ", this.state.user);
-    console.log("Index props: ", this.props);
-
     return (
       <div>
         <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
@@ -84,13 +79,9 @@ class Index extends React.Component {
         <div id="contact" className="pt-5">
           <Footer />
         </div>
-
-        <div style={{ backgroundColor: "#0fb" }}>{user.name}</div>
       </div>
     );
   }
 }
-
-Index.contextType = ThemeContext;
 
 export default Index;

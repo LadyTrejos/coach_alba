@@ -101,7 +101,7 @@ class Component_register extends React.Component {
             //console.log("userData: ", userData);
 
             api
-              .post(`/api/users/register`, userData, {
+              .post(`/rest-auth/registration/`, userData, {
                 headers: { "Content-type": "application/json" }
               })
 
