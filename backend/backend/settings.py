@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'corsheaders',
     'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,6 +123,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# CORS
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+CORS_ALLOW_CREDENTIALS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -134,6 +139,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'coach.api.serializers.UserSerializer',
+    'TOKEN_SERIALIZER': 'coach.api.serializers.TokenSerializer',
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
