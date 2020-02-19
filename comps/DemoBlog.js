@@ -70,9 +70,9 @@ class DemoBlog extends React.Component {
                     <div className={styles.content}>
                       <span className={styles.author}>Jane Doe</span>
                       <h1 className={styles.postTitle}>
-                        <a href="#">
+                        <Link href="/post/[id]" as={`/post/${item.title}`}>
                           Boxing icon has the will for a couple more fights
-                        </a>
+                        </Link>
                       </h1>
                       <p className={styles.text}>
                         Dolore minim ad anim adipisicing quis. Tempor eu sint
