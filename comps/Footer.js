@@ -1,4 +1,5 @@
 import styles from "../styles/styles.scss";
+import { Icon } from "antd";
 
 export default function Footer() {
   return (
@@ -9,13 +10,12 @@ export default function Footer() {
             <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
               <a href="https://wa.me/573233396771">
                 <i
-                  className="fab fa-whatsapp"
+                  className="fa fa-whatsapp"
                   aria-hidden="true"
                   data-text="Whatsapp"
                   style={{
-                    fontSize: "5vh",
+                    fontSize: "40px",
                     textAlign: "center",
-                    margin: "20px",
                     color: "#fff"
                   }}
                 ></i>
@@ -23,32 +23,22 @@ export default function Footer() {
             </div>
             <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
               <a href="https://www.facebook.com">
-                <i
-                  className="fa fa-facebook"
-                  aria-hidden="true"
-                  data-text="Facebook"
+                <Icon
+                  type="facebook"
+                  theme="filled"
                   style={{
-                    fontSize: "5vh",
-                    textAlign: "center",
-                    margin: "20px",
-                    color: "#fff"
+                    color: "#fff",
+                    fontSize: "40px"
                   }}
-                ></i>
+                />
               </a>
             </div>
             <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
               <a href="https://www.instagram.com/albanurycoach/">
-                <i
-                  className="fa fa-instagram"
-                  aria-hidden="true"
-                  data-text="Instagram"
-                  style={{
-                    fontSize: "5vh",
-                    textAlign: "center",
-                    margin: "20px",
-                    color: "#fff"
-                  }}
-                ></i>
+                <Icon
+                  type="instagram"
+                  style={{ color: "#fff", fontSize: "40px" }}
+                />
               </a>
             </div>
           </div>

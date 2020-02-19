@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, List, Typography, BackTop } from "antd";
+import styles from "../styles/styles.scss";
 
 const { Text, Title } = Typography;
 
@@ -106,10 +107,17 @@ class Users extends React.Component {
             >
               <Card
                 title={
-                  <marquee behavior="alternate" scrolldelay="500">
-                    {" "}
-                    {item.name}
-                  </marquee>
+                  item.name.length > 27 ? (
+                    <div className={styles.marquee}>
+                      <div className={styles.marquee__inner}>
+                        <div className={styles.marquee__content}>
+                          {item.name}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>{item.name}</div>
+                  )
                 }
                 headStyle={{
                   backgroundColor: "rgba(255, 255, 255, 0.5)"
