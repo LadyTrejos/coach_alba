@@ -5,6 +5,7 @@ import Gallery from "../comps/Gallery";
 import DemoBlog from "../comps/DemoBlog";
 import Footer from "../comps/Footer";
 import Home from "../comps/Home";
+import File from "../comps/Files";
 import styles from "../styles/styles.scss";
 
 import { BackTop, Button, Row, Col } from "antd";
@@ -68,6 +69,9 @@ class Index extends React.Component {
 
         <div id="contact" className="pt-5">
           <Footer />
+        </div>
+        <div id="files">
+          <File />
         </div>
       </div>
     );
