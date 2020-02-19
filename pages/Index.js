@@ -7,28 +7,26 @@ import Footer from "../comps/Footer";
 import Home from "../comps/Home";
 import styles from "../styles/styles.scss";
 
-import Link from "next/link";
-import Router from "next/router";
-
 import { BackTop, Button, Row, Col } from "antd";
 
 import { ThemeContext, User_info } from "../comps/Contex";
+//Cambiar por la consulta a la base de datos
 let a = [
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" },
-  { src: "tatiana.png" }
+  { title: "title_1", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_2", src: "image.png", description: "blablablalbaljdkfas" },
+  { title: "title_3", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_4", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_5", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_6", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_7", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_8", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_9", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_10", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_11", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_12", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_13", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_14", src: "tatiana.png", description: "blablablalbaljdkfas" },
+  { title: "title_15", src: "image.png", description: "blablablalbaljdkfas" }
 ];
 
 class Index extends React.Component {
@@ -62,20 +60,11 @@ class Index extends React.Component {
 
         <div id="demo_blog" className="pt-5">
           <h1 className={styles.sectionTitle}>Blog</h1>
-          <DemoBlog post={a} demo={true} />
+          <DemoBlog post={a} demo={true} pagination={false} />
           <Row justify="center" type="flex">
             <Col>
-              <Button>
-                <Link
-                  href={{
-                    pathname: "/blog",
-                    query: {
-                      object: JSON.stringify(a)
-                    }
-                  }}
-                >
-                  Ver más publicaciones
-                </Link>
+              <Button href="/blog" type="primary">
+                Ver más publicaciones
               </Button>
             </Col>
           </Row>
@@ -84,8 +73,6 @@ class Index extends React.Component {
         <div id="contact" className="pt-5">
           <Footer />
         </div>
-
-        <div style={{ backgroundColor: "#0fb" }}>{user.name}</div>
       </div>
     );
   }

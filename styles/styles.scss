@@ -358,3 +358,41 @@ label {
   font-size: 8;
   font-weight: bold;
 }
+
+//marquee
+
+.marquee {
+  position: relative;
+
+  overflow: hidden;
+
+  &__inner {
+    display: inline-block;
+    animation: marquee__inner 3s linear infinite alternate;
+  }
+
+  &__content {
+    animation: marquee__content 3s linear infinite alternate;
+    white-space: nowrap;
+  }
+}
+
+@keyframes marquee__inner {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: 100%;
+  }
+}
+
+@keyframes marquee__content {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: -100%;
+  }
+}
