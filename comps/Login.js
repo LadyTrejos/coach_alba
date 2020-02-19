@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "../styles/styles.scss";
-
 import Router from "next/router";
-import api from "../api";
 import { Form, Input, Icon, Tooltip, Button, Alert } from "antd";
+
+import styles from "../styles/styles.scss";
+import api from "../api";
 
 class Component_login extends React.Component {
   constructor(props) {
@@ -28,14 +28,13 @@ class Component_login extends React.Component {
         const userData = JSON.stringify(this.state.login);
         console.log("UserData: ", userData);
         api
-          .post(`/api/users/login/`, userData, {
+          .post(`/rest-auth/login/`, userData, {
             headers: { "Content-type": "application/json" }
           })
 
           .then(res => {
             console.log("res: ", res);
             let userInfo = res.data.user;
-            console.log(userInfo);
             Router.push("/");
           })
           .catch(err => {
