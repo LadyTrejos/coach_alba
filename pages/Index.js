@@ -59,7 +59,9 @@ class Index extends React.Component {
         </div>
 
         <div id="demo_blog" className="pt-5">
-          <h1 className={styles.sectionTitle}>Blog</h1>
+          <h1 className={styles.sectionTitle}>
+            <a href="/blog">Blog</a>
+          </h1>
           <DemoBlog post={a} demo={true} pagination={false} />
           <Row justify="center" type="flex">
             <Col>

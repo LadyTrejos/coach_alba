@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, List, Typography, BackTop } from "antd";
+import { Card, List, Typography, BackTop, Row } from "antd";
 import styles from "../styles/styles.scss";
 
 const { Text, Title } = Typography;
@@ -81,6 +81,9 @@ class Users extends React.Component {
     return (
       <div style={{ padding: "10px" }}>
         <BackTop />
+        <Row justify="center" type="flex" style={{ fontSize: "30px" }}>
+          Usuarios
+        </Row>
         <List
           itemLayout="horizontal"
           grid={{
