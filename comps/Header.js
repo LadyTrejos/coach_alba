@@ -31,7 +31,6 @@ function Header(props) {
           <Nav.Link href="/#demo_blog">Blog</Nav.Link>
           <Nav.Link href="/#contact">Contacto</Nav.Link>
           <Nav.Link href="/users">Usuarios</Nav.Link>
-          <Nav.Link href="/#files">Archivos</Nav.Link>
         </Nav>
         <Nav>
           <Button href="/ingresar">Inicia sesión / Regístrate</Button>
