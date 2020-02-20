@@ -4,10 +4,13 @@ import { Form, Input, Icon, Tooltip, Button, Alert } from "antd";
 
 import styles from "../styles/styles.scss";
 import api from "../api";
+import { UserContext } from "../store/store";
 
 function LoginComponent(props) {
   const [errors, setErrors] = useState(null);
   const { getFieldDecorator } = props.form;
+  const ctx = useContext(UserContext);
+  const { dispatch } = ctx;
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -15,13 +18,13 @@ function LoginComponent(props) {
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const userData = JSON.stringify(values);
-        console.log(userData);
         api
           .post(`/rest-auth/login/`, userData, {
             headers: { "Content-type": "application/json" }
           })
           .then(res => {
-            console.log(res);
+            dispatch({ type: "increment" });
+            console.log(ctx);
             // Router.push("/");
           })
           .catch(err => {

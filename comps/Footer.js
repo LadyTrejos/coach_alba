@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "../styles/styles.scss";
 import { Icon } from "antd";
 
@@ -8,7 +9,11 @@ export default function Footer() {
         <div className="col-12 col-sm-2 col-md-6 col-lg-5 col-xl-5 ">
           <div className="row justify-content-center">
             <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              <a href="https://wa.me/573233396771">
+              <a
+                href="https://wa.me/573233396771"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <i
                   className="fa fa-whatsapp"
                   aria-hidden="true"
@@ -22,7 +27,11 @@ export default function Footer() {
               </a>
             </div>
             <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              <a href="https://www.facebook.com">
+              <a
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Icon
                   type="facebook"
                   theme="filled"
@@ -34,7 +43,11 @@ export default function Footer() {
               </a>
             </div>
             <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              <a href="https://www.instagram.com/albanurycoach/">
+              <a
+                href="https://www.instagram.com/albanurycoach/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Icon
                   type="instagram"
                   style={{ color: "#fff", fontSize: "40px" }}
