@@ -1,7 +1,9 @@
 import React from "react";
 import Head from "next/head";
 import Header from "../comps/Header";
-function MyApp({ Component, pageProps }) {
+
+function MyApp({ Component, pageProps, request }) {
+  console.log(request);
   return (
     <div>
       <Head>
@@ -38,5 +40,9 @@ function MyApp({ Component, pageProps }) {
     </div>
   );
 }
+
+MyApp.getInitialProps = async ctx => {
+  return { request: ctx.req };
+};
 
 export default MyApp;
