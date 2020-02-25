@@ -44,7 +44,16 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['is_superuser']
 
 
+class SimpleUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'is_admin',)
+        read_only_fields = ['id', 'is_admin']
+
+
 class TokenSerializer(serializers.ModelSerializer):
+    user = SimpleUserSerializer()
 
     class Meta:
         model = Token
