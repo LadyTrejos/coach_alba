@@ -22,7 +22,7 @@ export default function Post(props) {
   console.log(post[0].src);
   return (
     <div>
-      {router.query.id}
+      {/* {router.query.id} */}
       <Row justify="center" type="flex">
         <div
           style={{

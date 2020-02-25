@@ -1,5 +1,6 @@
 import React, { Component, useRef, useState } from "react";
 import Files from "../../comps/Files";
+import Router from "next/router";
 import { Button, Form, Input, Row, Col, Card, Typography, Alert } from "antd";
 
 const { TextArea } = Input;
@@ -23,6 +24,7 @@ function CreatePost(props) {
         postData.append("file", file);
 
         console.log("postData: ", postData.get("title"));
+        Router.push("/post/[id]", `/post/${values.title}`);
         // api
         //   .post(``, postData, {
         //     headers: { "Content-type": "multipart/form-data" }
@@ -30,7 +32,7 @@ function CreatePost(props) {
         //   .then(res => {
         //     console.log(res);
         //message.success('Publicación creada correctamente.',10)
-        //     // Router.push("/");
+        //     // Router.push("/ "/post/[id]" as={`/post/${item.title}`}");
         //   })
         //   .catch(err => {
         //     setErrors(err);

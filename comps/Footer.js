@@ -18,6 +18,7 @@ export default function Footer() {
                   className="fa fa-whatsapp"
                   aria-hidden="true"
                   data-text="Whatsapp"
+                  title="Whatsapp"
                   style={{
                     fontSize: "40px",
                     textAlign: "center",
@@ -34,6 +35,7 @@ export default function Footer() {
               >
                 <Icon
                   type="facebook"
+                  title="facebook"
                   theme="filled"
                   style={{
                     color: "#fff",
@@ -50,6 +52,7 @@ export default function Footer() {
               >
                 <Icon
                   type="instagram"
+                  title="www.instagram.com/albanurycoach/"
                   style={{ color: "#fff", fontSize: "40px" }}
                 />
               </a>

@@ -7,7 +7,7 @@ class File extends Component {
     selectedFile: null
   };
   fileSelectedHandler = event => {
-    console.log(event.target.files[0]);
+    console.log(event.target.files);
     this.setState({
       selectedFile: event.target.files[0]
     });
@@ -25,6 +25,7 @@ class File extends Component {
           onChange={this.fileSelectedHandler}
           className={styles.custom_file_input}
           accept="image/png, image/jpeg, image/jpg"
+          multiple
         />
 
         {/* <Button onClick={this.fileUploadHandler}></Button> */}
