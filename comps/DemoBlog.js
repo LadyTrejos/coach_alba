@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../styles/styles.scss";
-import { List, Row, Card } from "antd";
+import { List, Row, Card, Button } from "antd";
 import Link from "next/link";
 
 class DemoBlog extends React.Component {
@@ -32,6 +32,9 @@ class DemoBlog extends React.Component {
     console.log("Blog Props: ", this.props);
     return (
       <div style={{ padding: "10px" }}>
+        <Button type="primary" href="/post/create">
+          Nueva publicación
+        </Button>
         <List
           itemLayout="horizontal"
           grid={{
