@@ -32,9 +32,11 @@ class DemoBlog extends React.Component {
     console.log("Blog Props: ", this.props);
     return (
       <div style={{ padding: "10px" }}>
-        <Button type="primary" href="/post/create">
-          Nueva publicación
-        </Button>
+        {this.props.demo ? null : (
+          <Button type="primary" href="/post/create">
+            Nueva publicación
+          </Button>
+        )}
         <List
           itemLayout="horizontal"
           grid={{
