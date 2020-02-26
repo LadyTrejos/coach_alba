@@ -1,16 +1,13 @@
-import React, { useContext, useState } from "react";
-import Router from "next/router";
+import React, { useState } from "react";
 import { Form, Input, Icon, Tooltip, Button, Alert } from "antd";
+import Router from "next/router";
 
 import styles from "../styles/styles.scss";
 import api from "../api";
-import { UserContext } from "../store/store";
 
 function LoginComponent(props) {
   const [errors, setErrors] = useState(null);
   const { getFieldDecorator } = props.form;
-  const ctx = useContext(UserContext);
-  const { dispatch } = ctx;
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -23,9 +20,13 @@ function LoginComponent(props) {
             headers: { "Content-type": "application/json" }
           })
           .then(res => {
-            dispatch({ type: "increment" });
-            console.log(ctx);
-            // Router.push("/");
+            const token = res.data.key;
+            const userId = res.data.user.id;
+            const isAdmin = res.data.user.is_admin;
+            localStorage.setItem("token", token);
+            localStorage.setItem("id", userId);
+            localStorage.setItem("role", isAdmin);
+            Router.push("/programs");
           })
           .catch(err => {
             setErrors(err);
