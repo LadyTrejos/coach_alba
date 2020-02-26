@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Router from "next/router";
+import style from "../../styles/styles.scss";
 import {
   Collapse,
   Row,
@@ -17,13 +18,8 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 
 let a = {
-  title: [
-    "Program 1 dsñlvhñsdlkjvñsjdl fjsdñlvnlkcxvn zñldsjfparjgireh",
-    "Program 2",
-    "Program 3",
-    "Program 4"
-  ],
-  day: ["Day 1", "Day 2", "Day 3", "Day 4"]
+  title: ["Programa 1 ", "Programa 2", "Programa 3", "Programa 4"],
+  day: ["Día 1", "Día 2", "Día 3", "Día 4"]
 };
 const text = `
   A dog is a type of domesticated animal.
@@ -57,12 +53,40 @@ function IndexProgram(props) {
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         //Hacer post a la base de datos
+        // const programData = JSON.stringify(values.title);
+        //     //console.log("programData: ", programData);
+
+        //     api
+        //       .post(``, programData, {
+        //         headers: { "Content-type": "application/json" }
+        //       })
+
+        //       .then((res) => {
+        // //mirar cómo trae el 'res' el título
+        //         Router.push("/programs/[title]", `/programs/${res.title}`);
+        //       })
+        //       .catch(err => {
+        //         console.log(err)
+        //         });
         console.log("No hay errores ", values);
-        Router.push("/");
+        Router.push("/programs/[title]", `/programs/${values.title}`);
       }
     });
   }
 
+  function deleteProgram(e) {
+    console.log("Eliminar el programa seleccionado");
+  }
+  function daySelected(day) {
+    console.log(day);
+    Router.push("/programs/day/[day]", `/programs/day/${day}`);
+  }
+
+  const genExtra = () => (
+    <Button type="danger" onClick={deleteProgram}>
+      Eliminar
+    </Button>
+  );
   return (
     <Row style={{ padding: "20px 0" }}>
       <Modal
@@ -103,7 +127,7 @@ function IndexProgram(props) {
       </Modal>
       <Col
         className="gutter-row"
-        className="offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-5 col-md-7 col-lg-5 col-xl-7"
+        className="offset-sm-3 offset-md-2 offset-lg-2 offset-xl-2 col-12 col-sm-6 col-md-8 col-lg-8 col-xl-8"
       >
         <Row justify="center" type="flex">
           <Title> Programas</Title>
@@ -116,13 +140,21 @@ function IndexProgram(props) {
         <br />
         <br />
         <Collapse accordion style={{ wordWrap: "break-word" }}>
-          {a.title.map(item => {
+          {a.title.map(title => {
             return (
-              <Panel header={`${item} `} key={`${item}`}>
+              <Panel
+                header={`${title} `}
+                key={`${title}`}
+                extra={isAdmin ? genExtra() : null}
+                className={isAdmin ? style.panel : null}
+              >
                 {a.day.map(day => {
                   return (
                     <div>
-                      <Button type="primary"> {day} </Button> <br />
+                      <Button type="primary" onClick={() => daySelected(day)}>
+                        {day}
+                      </Button>
+                      <br />
                       <br />
                     </div>
                   );
