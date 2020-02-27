@@ -42,8 +42,4 @@ function MyApp({ Component, pageProps, request }) {
   );
 }
 
-MyApp.getInitialProps = async ctx => {
-  return { request: ctx.req };
-};
-
 export default MyApp;
