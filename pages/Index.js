@@ -119,7 +119,14 @@ class Index extends React.Component {
           <DemoBlog post={a} demo={true} pagination={false} />
           <Row justify="center" type="flex">
             <Col>
-              <Button href="/blog" type="primary">
+              <Button
+                href="/blog"
+                style={{
+                  borderColor: "blue",
+                  color: "black",
+                  fontWeight: "500"
+                }}
+              >
                 Ver más publicaciones
               </Button>
             </Col>

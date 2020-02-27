@@ -2,25 +2,25 @@ import React from "react";
 import { Button } from "antd";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import Text from "antd/lib/typography/Text";
 
 function Header(props) {
   return (
     <Navbar
       collapseOnSelect
       expand="lg"
-      bg="light"
-      variant="light"
+      variant="dark"
       sticky="top"
+      style={{ backgroundColor: "rgba(35, 53, 192, 0.9)" }}
     >
       <Navbar.Brand href="/#home">
         <img
           alt=""
-          src="/fb.ico"
-          width="30"
-          height="30"
+          src="/logoAlba.png"
+          width="80"
+          height="50"
           className="d-inline-block align-top"
         />{" "}
-        Alba Nury
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
@@ -34,7 +34,17 @@ function Header(props) {
           <Nav.Link href="/programs">Programas</Nav.Link>
         </Nav>
         <Nav>
-          <Button href="/ingresar">Inicia sesión / Regístrate</Button>
+          <Text
+            style={{
+              paddingRight: "5rem",
+              fontFamily: "Shadows Into Light",
+              fontSize: "1.5rem",
+              color: "rgba(255, 255, 255, 0.9)"
+            }}
+          >
+            Coach Alba Nury
+          </Text>
+          {/* <Button href="/ingresar">Inicia sesión / Regístrate</Button> */}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
