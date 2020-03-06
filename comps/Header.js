@@ -44,7 +44,7 @@ function Header(props) {
           >
             Coach Alba Nury
           </Text>
-          {/* <Button href="/ingresar">Inicia sesión / Regístrate</Button> */}
+          <Button href="/ingresar">Inicia sesión / Regístrate</Button>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
