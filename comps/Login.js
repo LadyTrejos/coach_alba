@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Input, Icon, Tooltip, Button, Alert } from "antd";
 import Router from "next/router";
-
 import styles from "../styles/styles.scss";
 import api from "../api";
+import Cookies from "js-cookie";
 
 function LoginComponent(props) {
   const [errors, setErrors] = useState(null);
@@ -15,9 +15,13 @@ function LoginComponent(props) {
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const userData = JSON.stringify(values);
+        const csrftoken = Cookies.get("csrftoken");
         api
           .post(`/rest-auth/login/`, userData, {
-            headers: { "Content-type": "application/json" }
+            headers: {
+              "Content-type": "application/json",
+              "X-CSRFToken": csrftoken
+            }
           })
           .then(res => {
             const token = res.data.key;
@@ -26,7 +30,7 @@ function LoginComponent(props) {
             localStorage.setItem("token", token);
             localStorage.setItem("id", userId);
             localStorage.setItem("role", isAdmin);
-            Router.push("/programs");
+            Router.push("/");
           })
           .catch(err => {
             setErrors(err);

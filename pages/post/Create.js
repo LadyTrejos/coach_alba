@@ -2,7 +2,17 @@ import React, { Component, useRef, useState, useEffect } from "react";
 import Files from "../../comps/Files";
 import api from "../../api";
 import Router from "next/router";
-import { Button, Form, Input, Row, Col, Card, Typography, Alert } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Row,
+  Col,
+  Card,
+  Typography,
+  Alert,
+  message
+} from "antd";
 import ReactHtmlParser from "react-html-parser";
 import { validationResult } from "express-validator";
 import Cookies from "js-cookie";
@@ -55,9 +65,10 @@ function CreatePost(props) {
             }
           })
           .then(res => {
-            console.log(res);
+            console.log("res: ", res.data.id);
             message.success("Publicación creada correctamente.", 10);
-            // Router.push("/ "/post/[id]" as={`/post/${item.title}`}");
+
+            Router.push("/post/[id]", `/post/${res.data.id}`);
           })
           .catch(err => {
             setError(err);

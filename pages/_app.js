@@ -3,7 +3,7 @@ import Head from "next/head";
 import Header from "../comps/Header";
 
 function MyApp({ Component, pageProps, request }) {
-  console.log(request);
+  // console.log(request);
   return (
     <div>
       <Head>
