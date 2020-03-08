@@ -1,9 +1,11 @@
 import React, { Component, useRef, useState, useEffect } from "react";
 import Files from "../../comps/Files";
+import api from "../../api";
 import Router from "next/router";
 import { Button, Form, Input, Row, Col, Card, Typography, Alert } from "antd";
 import ReactHtmlParser from "react-html-parser";
 import { validationResult } from "express-validator";
+import Cookies from "js-cookie";
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -37,27 +39,30 @@ function CreatePost(props) {
     event.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
       console.log(values);
-      // if (!err && file && description) {
-      //   let postData = new FormData();
-      //   postData.append("title", values.title);
-      //   postData.append("description", values.description);
-      //   postData.append("file", file);
-
-      //   console.log("postData: ", postData.get("title"));
-      //   Router.push("/post/[id]", `/post/${values.title}`);
-      //   // api
-      //   //   .post(``, postData, {
-      //   //     headers: { "Content-type": "multipart/form-data" }
-      //   //   })
-      //   //   .then(res => {
-      //   //     console.log(res);
-      //   //message.success('Publicación creada correctamente.',10)
-      //   //     // Router.push("/ "/post/[id]" as={`/post/${item.title}`}");
-      //   //   })
-      //   //   .catch(err => {
-      //   //     setErrors(err);
-      //   //   });
-      // }
+      if (!err && file && description) {
+        let postData = new FormData();
+        postData.append("picture", file);
+        postData.append("title", values.title);
+        postData.append("description", description);
+        postData.append("owner", 1);
+        const csrftoken = Cookies.get("csrftoken");
+        //Router.push("/post/[id]", `/post/${values.title}`);
+        api
+          .post(`/api/post/`, postData, {
+            headers: {
+              "Content-type": "multipart/form-data",
+              "X-CSRFToken": csrftoken
+            }
+          })
+          .then(res => {
+            console.log(res);
+            message.success("Publicación creada correctamente.", 10);
+            // Router.push("/ "/post/[id]" as={`/post/${item.title}`}");
+          })
+          .catch(err => {
+            setError(err);
+          });
+      }
     });
   }
 
@@ -217,7 +222,7 @@ function CreatePost(props) {
                       />
                     </div>
                   ) : (
-                    <div>{console.log(editorLoaded)}Cargando... </div>
+                    <div>Cargando... </div>
                   )}
                   {errorDescription ? (
                     <Alert

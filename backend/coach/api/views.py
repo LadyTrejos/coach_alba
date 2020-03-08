@@ -1,8 +1,10 @@
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import (
     AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly, BasePermission, IsAuthenticated, SAFE_METHODS)
-from coach.models import (User)
-from .serializers import (UserSerializer)
+from coach.models import (User, Post)
+from .serializers import (UserSerializer, PostSerializer)
 
 
 class ReadOnly(BasePermission):
@@ -28,3 +30,12 @@ class UserViewSet(viewsets.ModelViewSet):
         elif self.action == 'destroy':
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
+    filter_fields = ('title', 'id',)
+    ordering_fields = ('created_at',)
+    search_fields = ('title', 'id')

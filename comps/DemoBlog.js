@@ -29,7 +29,7 @@ class DemoBlog extends React.Component {
   }
 
   render() {
-    console.log("Blog Props: ", this.props);
+    // console.log("Blog Props: ", this.props);
     return (
       <div style={{ padding: "10px" }}>
         {this.props.demo ? null : (

@@ -3,6 +3,7 @@ import styles from "../styles/styles.scss";
 import Router from "next/router";
 import CountrySelector from "../comps/CountrySelector";
 import api from "../api";
+import Cookies from "js-cookie";
 import {
   Select,
   Form,
@@ -30,13 +31,13 @@ class Component_register extends React.Component {
         email: "",
         phone: null,
         id_phone: 57,
-        location: {
-          country: "",
-          state: "",
-          city: ""
-        },
-        password: "",
-        password_confirmation: ""
+
+        country: "",
+        state: "",
+        city: "",
+
+        password1: "",
+        password2: ""
       },
 
       registerError: {
@@ -61,15 +62,15 @@ class Component_register extends React.Component {
   }
 
   validateRegister = selector => {
-    console.log(
-      "validateRegister: ",
-      selector.state.country,
-      " country: ",
-      selector.state.state,
-      " state:",
-      selector.state.city,
-      " city"
-    );
+    // console.log(
+    //   "validateRegister: ",
+    //   selector.state.country,
+    //   " country: ",
+    //   selector.state.state,
+    //   " state:",
+    //   selector.state.city,
+    //   " city"
+    // );
     if (
       selector.state.country == "" ||
       selector.state.state == "" ||
@@ -93,16 +94,19 @@ class Component_register extends React.Component {
           {
             register: {
               ...this.state.register,
-              location: { country, state, city }
+              country,
+              state,
+              city
             }
           },
           () => {
             const userData = JSON.stringify(this.state.register);
-            //console.log("userData: ", userData);
+            const csrftoken = Cookies.get("csrftoken");
+            console.log("userData: ", userData);
 
             api
               .post(`/rest-auth/registration/`, userData, {
-                headers: { "Content-type": "application/json" }
+                headers: { "Content-type": "application/json","X-CSRFToken": csrftoken }
               })
 
               .then(() => {
@@ -177,14 +181,14 @@ class Component_register extends React.Component {
   validateResidence = (rule, value, callback) => {
     const selector = this.countryRef.current;
     console.log("rule: ", rule, " ,value: ", value);
-    console.log(
-      "validate residence: country",
-      selector.state.country,
-      " state",
-      selector.state.state,
-      " city ",
-      selector.state.city
-    );
+    // console.log(
+    //   "validate residence: country",
+    //   selector.state.country,
+    //   " state",
+    //   selector.state.state,
+    //   " city ",
+    //   selector.state.city
+    // );
 
     if (
       selector.state.city === "" ||
@@ -354,7 +358,7 @@ class Component_register extends React.Component {
           label={
             <span>
               Contraseña&nbsp;
-              <Tooltip title="Utiliza al menos 6 caracteres">
+              <Tooltip title="Utiliza al menos 8 caracteres">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
@@ -365,7 +369,7 @@ class Component_register extends React.Component {
             rules: [
               {
                 required: true,
-                pattern: /^[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ!@#\$%\^&\*\?]{6,100}$/,
+                pattern: /^[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ!@#\$%\^&\*\?]{8,100}$/,
                 message: "Contraseña no válida.",
                 whitespace: true
               },
@@ -382,7 +386,7 @@ class Component_register extends React.Component {
                 this.setState({
                   register: {
                     ...this.state.register,
-                    password: this.noSpaces(e.target.value)
+                    password1: this.noSpaces(e.target.value)
                   }
                 });
               }}
@@ -410,7 +414,7 @@ class Component_register extends React.Component {
                 this.setState({
                   register: {
                     ...this.state.register,
-                    password_confirmation: this.noSpaces(e.target.value)
+                    password2: this.noSpaces(e.target.value)
                   }
                 });
               }}
