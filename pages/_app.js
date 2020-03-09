@@ -1,9 +1,11 @@
 import React from "react";
 import Head from "next/head";
 import Header from "../comps/Header";
+import { authInitialProps } from "../utils/auth";
 
-function MyApp({ Component, pageProps, request }) {
-  // console.log(request);
+function MyApp({ Component, pageProps, auth }) {
+  const { user = {} } = auth || {};
+
   return (
     <div>
       <Head>
@@ -36,10 +38,11 @@ function MyApp({ Component, pageProps, request }) {
         />
         <link rel="stylesheet" href="/css/video-react.css" />
       </Head>
-      <Header />
-      <Component {...pageProps} />
+      <Header user={user} />
+      <Component {...pageProps} user={user} />
     </div>
   );
 }
 
+MyApp.getInitialProps = authInitialProps();
 export default MyApp;
