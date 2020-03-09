@@ -11,13 +11,13 @@ export default function Blog() {
 
   function loadData() {
     api.get(`/api/post/?ordering=-created_at`).then(res => {
-      console.log("Blog res: ", res.data);
+      // console.log("Blog res: ", res.data);
       setData(res.data);
     });
   }
 
   return (
-    <div style={{ paddingBottom: "50px" }}>
+    <div style={{ padding: "10px 0 50px 0" }}>
       <BackTop />
       <h1 className={styles.sectionTitle}>Blog</h1>
       {data ? (

@@ -106,7 +106,10 @@ class Component_register extends React.Component {
 
             api
               .post(`/rest-auth/registration/`, userData, {
-                headers: { "Content-type": "application/json","X-CSRFToken": csrftoken }
+                headers: {
+                  "Content-type": "application/json",
+                  "X-CSRFToken": csrftoken
+                }
               })
 
               .then(() => {

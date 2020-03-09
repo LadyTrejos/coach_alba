@@ -7,7 +7,7 @@ import ReactHtmlParser from "react-html-parser";
 export default function Post(props) {
   function getDay(date) {
     const newDate = new Date(date);
-    return newDate.getgitDate();
+    return newDate.getDate();
   }
 
   function getMonth(date) {

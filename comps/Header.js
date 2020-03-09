@@ -3,6 +3,7 @@ import { Button } from "antd";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Text from "antd/lib/typography/Text";
+import styles from "../styles/styles.scss";
 
 function Header(props) {
   return (
@@ -44,7 +45,9 @@ function Header(props) {
           >
             Coach Alba Nury
           </Text>
-          <Button href="/ingresar">Inicia sesión / Regístrate</Button>
+          <Button href="/ingresar" className={styles.defaultButton}>
+            Inicia sesión / Regístrate
+          </Button>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
