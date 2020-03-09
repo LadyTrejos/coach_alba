@@ -2,7 +2,9 @@ import React, { Component, useRef, useState, useEffect } from "react";
 import Files from "../../comps/Files";
 import api from "../../api";
 import Router from "next/router";
+import style from "../../styles/styles.scss";
 import {
+  Collapse,
   Button,
   Form,
   Input,
@@ -17,8 +19,8 @@ import ReactHtmlParser from "react-html-parser";
 import { validationResult } from "express-validator";
 import Cookies from "js-cookie";
 
-const { TextArea } = Input;
-const { Title } = Typography;
+const { Text, Title } = Typography;
+const { Panel } = Collapse;
 
 function CreatePost(props) {
   const fileRef = useRef(null);
@@ -244,12 +246,36 @@ function CreatePost(props) {
                     />
                   ) : null}
                 </Form.Item>
-                <div style={{ wordWrap: "break-word" }}>
-                  {" "}
-                  {ReactHtmlParser(description)}
+
+                <div>
+                  <Collapse accordion style={{ wordWrap: "break-word" }}>
+                    <Panel
+                      header={`Vista previa del texto`}
+                      key={`Vista previa`}
+                      className={style.panel}
+                    >
+                      <Row
+                        justify="center"
+                        type="flex"
+                        style={{ paddingTop: "20px" }}
+                      >
+                        <Title>{props.form.getFieldValue("title")}</Title>
+                      </Row>
+
+                      <Row justify="center">
+                        <Col
+                          className="gutter-row"
+                          // className="offset-1 offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-10 col-sm-8 col-md-10 col-lg-10 col-xl-8"
+                        >
+                          <Text>{ReactHtmlParser(description)}</Text>
+                        </Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
                 </div>
               </Col>
             </Row>
+            <br />
             <Row justify="center" type="flex">
               <Button htmlType="submit" type="primary">
                 Subir publicación
