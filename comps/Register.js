@@ -217,7 +217,6 @@ class Component_register extends React.Component {
       <Select
         showSearch
         size="large"
-        placeholder="hola"
         style={{ minWidth: "5vw" }}
         onChange={value =>
           this.setState({

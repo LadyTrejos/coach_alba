@@ -5,6 +5,7 @@ import Link from "next/link";
 import ReactHtmlParser from "react-html-parser";
 
 export default function Post(props) {
+  const { user } = props;
   function getDay(date) {
     const newDate = new Date(date);
     return newDate.getDate();
@@ -23,11 +24,11 @@ export default function Post(props) {
 
   return (
     <div style={{ padding: "10px" }}>
-      {props.demo ? null : (
+      {props.demo ? null : user.is_admin ? (
         <Button href="/post/create" className={styles.defaultButton}>
           Nueva publicación
         </Button>
-      )}
+      ) : null}
       <List
         itemLayout="horizontal"
         grid={{
@@ -58,14 +59,15 @@ export default function Post(props) {
           >
             <Row className={`${styles.postcard} ${styles.card}`}>
               <div className={styles.wrapper}>
-                {console.log("item.title: ", item.title)}
                 <Link href="/post/[id]" as={`/post/${item.id}`}>
-                  <img
-                    src={
-                      "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                    }
-                    className={styles.thumbnail}
-                  />
+                  <a>
+                    <img
+                      src={
+                        "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                      }
+                      className={styles.thumbnail}
+                    />
+                  </a>
                 </Link>
 
                 <div className={styles.date}>
@@ -83,7 +85,7 @@ export default function Post(props) {
                     <span className={styles.author}>Alba Nury Gonzalez L.</span>
                     <h1 className={styles.postTitle}>
                       <Link href="/post/[id]" as={`/post/${item.id}`}>
-                        {item.title}
+                        <a>{item.title}</a>
                       </Link>
                     </h1>
                     <div className={styles.text}>

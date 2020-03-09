@@ -77,15 +77,11 @@ let a = [
     location: { country: "Colombia", state: "Risaralda", city: "Pereira" }
   }
 ];
-export default function Users() {
+export default function Users(props) {
   const [data, setData] = useState(null);
 
   function checkAdmin(user) {
-    if (!user.is_admin) {
-      return true;
-    } else {
-      return false;
-    }
+    return !user.is_admin;
   }
 
   function loadData() {
@@ -97,7 +93,7 @@ export default function Users() {
   return data ? (
     <div style={{ padding: "10px" }}>
       <BackTop />
-      <Row justify="center" type="flex" style={{ fontSize: "30px" }}>
+      <Row justify="center" type="flex" className={styles.sectionTitle}>
         Usuarios
       </Row>
       <List

@@ -9,7 +9,6 @@ function MyApp({ Component, pageProps, auth }) {
   return (
     <div>
       <Head>
-        <link href="/your-path-to-fontawesome/css/all.css" rel="stylesheet" />
         <link
           rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -36,7 +35,6 @@ function MyApp({ Component, pageProps, auth }) {
           href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           rel="stylesheet"
         />
-        <link rel="stylesheet" href="/css/video-react.css" />
       </Head>
       <Header user={user} />
       <Component {...pageProps} user={user} />

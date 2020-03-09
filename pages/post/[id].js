@@ -1,36 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { Row, Typography, Col, Card, Skeleton } from "antd";
+import { Row, Typography, Col, Modal, Skeleton, Button, message } from "antd";
 const { Text, Title } = Typography;
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
+import Cookies from "js-cookie";
 import styles from "../../styles/styles.scss";
 import api from "../../api";
 import ReactHtmlParser from "react-html-parser";
 
 export default function Post(props) {
+  const { user } = props;
   const router = useRouter();
+  const [visible, setVisible] = useState(null);
   const [title, setTitle] = useState(null);
   const [src, setSrc] = useState(
     "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
   );
+  const [id, setId] = useState(null);
   const [description, setDescription] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
-  function loadData() {
-    console.log("hola"),
-      api.get(`/api/post/${router.query.id}`).then(res => {
-        console.log("res: ", res);
-        console.log("res.data.picture: ", res.data.picture);
+  function showModal() {
+    setVisible(true);
+  }
 
-        // src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-        setSrc(res.data.picture);
-        setTitle(res.data.title);
-        setDescription(res.data.description);
+  function handleOk(e) {
+    setVisible(false);
+    const csrftoken = Cookies.get("csrftoken");
+    api
+      .delete(`/api/post/${router.query.id}`, {
+        headers: {
+          "X-CSRFToken": csrftoken
+        }
+      })
+      .then(res => {
+        Router.push("/Blog");
       });
+  }
+
+  function handleCancel(e) {
+    setVisible(false);
+  }
+
+  function loadData() {
+    api.get(`/api/post/${router.query.id}`).then(res => {
+      // src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
+      // setSrc(res.data.picture);
+      setSrc("https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png");
+      setTitle(res.data.title);
+      setDescription(res.data.description);
+      setId(res.data.id);
+    });
   }
 
   return title ? (
     <div>
-      {console.log("return--> ", router.query.id)}
       <Row justify="center" type="flex">
         <div
           style={{
@@ -39,8 +62,6 @@ export default function Post(props) {
             height: "40vh",
             width: "auto",
             margin: "1rem"
-            // boxShadow:
-            //   " 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19)"
           }}
         >
           <img
@@ -63,11 +84,31 @@ export default function Post(props) {
           </Text>
         </Col>
       </Row>
+      {user.is_admin ? (
+        <Row justify="center" type="flex" style={{ margin: "10px 0 20px 0" }}>
+          <Modal
+            title="Eliminar publicación"
+            visible={visible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            cancelText="Cancelar"
+            okText="Eliminar"
+          >
+            ¿Está segura que desea eliminar esta publicación?
+          </Modal>
+          <Button type="danger" onClick={() => showModal()}>
+            Eliminar publicación
+          </Button>
+          <Button
+            className={styles.defaultButton}
+            onClick={() => Router.push("/post/edit/[id]", `/post/edit/${id}`)}
+          >
+            Editar publicación
+          </Button>
+        </Row>
+      ) : null}
     </div>
   ) : (
-    // <div style={{ textAlign: "center" }}>
-    //   Cargando... {description == null ? ud() : null}
-    // </div>
     <div className="container">
       <Skeleton active>{description == null ? loadData() : null} </Skeleton>
     </div>

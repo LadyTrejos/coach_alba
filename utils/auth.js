@@ -13,7 +13,7 @@ export const loginUser = async (email, password) => {
       if (typeof window !== "undefined") {
         window[WINDOW_USER_SCRIPT_VARIABLE] = res.data.user || {};
       }
-      Router.push("/programs");
+      Router.push("/Blog");
     })
     .catch(err => {
       console.log(err);

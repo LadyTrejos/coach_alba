@@ -14,7 +14,6 @@ export default function Index() {
   const [data, setData] = useState(null);
   function loadData() {
     api.get(`/api/post/?ordering=-created_at`).then(res => {
-      console.log("Blog res: ", res.data);
       setData(res.data);
     });
   }
