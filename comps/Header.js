@@ -3,8 +3,10 @@ import { Button } from "antd";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Text from "antd/lib/typography/Text";
+import { logoutUser } from "../utils/auth";
 
 function Header(props) {
+  const { user } = props;
   return (
     <Navbar
       collapseOnSelect
@@ -30,8 +32,13 @@ function Header(props) {
           <Nav.Link href="/#gallery">Galería</Nav.Link>
           <Nav.Link href="/#demo_blog">Blog</Nav.Link>
           <Nav.Link href="/#contact">Contacto</Nav.Link>
-          <Nav.Link href="/users">Usuarios</Nav.Link>
-          <Nav.Link href="/programs">Programas</Nav.Link>
+          {user.id ? (
+            //Auth Navigation
+            <React.Fragment>
+              <Nav.Link href="/programs">Programas</Nav.Link>
+            </React.Fragment>
+          ) : null}
+          {user.is_admin ? <Nav.Link href="/users">Usuarios</Nav.Link> : null}
         </Nav>
         <Nav>
           <Text
@@ -44,7 +51,13 @@ function Header(props) {
           >
             Coach Alba Nury
           </Text>
-          {/* <Button href="/ingresar">Inicia sesión / Regístrate</Button> */}
+          {user.id ? (
+            <React.Fragment>
+              <Button onClick={logoutUser}>Cerrar sesión</Button>
+            </React.Fragment>
+          ) : null
+          /* <Button href="/ingresar">Inicia sesión / Regístrate</Button> */
+          }
         </Nav>
       </Navbar.Collapse>
     </Navbar>

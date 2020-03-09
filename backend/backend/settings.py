@@ -109,7 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'coach.User'
 
-
+# SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
