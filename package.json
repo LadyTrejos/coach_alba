@@ -6,6 +6,9 @@
     "babel": true
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^17.0.0",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^17.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
@@ -23,6 +26,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "express-validator": "^6.4.0",
+    "js-cookie": "^2.2.1",
     "mongoose": "^5.8.11",
     "morgan": "^1.9.1",
     "next": "^9.2.1",
@@ -36,6 +40,7 @@
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
+    "react-html-parser": "^2.0.2",
     "react-modal-video": "^1.2.3",
     "react-player": "^1.15.2",
     "react-router-dom": "^5.1.2",

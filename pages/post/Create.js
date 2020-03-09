@@ -1,48 +1,89 @@
-import React, { Component, useRef, useState } from "react";
+import React, { Component, useRef, useState, useEffect } from "react";
 import Files from "../../comps/Files";
+import api from "../../api";
 import Router from "next/router";
-import { Button, Form, Input, Row, Col, Card, Typography, Alert } from "antd";
+import styles from "../../styles/styles.scss";
+import {
+  Collapse,
+  Button,
+  Form,
+  Input,
+  Row,
+  Col,
+  Card,
+  Typography,
+  Alert,
+  message
+} from "antd";
+import ReactHtmlParser from "react-html-parser";
+import { validationResult } from "express-validator";
+import Cookies from "js-cookie";
 
-const { TextArea } = Input;
-const { Title } = Typography;
+const { Text, Title } = Typography;
+const { Panel } = Collapse;
 
 function CreatePost(props) {
   const fileRef = useRef(null);
+  const editorRef = useRef();
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const [description, setDescription] = useState(null);
   const [error, setError] = useState(null);
+  const [errorDescription, setErrorDescription] = useState(null);
+  const { CKEditor, DecoupledEditor } = editorRef.current || {};
   const { getFieldDecorator } = props.form;
+
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require("@ckeditor/ckeditor5-react"),
+      DecoupledEditor: require("@ckeditor/ckeditor5-build-decoupled-document")
+    };
+
+    setEditorLoaded(true);
+  }, []);
 
   function handleSubmit(event, fileRef) {
     const file = fileRef.current.state.selectedFile;
     !file ? setError("Ingresa un archivo") : setError(null);
+    !description
+      ? setErrorDescription("Ingresa el enunciado del post")
+      : setErrorDescription(null);
 
     event.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
-      if (!err && file) {
+      console.log(values);
+      if (!err && file && description) {
         let postData = new FormData();
+        postData.append("picture", file);
         postData.append("title", values.title);
-        postData.append("description", values.description);
-        postData.append("file", file);
+        postData.append("description", description);
+        postData.append("owner", 1);
+        const csrftoken = Cookies.get("csrftoken");
+        //Router.push("/post/[id]", `/post/${values.title}`);
+        api
+          .post(`/api/post/`, postData, {
+            headers: {
+              "Content-type": "multipart/form-data",
+              "X-CSRFToken": csrftoken
+            }
+          })
+          .then(res => {
+            console.log("res: ", res.data.id);
+            message.success("Publicación creada correctamente.", 10);
 
-        console.log("postData: ", postData.get("title"));
-        Router.push("/post/[id]", `/post/${values.title}`);
-        // api
-        //   .post(``, postData, {
-        //     headers: { "Content-type": "multipart/form-data" }
-        //   })
-        //   .then(res => {
-        //     console.log(res);
-        //message.success('Publicación creada correctamente.',10)
-        //     // Router.push("/ "/post/[id]" as={`/post/${item.title}`}");
-        //   })
-        //   .catch(err => {
-        //     setErrors(err);
-        //   });
+            Router.push("/post/[id]", `/post/${res.data.id}`);
+          })
+          .catch(err => {
+            setError(err);
+          });
       }
     });
   }
 
   function onClose() {
     setError(null);
+  }
+  function onCloseDescription() {
+    setErrorDescription(null);
   }
 
   return (
@@ -67,7 +108,7 @@ function CreatePost(props) {
                 <Files ref={fileRef}></Files>
                 {error ? (
                   <Alert
-                    message="Ingresa un archivo"
+                    message={error}
                     type="error"
                     closable
                     onClose={() => onClose()}
@@ -104,24 +145,137 @@ function CreatePost(props) {
                 className="offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-8 col-md-10 col-lg-10 col-xl-8"
               >
                 <Form.Item label="Descripción de la publicación">
-                  {getFieldDecorator("description", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Ponle una descripción a tu publicación",
-                        type: "string"
-                      }
-                    ]
-                  })(
-                    <TextArea
-                      placeholder="Decribe tu publicación"
-                      rows={8}
-                      style={{ whiteSpace: "pre-line" }}
-                    />
+                  {editorLoaded ? (
+                    <div>
+                      <div id="toolbar-container"></div>
+                      <CKEditor
+                        onInit={editor => {
+                          // Add the toolbar to the container
+
+                          const toolbarContainer = document.querySelector(
+                            "#toolbar-container"
+                          );
+                          toolbarContainer.appendChild(
+                            editor.ui.view.toolbar.element,
+                            editor.ui.view.editable.element
+                          );
+
+                          window.editor = editor;
+                          // You can store the "editor" and use when it is needed.
+                          console.log("Editor is ready to use!", editor);
+                        }}
+                        config={{
+                          toolbar: [
+                            "Heading",
+                            "|",
+                            "fontFamily",
+                            "fontSize",
+                            "fontColor",
+                            "fontBackgroundColor",
+                            "|",
+                            "bold",
+                            "italic",
+                            "underline",
+                            "strikethrough",
+                            "|",
+                            "bulletedList",
+
+                            "numberedList",
+                            "|",
+                            "alignment",
+                            "link"
+                            // "undo",
+                            // "redo"
+                          ],
+                          fontSize: {
+                            options: [9, 11, 13, "default", 17, 19, 21]
+                          },
+                          heading: {
+                            options: [
+                              {
+                                model: "paragraph",
+                                title: "Párrafo",
+                                class: "ck-heading_paragraph"
+                              },
+                              {
+                                model: "heading1",
+                                view: "h1",
+                                title: "Título 1",
+                                class: "ck-heading_heading1"
+                              },
+                              {
+                                model: "heading2",
+                                view: "h2",
+                                title: "Titulo 2",
+                                class: "ck-heading_heading2"
+                              },
+                              {
+                                model: "heading3",
+                                view: "h3",
+                                title: "Titulo 3",
+                                class: "ck-heading_heading3"
+                              }
+                            ]
+                          },
+
+                          removePlugins: [
+                            "ImageUpload",
+                            "MediaEmbed",
+                            "BlockQuote",
+                            "IncreaseIndent"
+                          ],
+                          isReadOnly: true
+                        }}
+                        onChange={(event, editor) => {
+                          const data = editor.getData();
+                          setDescription(data);
+                          setErrorDescription(null);
+                        }}
+                        editor={DecoupledEditor}
+                      />
+                    </div>
+                  ) : (
+                    <div>Cargando... </div>
                   )}
+                  {errorDescription ? (
+                    <Alert
+                      message={errorDescription}
+                      type="error"
+                      closable
+                      onClose={() => onCloseDescription()}
+                    />
+                  ) : null}
                 </Form.Item>
+
+                <div>
+                  <Collapse accordion style={{ wordWrap: "break-word" }}>
+                    <Panel
+                      header={`Vista previa del texto`}
+                      key={`Vista previa`}
+                      className={styles.panel}
+                    >
+                      <Row
+                        justify="center"
+                        type="flex"
+                        style={{ paddingTop: "20px" }}
+                      >
+                        <Title>{props.form.getFieldValue("title")}</Title>
+                      </Row>
+
+                      <Row justify="center">
+                        <Col
+                          className="gutter-row"
+                          // className="offset-1 offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-10 col-sm-8 col-md-10 col-lg-10 col-xl-8"
+                        >
+                          <Text>{ReactHtmlParser(description)}</Text>
+                        </Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
               </Col>
             </Row>
+            <br />
             <Row justify="center" type="flex">
               <Button htmlType="submit" type="primary">
                 Subir publicación

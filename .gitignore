@@ -9,6 +9,7 @@
 /backend/coach/__pycache__
 /backend/coach/migrations
 /backend/coach/api/__pycache__
+/backend/post_img
 
 # testing
 /coverage

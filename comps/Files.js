@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "antd";
+
 import styles from "../styles/styles.scss";
 
 class File extends Component {
@@ -13,9 +13,6 @@ class File extends Component {
     });
   };
 
-  //   fileUploadHandler = () => {
-
-  //   };
   render() {
     return (
       <div>
@@ -27,8 +24,6 @@ class File extends Component {
           accept="image/png, image/jpeg, image/jpg"
           multiple
         />
-
-        {/* <Button onClick={this.fileUploadHandler}></Button> */}
       </div>
     );
   }

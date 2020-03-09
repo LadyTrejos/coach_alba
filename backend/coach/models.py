@@ -54,7 +54,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=100, blank=True)
-
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -72,3 +71,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+class Post(models.Model):
+    picture = models.ImageField(upload_to="post_img")
+    title = models.CharField(max_length=120)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='post_user')
+
+    def __str__(self):
+        return self.title
