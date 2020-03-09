@@ -4,6 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Text from "antd/lib/typography/Text";
 import { logoutUser } from "../utils/auth";
+import styles from "../styles/styles.scss";
 
 function Header(props) {
   const { user } = props;
@@ -56,7 +57,7 @@ function Header(props) {
               <Button onClick={logoutUser}>Cerrar sesión</Button>
             </React.Fragment>
           ) : null
-          /* <Button href="/ingresar">Inicia sesión / Regístrate</Button> */
+          /* <Button href="/ingresar" className={styles.defaultButton}>Inicia sesión / Regístrate</Button> */
           }
         </Nav>
       </Navbar.Collapse>
