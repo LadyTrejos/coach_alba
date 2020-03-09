@@ -2,7 +2,7 @@ import React, { Component, useRef, useState, useEffect } from "react";
 import Files from "../../comps/Files";
 import api from "../../api";
 import Router from "next/router";
-import style from "../../styles/styles.scss";
+import styles from "../../styles/styles.scss";
 import {
   Collapse,
   Button,
@@ -252,7 +252,7 @@ function CreatePost(props) {
                     <Panel
                       header={`Vista previa del texto`}
                       key={`Vista previa`}
-                      className={style.panel}
+                      className={styles.panel}
                     >
                       <Row
                         justify="center"

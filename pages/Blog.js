@@ -1,93 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import DemoBlog from "../comps/DemoBlog";
-import { BackTop } from "antd";
+import { BackTop, Skeleton } from "antd";
+import api from "../api";
 
 import styles from "../styles/styles.scss";
 //Cambiar por la consulta a la base de datos
-let a = [
-  {
-    title: "title_1",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_2",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_3",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_4",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_5",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_6",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_7",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_8",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_9",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_10",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_11",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_12",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_13",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_14",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  },
-  {
-    title: "title_15",
-    src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-    description: "blablablalbaljdkfas"
-  }
-];
 
 export default function Blog() {
+  const [data, setData] = useState(null);
+
+  function loadData() {
+    api.get(`/api/post/?ordering=-created_at`).then(res => {
+      console.log("Blog res: ", res.data);
+      setData(res.data);
+    });
+  }
+
   return (
     <div style={{ paddingBottom: "50px" }}>
       <BackTop />
       <h1 className={styles.sectionTitle}>Blog</h1>
-      <DemoBlog post={a} demo={false} pagination={true} />
+      {data ? (
+        <DemoBlog post={data} demo={false} pagination={true} />
+      ) : (
+        <div className="container">
+          <Skeleton active>{data == null ? loadData() : null} </Skeleton>
+        </div>
+      )}
     </div>
   );
 }
