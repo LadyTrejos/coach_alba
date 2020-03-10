@@ -60,14 +60,26 @@ export default function Post(props) {
             <Row className={`${styles.postcard} ${styles.card}`}>
               <div className={styles.wrapper}>
                 <Link href="/post/[id]" as={`/post/${item.id}`}>
-                  <a>
-                    <img
-                      src={
-                        "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                      }
-                      className={styles.thumbnail}
-                    />
-                  </a>
+                  <div
+                    style={{
+                      minWidth: "250px",
+                      minHeight: "350px",
+                      height: "50vh",
+                      width: "45vh",
+                      margin: "1rem"
+                    }}
+                  >
+                    <a>
+                      <img
+                        style={{
+                          height: "100%",
+                          width: "100%"
+                        }}
+                        src={item.picture}
+                        className={styles.thumbnail}
+                      />
+                    </a>
+                  </div>
                 </Link>
 
                 <div className={styles.date}>

@@ -44,8 +44,7 @@ export default function Post(props) {
   function loadData() {
     api.get(`/api/post/${router.query.id}`).then(res => {
       // src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      // setSrc(res.data.picture);
-      setSrc("https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png");
+      setSrc(res.data.picture);
       setTitle(res.data.title);
       setDescription(res.data.description);
       setId(res.data.id);
@@ -57,7 +56,7 @@ export default function Post(props) {
       <Row justify="center" type="flex">
         <div
           style={{
-            minWidth: "400px",
+            minWidth: "320px",
             minHeight: "350px",
             height: "40vh",
             width: "auto",

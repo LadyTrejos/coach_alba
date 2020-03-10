@@ -4,9 +4,10 @@ import nextCookie from "next-cookies";
 import Router from "next/router";
 
 export const loginUser = async (email, password) => {
+  const csrftoken = cookie.get("csrftoken");
   api
     .post(`/rest-auth/login/`, JSON.stringify({ email, password }), {
-      headers: { "Content-type": "application/json" }
+      headers: { "Content-type": "application/json", "X-CSRFToken": csrftoken }
     })
     .then(res => {
       cookie.set("userdata", res.data);

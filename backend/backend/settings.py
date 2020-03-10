@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+    'storages',
 
     'coach'
 ]
@@ -158,3 +159,13 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# AWS storage
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = 'AKIASNWJXNEZETRBGCCM'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'alba-nury'
+
+AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE = False
