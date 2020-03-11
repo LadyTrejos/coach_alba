@@ -62,15 +62,6 @@ class Component_register extends React.Component {
   }
 
   validateRegister = selector => {
-    // console.log(
-    //   "validateRegister: ",
-    //   selector.state.country,
-    //   " country: ",
-    //   selector.state.state,
-    //   " state:",
-    //   selector.state.city,
-    //   " city"
-    // );
     if (
       selector.state.country == "" ||
       selector.state.state == "" ||
@@ -184,14 +175,6 @@ class Component_register extends React.Component {
   validateResidence = (rule, value, callback) => {
     const selector = this.countryRef.current;
     console.log("rule: ", rule, " ,value: ", value);
-    // console.log(
-    //   "validate residence: country",
-    //   selector.state.country,
-    //   " state",
-    //   selector.state.state,
-    //   " city ",
-    //   selector.state.city
-    // );
 
     if (
       selector.state.city === "" ||
@@ -202,12 +185,8 @@ class Component_register extends React.Component {
     }
     callback();
   };
-  // onBlurEmail(event) {
-  //   pass;
-  // }
 
   render() {
-    // console.log("Register: ", this.state.register);
     const { getFieldDecorator } = this.props.form;
 
     const prefixSelector = getFieldDecorator("id_phone", {
