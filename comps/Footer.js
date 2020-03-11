@@ -18,7 +18,7 @@ export default function Footer() {
                   className="fa fa-whatsapp"
                   aria-hidden="true"
                   data-text="Whatsapp"
-                  title="Whatsapp"
+                  title="WhatsApp"
                   style={{
                     fontSize: "40px",
                     textAlign: "center",
@@ -29,13 +29,13 @@ export default function Footer() {
             </div>
             <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
               <a
-                href="https://www.facebook.com"
+                href="https://www.facebook.com/AlbaNuryCoach/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Icon
                   type="facebook"
-                  title="facebook"
+                  title="www.facebook.com/AlbaNuryCoach/"
                   theme="filled"
                   style={{
                     color: "#fff",
@@ -61,9 +61,9 @@ export default function Footer() {
         </div>
         <div className="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2 text-center">
           <h6>Contacto</h6>
-          Cr 12 cs 45 Pereira <br />
           +57 323 3396771 <br />
-          example@gmail.com
+          albanurycoach@gmail.com <br />
+          Pereira, Risaralda, Colombia
         </div>
       </div>
     </footer>
