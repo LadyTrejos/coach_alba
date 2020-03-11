@@ -22,19 +22,19 @@ export default function Index() {
     <div>
       <script picture="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
       <BackTop />
-      <div id="home" className="pt-5">
+      <div id="home" style={{ paddingTop: "75px" }}>
         <Home />
       </div>
 
-      <div id="about-me" className="pt-5">
+      <div id="about-me">
         <AboutMe />
       </div>
 
-      <div id="gallery" className="pt-5">
+      <div id="gallery" style={{ paddingTop: "75px" }}>
         <Gallery />
       </div>
 
-      <div id="demo_blog" className="pt-5">
+      <div id="demo_blog" style={{ paddingTop: "75px" }}>
         <h1 className={styles.sectionTitle}>
           <a href="/blog">Blog</a>
         </h1>
@@ -55,7 +55,7 @@ export default function Index() {
         </Row>
       </div>
 
-      <div id="contact" className="pt-5">
+      <div id="contact" style={{ paddingTop: "75px" }}>
         <Footer />
       </div>
     </div>
