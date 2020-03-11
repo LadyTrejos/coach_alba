@@ -1,0 +1,26 @@
+$background:rgba(35, 53, 192, 0.9);
+
+.header {
+    background-color: $background !important;
+    font-size: 16px !important;
+}
+
+.navlink {
+    color: whitesmoke !important;
+    border-bottom: 2px solid transparent;
+}
+
+.navlink:hover {
+    border-color: whitesmoke;
+}
+
+.nav-link.active {
+    background-color: yellow;
+}
+
+.signature {
+    padding-right: 5rem;
+    font-family: "Shadows Into Light";
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9)
+}
