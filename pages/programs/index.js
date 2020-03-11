@@ -27,10 +27,9 @@ const text = `
   it can be found as a welcome guest in many households across the world.
 `;
 
-let isAdmin = true;
-
 //funcion principal
 function IndexProgram(props) {
+  const { user } = props;
   const [visible, setVisible] = useState(null);
   const { getFieldDecorator } = props.form;
 
@@ -132,7 +131,7 @@ function IndexProgram(props) {
         <Row justify="center" type="flex">
           <Title> Programas</Title>
         </Row>
-        {isAdmin ? (
+        {user.is_admin ? (
           <Button type="primary" onClick={() => showModal()}>
             Nuevo programa
           </Button>
@@ -145,8 +144,8 @@ function IndexProgram(props) {
               <Panel
                 header={`${title} `}
                 key={`${title}`}
-                extra={isAdmin ? genExtra() : null}
-                className={isAdmin ? style.panel : null}
+                extra={user.is_admin ? genExtra() : null}
+                className={user.is_admin ? style.panel : null}
               >
                 {a.day.map(day => {
                   return (

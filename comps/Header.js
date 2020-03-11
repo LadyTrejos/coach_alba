@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "antd";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -9,6 +9,12 @@ import styles from "../styles/header.scss";
 
 function Header(props) {
   const { user } = props;
+  const [loading, setLoading] = useState(false);
+
+  function logoutUserFunct() {
+    setLoading(true);
+    logoutUser();
+  }
   return (
     <Navbar
       collapseOnSelect
@@ -52,17 +58,19 @@ function Header(props) {
               </Nav.Link>
             </React.Fragment>
           ) : null}
-          {user.is_admin ? (
+          {/* {user.is_admin ? (
             <Nav.Link className={styles.navlink} href="/users">
               Usuarios
             </Nav.Link>
-          ) : null}
+          ) : null} */}
         </Nav>
         <Nav>
           <Text className={styles.signature}>Coach Alba Nury</Text>
           {user.id ? (
             <React.Fragment>
-              <Button onClick={logoutUser}>Cerrar sesión</Button>
+              <Button onClick={() => logoutUserFunct()} loading={loading}>
+                Cerrar sesión
+              </Button>
             </React.Fragment>
           ) : null
           /* <Button href="/ingresar" className={styles.defaultButton}>Inicia sesión / Regístrate</Button> */

@@ -4,16 +4,17 @@ import nextCookie from "next-cookies";
 import Router from "next/router";
 
 export const loginUser = async (email, password) => {
+  const csrftoken = cookie.get("csrftoken");
   api
     .post(`/rest-auth/login/`, JSON.stringify({ email, password }), {
-      headers: { "Content-type": "application/json" }
+      headers: { "Content-type": "application/json", "X-CSRFToken": csrftoken }
     })
     .then(res => {
       cookie.set("userdata", res.data);
       if (typeof window !== "undefined") {
         window[WINDOW_USER_SCRIPT_VARIABLE] = res.data.user || {};
       }
-      Router.push("/programs");
+      Router.push("/Blog");
     })
     .catch(err => {
       console.log(err);

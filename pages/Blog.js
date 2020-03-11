@@ -6,12 +6,11 @@ import api from "../api";
 import styles from "../styles/styles.scss";
 //Cambiar por la consulta a la base de datos
 
-export default function Blog() {
+export default function Blog(props) {
   const [data, setData] = useState(null);
 
   function loadData() {
     api.get(`/api/post/?ordering=-created_at`).then(res => {
-      // console.log("Blog res: ", res.data);
       setData(res.data);
     });
   }
@@ -21,7 +20,7 @@ export default function Blog() {
       <BackTop />
       <h1 className={styles.sectionTitle}>Blog</h1>
       {data ? (
-        <DemoBlog post={data} demo={false} pagination={true} />
+        <DemoBlog post={data} demo={false} pagination={true} {...props} />
       ) : (
         <div className="container">
           <Skeleton active>{data == null ? loadData() : null} </Skeleton>

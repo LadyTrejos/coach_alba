@@ -1,8 +1,8 @@
 import React, { Component, useRef, useState, useEffect } from "react";
-import Files from "../../comps/Files";
-import api from "../../api";
-import Router from "next/router";
-import styles from "../../styles/styles.scss";
+import Router, { useRouter } from "next/router";
+import Files from "../../../comps/Files";
+import api from "../../../api";
+import styles from "../../../styles/styles.scss";
 import {
   Collapse,
   Button,
@@ -13,7 +13,8 @@ import {
   Card,
   Typography,
   Alert,
-  message
+  message,
+  Skeleton
 } from "antd";
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
@@ -21,14 +22,18 @@ import Cookies from "js-cookie";
 const { Text, Title } = Typography;
 const { Panel } = Collapse;
 
-function CreatePost(props) {
+function EditPost(props) {
   const { user } = props;
+  const router = useRouter();
   const fileRef = useRef(null);
   const editorRef = useRef();
   const [editorLoaded, setEditorLoaded] = useState(false);
+  const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
   const [error, setError] = useState(null);
   const [errorDescription, setErrorDescription] = useState(null);
+  const [first, setFirst] = useState(false);
+  const [id, setId] = useState(null);
   const [loading, setLoading] = useState(false);
   const { CKEditor, DecoupledEditor } = editorRef.current || {};
   const { getFieldDecorator } = props.form;
@@ -51,18 +56,17 @@ function CreatePost(props) {
 
     event.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
-      console.log(values);
       if (!err && file && description) {
         setLoading(true);
         let postData = new FormData();
         postData.append("picture", file);
         postData.append("title", values.title);
+        console.log("postData: ", postData.get("title"));
         postData.append("description", description);
         postData.append("owner", user.id);
         const csrftoken = Cookies.get("csrftoken");
-        //Router.push("/post/[id]", `/post/${values.title}`);
         api
-          .post(`/api/post/`, postData, {
+          .put(`/api/post/${id}/`, postData, {
             headers: {
               "Content-type": "multipart/form-data",
               "X-CSRFToken": csrftoken
@@ -72,7 +76,7 @@ function CreatePost(props) {
             message.config({
               top: 90
             });
-            message.success("Publicación creada correctamente.", 5);
+            message.success("Publicación editada correctamente.", 5);
 
             Router.push("/post/[id]", `/post/${res.data.id}`);
           })
@@ -90,7 +94,18 @@ function CreatePost(props) {
     setErrorDescription(null);
   }
 
-  return (
+  function loadData() {
+    api.get(`/api/post/${router.query.id}`).then(res => {
+      // src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
+      // setSrc(res.data.picture);
+      setTitle(res.data.title);
+      setDescription(res.data.description);
+      setId(res.data.id);
+      setFirst(true);
+    });
+  }
+
+  return first ? (
     <Form onSubmit={e => handleSubmit(e, fileRef)}>
       <Row>
         <Col className=" offset-sm-1 offset-md-1 offset-lg-1 offset-xl-1 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
@@ -138,7 +153,8 @@ function CreatePost(props) {
                         pattern: /^(?=.{1,1000}$)([a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.¿]+[\s(?!\s)]?)*[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.?]$/,
                         message: "Título no válido"
                       }
-                    ]
+                    ],
+                    initialValue: title
                   })(<Input placeholder="Título" size="large"></Input>)}
                 </Form.Item>
               </Col>
@@ -228,6 +244,7 @@ function CreatePost(props) {
                             "BlockQuote",
                             "IncreaseIndent"
                           ],
+
                           isReadOnly: true
                         }}
                         onChange={(event, editor) => {
@@ -235,6 +252,7 @@ function CreatePost(props) {
                           setDescription(data);
                           setErrorDescription(null);
                         }}
+                        data={description}
                         editor={DecoupledEditor}
                       />
                     </div>
@@ -290,7 +308,11 @@ function CreatePost(props) {
         </Col>
       </Row>
     </Form>
+  ) : (
+    <div className="container">
+      <Skeleton active>{first == false ? loadData() : null}</Skeleton>
+    </div>
   );
 }
-const Create = Form.create({ name: "create" })(CreatePost);
-export default Create;
+const Edit = Form.create({ name: "edit" })(EditPost);
+export default Edit;

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../styles/styles.scss";
 import { List, Row, Card, Button } from "antd";
 import Link from "next/link";
+import Router from "next/router";
 import ReactHtmlParser from "react-html-parser";
 
 export default function Post(props) {
+  const { user } = props;
+  const [loading, setLoading] = useState(false);
   function getDay(date) {
     const newDate = new Date(date);
     return newDate.getDate();
@@ -21,13 +24,22 @@ export default function Post(props) {
     return newDate.getFullYear();
   }
 
+  function toCreate() {
+    setLoading(true);
+    Router.push("/post/create");
+  }
+
   return (
     <div style={{ padding: "10px" }}>
-      {props.demo ? null : (
-        <Button href="/post/create" className={styles.defaultButton}>
+      {props.demo ? null : user.is_admin ? (
+        <Button
+          onClick={() => toCreate()}
+          className={styles.defaultButton}
+          loading={loading}
+        >
           Nueva publicación
         </Button>
-      )}
+      ) : null}
       <List
         itemLayout="horizontal"
         grid={{
@@ -58,14 +70,27 @@ export default function Post(props) {
           >
             <Row className={`${styles.postcard} ${styles.card}`}>
               <div className={styles.wrapper}>
-                {console.log("item.title: ", item.title)}
                 <Link href="/post/[id]" as={`/post/${item.id}`}>
-                  <img
-                    src={
-                      "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                    }
-                    className={styles.thumbnail}
-                  />
+                  <div
+                    style={{
+                      minWidth: "250px",
+                      minHeight: "350px",
+                      height: "50vh",
+                      width: "45vh",
+                      margin: "1rem"
+                    }}
+                  >
+                    <a>
+                      <img
+                        style={{
+                          height: "100%",
+                          width: "100%"
+                        }}
+                        src={item.picture}
+                        className={styles.thumbnail}
+                      />
+                    </a>
+                  </div>
                 </Link>
 
                 <div className={styles.date}>
@@ -83,7 +108,7 @@ export default function Post(props) {
                     <span className={styles.author}>Alba Nury Gonzalez L.</span>
                     <h1 className={styles.postTitle}>
                       <Link href="/post/[id]" as={`/post/${item.id}`}>
-                        {item.title}
+                        <a>{item.title}</a>
                       </Link>
                     </h1>
                     <div className={styles.text}>

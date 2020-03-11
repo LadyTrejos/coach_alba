@@ -9,6 +9,16 @@ export default function Ingresar() {
   return (
     <div>
       <BackTop />
+      {/* quitar esto cuando sea necesario registrarse*/}
+      <div className={`offset-md-3 col-md-7 ${styles.container}`}>
+        <div className="row">
+          <div className={`col-md-10 ${styles.login_form}`}>
+            <Login></Login>
+          </div>
+        </div>
+      </div>
+      {/*
+      //activar esto cuando sea necesario registrarse
       <div className="row">
         <div className={`col-md-6 ${styles.container}`}>
           <div className="row">
@@ -25,7 +35,7 @@ export default function Ingresar() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

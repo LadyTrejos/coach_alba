@@ -7,14 +7,20 @@ import Footer from "../comps/Footer";
 import Home from "../comps/Home";
 import styles from "../styles/styles.scss";
 import api from "../api";
+import Router from "next/router";
 
 import { BackTop, Button, Row, Col, Skeleton } from "antd";
 
 export default function Index() {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  function toBlog() {
+    setLoading(true);
+    Router.push("/blog");
+  }
   function loadData() {
     api.get(`/api/post/?ordering=-created_at`).then(res => {
-      console.log("Blog res: ", res.data);
       setData(res.data);
     });
   }
@@ -48,7 +54,11 @@ export default function Index() {
 
         <Row justify="center" type="flex">
           <Col>
-            <Button href="/blog" className={styles.defaultButton}>
+            <Button
+              onClick={() => toBlog()}
+              className={styles.defaultButton}
+              loading={loading}
+            >
               Ver más publicaciones
             </Button>
           </Col>
