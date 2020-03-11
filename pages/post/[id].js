@@ -17,7 +17,8 @@ export default function Post(props) {
   );
   const [id, setId] = useState(null);
   const [description, setDescription] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
 
   function showModal() {
     setVisible(true);
@@ -25,6 +26,7 @@ export default function Post(props) {
 
   function handleOk(e) {
     setVisible(false);
+    setLoadingDelete(true);
     const csrftoken = Cookies.get("csrftoken");
     api
       .delete(`/api/post/${router.query.id}`, {
@@ -34,11 +36,17 @@ export default function Post(props) {
       })
       .then(res => {
         Router.push("/Blog");
-      });
+      })
+      .catch(err => console.log(err));
   }
 
   function handleCancel(e) {
     setVisible(false);
+  }
+
+  function loadingEditFunct() {
+    setLoadingEdit(true);
+    Router.push("/post/edit/[id]", `/post/edit/${id}`);
   }
 
   function loadData() {
@@ -83,6 +91,7 @@ export default function Post(props) {
           </Text>
         </Col>
       </Row>
+
       {user.is_admin ? (
         <Row justify="center" type="flex" style={{ margin: "10px 0 20px 0" }}>
           <Modal
@@ -95,12 +104,17 @@ export default function Post(props) {
           >
             ¿Está segura que desea eliminar esta publicación?
           </Modal>
-          <Button type="danger" onClick={() => showModal()}>
+          <Button
+            type="danger"
+            onClick={() => showModal()}
+            loading={loadingDelete}
+          >
             Eliminar publicación
           </Button>
           <Button
             className={styles.defaultButton}
-            onClick={() => Router.push("/post/edit/[id]", `/post/edit/${id}`)}
+            onClick={() => loadingEditFunct()}
+            loading={loadingEdit}
           >
             Editar publicación
           </Button>

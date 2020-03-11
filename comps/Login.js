@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Form, Input, Icon, Tooltip, Button, Alert } from "antd";
+import { Form, Input, Icon, Tooltip, Button, Alert, Row } from "antd";
 
 import styles from "../styles/styles.scss";
 import { loginUser } from "../utils/auth";
 
 function LoginComponent(props) {
   const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { getFieldDecorator } = props.form;
 
   function handleSubmit(event) {
@@ -13,6 +14,7 @@ function LoginComponent(props) {
 
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        setLoading(true);
         loginUser(values.email, values.password);
       }
     });
@@ -86,12 +88,14 @@ function LoginComponent(props) {
           />
         )}
       </Form.Item>
+
       <Button
         type="primary"
         htmlType="submit"
         block
         size="large"
         className={styles.btnSubmit}
+        loading={loading}
       >
         Iniciar sesión
       </Button>

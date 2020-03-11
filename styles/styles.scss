@@ -2,6 +2,7 @@
 
 // Variables
 $indigo: rgb(35, 53, 192);
+$blue: #3949c6;
 $san-juan: #2d4e68;
 $bermuda: #77d7b9;
 $white: #fff;
@@ -439,9 +440,6 @@ label {
 .custom_file_input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
-
-
-
 
 .panel {
   display: grid;

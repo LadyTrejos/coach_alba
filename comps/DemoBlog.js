@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../styles/styles.scss";
 import { List, Row, Card, Button } from "antd";
 import Link from "next/link";
+import Router from "next/router";
 import ReactHtmlParser from "react-html-parser";
 
 export default function Post(props) {
   const { user } = props;
+  const [loading, setLoading] = useState(false);
   function getDay(date) {
     const newDate = new Date(date);
     return newDate.getDate();
@@ -22,10 +24,19 @@ export default function Post(props) {
     return newDate.getFullYear();
   }
 
+  function toCreate() {
+    setLoading(true);
+    Router.push("/post/create");
+  }
+
   return (
     <div style={{ padding: "10px" }}>
       {props.demo ? null : user.is_admin ? (
-        <Button href="/post/create" className={styles.defaultButton}>
+        <Button
+          onClick={() => toCreate()}
+          className={styles.defaultButton}
+          loading={loading}
+        >
           Nueva publicación
         </Button>
       ) : null}

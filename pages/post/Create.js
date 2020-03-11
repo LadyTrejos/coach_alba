@@ -29,6 +29,7 @@ function CreatePost(props) {
   const [description, setDescription] = useState(null);
   const [error, setError] = useState(null);
   const [errorDescription, setErrorDescription] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { CKEditor, DecoupledEditor } = editorRef.current || {};
   const { getFieldDecorator } = props.form;
 
@@ -52,6 +53,7 @@ function CreatePost(props) {
     props.form.validateFieldsAndScroll((err, values) => {
       console.log(values);
       if (!err && file && description) {
+        setLoading(true);
         let postData = new FormData();
         postData.append("picture", file);
         postData.append("title", values.title);
@@ -278,8 +280,9 @@ function CreatePost(props) {
               </Col>
             </Row>
             <br />
+
             <Row justify="center" type="flex">
-              <Button htmlType="submit" type="primary">
+              <Button htmlType="submit" type="primary" loading={loading}>
                 Subir publicación
               </Button>
             </Row>

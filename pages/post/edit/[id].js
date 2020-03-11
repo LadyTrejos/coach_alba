@@ -34,6 +34,7 @@ function EditPost(props) {
   const [errorDescription, setErrorDescription] = useState(null);
   const [first, setFirst] = useState(false);
   const [id, setId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { CKEditor, DecoupledEditor } = editorRef.current || {};
   const { getFieldDecorator } = props.form;
 
@@ -55,17 +56,8 @@ function EditPost(props) {
 
     event.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
-      console.log(
-        "values: ",
-        values,
-        "  description: ",
-        description,
-        "user.id: ",
-        user.id,
-        "file: ",
-        file
-      );
       if (!err && file && description) {
+        setLoading(true);
         let postData = new FormData();
         postData.append("picture", file);
         postData.append("title", values.title);
@@ -306,8 +298,9 @@ function EditPost(props) {
               </Col>
             </Row>
             <br />
+
             <Row justify="center" type="flex">
-              <Button htmlType="submit" type="primary">
+              <Button htmlType="submit" type="primary" loading={loading}>
                 Subir publicación
               </Button>
             </Row>
