@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import styles from "../styles/styles.scss";
-import { List, Row, Card, Button } from "antd";
 import Link from "next/link";
 import Router from "next/router";
+import { List, Row, Button } from "antd";
 import ReactHtmlParser from "react-html-parser";
+
+import styles from "../styles/styles.scss";
 
 export default function Post(props) {
   const { user } = props;
   const [loading, setLoading] = useState(false);
+
   function getDay(date) {
     const newDate = new Date(date);
     return newDate.getDate();
@@ -24,6 +26,14 @@ export default function Post(props) {
     return newDate.getFullYear();
   }
 
+  function getVisibility() {
+    if (!props.demo && user.is_admin) {
+      return "visible";
+    } else {
+      return "hidden";
+    }
+  }
+
   function toCreate() {
     setLoading(true);
     Router.push("/post/create");
@@ -31,15 +41,15 @@ export default function Post(props) {
 
   return (
     <div style={{ padding: "10px" }}>
-      {props.demo ? null : user.is_admin ? (
-        <Button
-          onClick={() => toCreate()}
-          className={styles.defaultButton}
-          loading={loading}
-        >
-          Nueva publicación
-        </Button>
-      ) : null}
+      <Button
+        onClick={() => toCreate()}
+        className={styles.defaultButton}
+        loading={loading}
+        style={{ visibility: getVisibility() }}
+      >
+        Nueva publicación
+      </Button>
+
       <List
         itemLayout="horizontal"
         grid={{
@@ -88,6 +98,7 @@ export default function Post(props) {
                         }}
                         src={item.picture}
                         className={styles.thumbnail}
+                        alt="Imagen de la publicación"
                       />
                     </a>
                   </div>

@@ -68,7 +68,11 @@ function Header(props) {
           <Text className={styles.signature}>Coach Alba Nury</Text>
           {user.id ? (
             <React.Fragment>
-              <Button onClick={() => logoutUserFunct()} loading={loading}>
+              <Button
+                onClick={() => logoutUserFunct()}
+                loading={loading}
+                className={styles.logoutButton}
+              >
                 Cerrar sesión
               </Button>
             </React.Fragment>

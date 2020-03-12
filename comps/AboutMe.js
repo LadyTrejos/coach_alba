@@ -6,15 +6,15 @@ export default function AboutMe() {
     <section className={styles.aboutbg}>
       <div className="container-fluid">
         <div className="row align-items-center justify-content-end">
-          <div className={`col-12 col-sm-10 col-md-8 col-lg-5 col-xl-5 `}>
+          <div className={`col-11 col-sm-10 col-md-4 col-lg-5 col-xl-5 `}>
             <img
               src="/static/DSC_4392.png"
               alt="Alba Nury"
-              className={styles.coverimg}
+              className={styles.aboutimg}
             />
           </div>
           <div
-            className={`col-12 col-sm-10 col-md-8 col-lg-5 col-xl-5 ${styles.bio}`}
+            className={`col-11 col-sm-10 col-md-8 col-lg-5 col-xl-5 ${styles.bio}`}
           >
             <h2 className={styles.biotitle}>Sobre mí </h2>
             <p>
