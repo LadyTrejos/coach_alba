@@ -101,7 +101,7 @@ function LoginComponent(props) {
       </Button>
 
       <div className="form-group">
-        <a href="#" className={styles.ForgetPwd}>
+        <a href="/password-reset" className={styles.ForgetPwd}>
           ¿Olvidaste tu contraseña?
         </a>
       </div>

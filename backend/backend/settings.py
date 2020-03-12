@@ -56,7 +56,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'coach/api/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,18 +147,32 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'coach.api.serializers.UserSerializer',
     'TOKEN_SERIALIZER': 'coach.api.serializers.TokenSerializer',
+    'PASSWORD_RESET_SERIALIZER':
+        'coach.api.serializers.PasswordResetSerializer',
 }
+
 
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'coach.api.serializers.CustomRegisterSerializer',
 }
 
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #enviar correo al email
+# enviar correo a consola
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+DEFAULT_FROM_EMAIL = 'Alba Nury <emailexample@gmail.com>'
+
 # Django All-Auth config
 ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_USER_EMAIL_FIELD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+USERNAME_REQUIRED = False
+EMAIL_REQUIRED = True
 
 # AWS storage
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
