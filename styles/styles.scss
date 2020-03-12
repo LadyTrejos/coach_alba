@@ -12,8 +12,10 @@ $label-color: #000;
 $alert-color-register: yellow;
 $alert-color-login: red;
 // Fonts
-$font-handwritten: "Shadows Into Light", cursive;
-$font-text: "Roboto", sans-serif;
+$font-handwritten: "Shadows Into Light",
+cursive;
+$font-text: "Roboto",
+sans-serif;
 // Common styles
 
 a {
@@ -67,21 +69,17 @@ body {
 
   background: rgba($color: $pink, $alpha: 0.2);
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    rgba($color: $pink, $alpha: 0.35) 0%,
-    rgba($color: $pink, $alpha: 0.3) 30%,
-    rgba($color: $pink, $alpha: 0.2) 65%,
-    rgba($color: $pink, $alpha: 0.1) 100%
-  );
+  background: -webkit-linear-gradient(to right,
+      rgba($color: $pink, $alpha: 0.35) 0%,
+      rgba($color: $pink, $alpha: 0.3) 30%,
+      rgba($color: $pink, $alpha: 0.2) 65%,
+      rgba($color: $pink, $alpha: 0.1) 100%);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    rgba($color: $pink, $alpha: 0.35) 0%,
-    rgba($color: $pink, $alpha: 0.3) 30%,
-    rgba($color: $pink, $alpha: 0.2) 65%,
-    rgba($color: $pink, $alpha: 0.1) 100%
-  );
+  background: linear-gradient(to right,
+      rgba($color: $pink, $alpha: 0.35) 0%,
+      rgba($color: $pink, $alpha: 0.3) 30%,
+      rgba($color: $pink, $alpha: 0.2) 65%,
+      rgba($color: $pink, $alpha: 0.1) 100%);
 }
 
 .highlightBlue::before {
@@ -92,21 +90,17 @@ body {
 
   background: rgba($color: $indigo, $alpha: 0.2);
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    rgba($color: $indigo, $alpha: 0.35) 0%,
-    rgba($color: $indigo, $alpha: 0.3) 30%,
-    rgba($color: $indigo, $alpha: 0.2) 65%,
-    rgba($color: $indigo, $alpha: 0.1) 100%
-  );
+  background: -webkit-linear-gradient(to right,
+      rgba($color: $indigo, $alpha: 0.35) 0%,
+      rgba($color: $indigo, $alpha: 0.3) 30%,
+      rgba($color: $indigo, $alpha: 0.2) 65%,
+      rgba($color: $indigo, $alpha: 0.1) 100%);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    rgba($color: $indigo, $alpha: 0.35) 0%,
-    rgba($color: $indigo, $alpha: 0.3) 30%,
-    rgba($color: $indigo, $alpha: 0.2) 65%,
-    rgba($color: $indigo, $alpha: 0.1) 100%
-  );
+  background: linear-gradient(to right,
+      rgba($color: $indigo, $alpha: 0.35) 0%,
+      rgba($color: $indigo, $alpha: 0.3) 30%,
+      rgba($color: $indigo, $alpha: 0.2) 65%,
+      rgba($color: $indigo, $alpha: 0.1) 100%);
 }
 
 // Home styles
@@ -448,7 +442,7 @@ body {
 }
 
 .container {
-
+  padding: 5%;
   background: #fff;
 }
 
