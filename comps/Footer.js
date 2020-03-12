@@ -6,9 +6,10 @@ export default function Footer() {
   return (
     <footer className={`container-fluid ${styles.footer}`}>
       <div className={`row justify-content-center ${styles.contact}`}>
-        <div className="col-12 col-sm-2 col-md-6 col-lg-5 col-xl-5 ">
+        <div className="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 ">
+          <h6 className={styles.footerTitle}>Sígueme en redes sociales</h6>
           <div className="row justify-content-center">
-            <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+            <div className="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-2">
               <a
                 href="https://wa.me/573233396771"
                 target="_blank"
@@ -27,24 +28,24 @@ export default function Footer() {
                 ></i>
               </a>
             </div>
-            <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+            <div className="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-2">
               <a
                 href="https://www.facebook.com/AlbaNuryCoach/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icon
-                  type="facebook"
-                  title="www.facebook.com/AlbaNuryCoach/"
-                  theme="filled"
+                <i
+                  class="fa fa-facebook"
+                  aria-hidden="true"
                   style={{
-                    color: "#fff",
-                    fontSize: "40px"
+                    fontSize: "40px",
+                    textAlign: "center",
+                    color: "#fff"
                   }}
-                />
+                ></i>
               </a>
             </div>
-            <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+            <div className="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-2">
               <a
                 href="https://www.instagram.com/albanurycoach/"
                 target="_blank"
@@ -59,11 +60,28 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2 text-center">
-          <h6>Contacto</h6>
-          +57 323 3396771 <br />
-          albanurycoach@gmail.com <br />
-          Pereira, Risaralda, Colombia
+        <div className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
+          <h6 className={styles.footerTitle}>Contáctame</h6>
+          <ul style={{ listStyleType: "none" }}>
+            <li>
+              <span>
+                <i class="fa fa-whatsapp mr-2" aria-hidden="true"></i> +57 323
+                3396771
+              </span>
+            </li>
+            <li>
+              <span>
+                <i class="fa fa-envelope mr-2" aria-hidden="true"></i>{" "}
+                albanurycoach@gmail.com
+              </span>
+            </li>
+            <li>
+              <span>
+                <i class="fa fa-map-marker mr-3" aria-hidden="true"></i>{" "}
+                Pereira, Risaralda, Colombia
+              </span>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

@@ -22,5 +22,18 @@ $background:rgba(35, 53, 192, 0.9);
     padding-right: 5rem;
     font-family: "Shadows Into Light";
     font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.9)
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.logoutButton {
+    border-color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.9);
+    background: none;
+    font-weight: 500;
+    align-self: center;
+
+    &:hover {
+        color: #3949c6;
+        border-color: rgba(255, 255, 255, 0.9)
+    }
 }

@@ -10,8 +10,9 @@ import api from "../api";
 import Router from "next/router";
 
 import { BackTop, Button, Row, Col, Skeleton } from "antd";
+import Link from "next/link";
 
-export default function Index() {
+export default function Index(props) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -42,10 +43,12 @@ export default function Index() {
 
       <div id="demo_blog" style={{ paddingTop: "75px" }}>
         <h1 className={styles.sectionTitle}>
-          <a href="/blog">Blog</a>
+          <Link href="/blog">
+            <a className={styles.sectionTitle}>Blog</a>
+          </Link>
         </h1>
         {data ? (
-          <DemoBlog post={data} demo={true} pagination={false} />
+          <DemoBlog post={data} demo={true} pagination={false} {...props} />
         ) : (
           <div className="container">
             <Skeleton active>{data == null ? loadData() : null} </Skeleton>

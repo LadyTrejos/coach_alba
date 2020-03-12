@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import DemoBlog from "../comps/DemoBlog";
 import { BackTop, Skeleton } from "antd";
-import api from "../api";
 
+import api from "../api";
+import DemoBlog from "../comps/DemoBlog";
 import styles from "../styles/styles.scss";
-//Cambiar por la consulta a la base de datos
 
 export default function Blog(props) {
   const [data, setData] = useState(null);
