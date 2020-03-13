@@ -29,7 +29,7 @@ export default function Index(props) {
     <div>
       <script picture="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
       <BackTop />
-      <div id="home" style={{ paddingTop: "75px" }}>
+      <div id="home" style={{ paddingTop: "50px" }}>
         <Home />
       </div>
 
