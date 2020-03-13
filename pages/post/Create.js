@@ -1,7 +1,8 @@
 import React, { Component, useRef, useState, useEffect } from "react";
+import Router from "next/router";
+
 import Files from "../../comps/Files";
 import api from "../../api";
-import Router from "next/router";
 import styles from "../../styles/styles.scss";
 import {
   Collapse,
@@ -36,7 +37,8 @@ function CreatePost(props) {
   useEffect(() => {
     editorRef.current = {
       CKEditor: require("@ckeditor/ckeditor5-react"),
-      DecoupledEditor: require("@ckeditor/ckeditor5-build-decoupled-document")
+      DecoupledEditor: require("@ckeditor/ckeditor5-build-decoupled-document"),
+      spanish: require("@ckeditor/ckeditor5-build-decoupled-document/build/translations/es")
     };
 
     setEditorLoaded(true);
@@ -121,22 +123,14 @@ function CreatePost(props) {
               </Form.Item>
             </Row>
             <Row>
-              <Col
-                className="gutter-row"
-                className="offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-5 col-md-7 col-lg-5 col-xl-5"
-              >
+              <Col className="gutter-row offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-5 col-md-7 col-lg-5 col-xl-5">
                 <Form.Item label="Título de la publicación">
                   {getFieldDecorator("title", {
                     rules: [
                       {
                         required: true,
-
                         message: "Ponle un título a tu publicación",
                         type: "string"
-                      },
-                      {
-                        pattern: /^(?=.{1,1000}$)([a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.¿]+[\s(?!\s)]?)*[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.?]$/,
-                        message: "Título no válido"
                       }
                     ]
                   })(<Input placeholder="Título" size="large"></Input>)}
@@ -144,10 +138,7 @@ function CreatePost(props) {
               </Col>
             </Row>
             <Row>
-              <Col
-                className="gutter-row"
-                className="offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-8 col-md-10 col-lg-10 col-xl-8"
-              >
+              <Col className="gutter-row offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-8 col-md-10 col-lg-10 col-xl-8">
                 <Form.Item label="Descripción de la publicación">
                   {editorLoaded ? (
                     <div>
@@ -169,6 +160,7 @@ function CreatePost(props) {
                           console.log("Editor is ready to use!", editor);
                         }}
                         config={{
+                          language: "es",
                           toolbar: [
                             "Heading",
                             "|",
@@ -194,34 +186,6 @@ function CreatePost(props) {
                           fontSize: {
                             options: [9, 11, 13, "default", 17, 19, 21]
                           },
-                          heading: {
-                            options: [
-                              {
-                                model: "paragraph",
-                                title: "Párrafo",
-                                class: "ck-heading_paragraph"
-                              },
-                              {
-                                model: "heading1",
-                                view: "h1",
-                                title: "Título 1",
-                                class: "ck-heading_heading1"
-                              },
-                              {
-                                model: "heading2",
-                                view: "h2",
-                                title: "Titulo 2",
-                                class: "ck-heading_heading2"
-                              },
-                              {
-                                model: "heading3",
-                                view: "h3",
-                                title: "Titulo 3",
-                                class: "ck-heading_heading3"
-                              }
-                            ]
-                          },
-
                           removePlugins: [
                             "ImageUpload",
                             "MediaEmbed",

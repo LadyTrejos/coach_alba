@@ -244,6 +244,13 @@ body {
 }
 
 // DemoBlog styles
+.imgWrapper {
+  min-width: 250px;
+  height: 50vh;
+  width: 45vh;
+  margin: 1rem;
+  min-height: 350px;
+}
 
 .card {
   float: left;
@@ -256,9 +263,12 @@ body {
     overflow: hidden;
     border-radius: 5px;
 
-    box-shadow: 0 19px 38px rgba(#000, 0.3), 0 15px 12px rgba(#000, 0.2);
+    box-shadow: 0px 7px 19px 3px rgba(102, 102, 102, 0.4);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 
     &:hover {
+      box-shadow: 0px 7px 19px 3px rgba(102, 102, 102, 0.9);
+
       .data {
         transform: translateY(0);
       }
@@ -273,7 +283,7 @@ body {
     transition: transform 0.3s;
 
     .content {
-      padding: 1em;
+      padding: 1em 1em 0 1em;
       position: relative;
       z-index: 1;
     }
@@ -286,15 +296,73 @@ body {
   }
 
   .postTitle {
-    margin: 14px 0;
     overflow-wrap: break-word;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    color: $indigo;
+    font-weight: bold;
   }
 
   .text {
     height: 70px;
     margin: 0;
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+}
+
+.blockWithText {
+  padding-top: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.readMore {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 40px 0 15px 0;
+
+  background-image: rgba($color: $pink, $alpha: 0.9);
+  /* fallback for old browsers */
+  background-image: -webkit-linear-gradient(to bottom,
+      transparent 0%,
+      rgba($color: white, $alpha: 0.4) 30%,
+      rgba($color: white, $alpha: 0.7) 60%,
+      rgba($color: white, $alpha: 0.9) 80%,
+      rgba($color: white, $alpha: 1) 100%);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background-image: linear-gradient(to bottom,
+      transparent 0%,
+      rgba($color: white, $alpha: 0.4) 30%,
+      rgba($color: white, $alpha: 0.7) 60%,
+      rgba($color: white, $alpha: 0.9) 80%,
+      rgba($color: white, $alpha: 1) 100%);
+  // background-image: linear-gradient(to bottom, transparent, $pink);
+}
+
+.readMoreButton {
+  // box-shadow:inset 0px 1px 0px 0px #fbafe3;
+  background: $pink;
+  background-color: $pink;
+  border-radius: 10px;
+  border: 1px solid $pink;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #c70067;
+
+  &:hover {
+    color: white;
+    background-color: darken($pink, 7);
   }
 }
 
@@ -342,80 +410,13 @@ body {
 
   .title {
     a {
-      color: $title;
-    }
-  }
-
-  .menubutton {
-    position: absolute;
-    z-index: 999;
-    top: 16px;
-    right: 16px;
-    width: 25px;
-    text-align: center;
-    cursor: pointer;
-
-    span {
-      width: 5px;
-      height: 5px;
-      background-color: lighten(#000, 50%);
-      color: lighten(#000, 50%);
-      position: relative;
-      display: inline-block;
-      border-radius: 50%;
-
-      &::after,
-      &::before {
-        content: "";
-        display: block;
-        width: 5px;
-        height: 5px;
-        background-color: currentColor;
-        position: absolute;
-        border-radius: 50%;
-      }
-
-      &::before {
-        left: -10px;
-      }
-
-      &::after {
-        right: -10px;
-      }
-    }
-  }
-
-  .menucontent {
-    text-align: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: -1;
-    transition: transform 0.3s;
-    transform: translateY(0);
-
-    li {
-      width: 33.333333%;
-      float: left;
-      background-color: $pink;
-      height: 60px;
-      position: relative;
-    }
-
-    a {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 24px;
-    }
-
-    span {
-      top: -10px;
+      color: $indigo;
     }
   }
 }
+
+
+
 
 // End DemoBlog styles
 
