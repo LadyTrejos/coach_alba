@@ -3,6 +3,7 @@ import Router from "next/router";
 import style from "../../styles/styles.scss";
 import api from "../../api";
 import Cookies from "js-cookie";
+import ProgramSettings from "../../comps/ProgramSettings";
 import {
   Collapse,
   Row,
@@ -11,12 +12,9 @@ import {
   Typography,
   Modal,
   Input,
-  Menu,
-  Dropdown,
   Form,
   Tooltip,
   Skeleton,
-  Popconfirm,
   Icon
 } from "antd";
 
@@ -24,7 +22,6 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 
 let a = {
-  title: ["Programa 1 ", "Programa 2", "Programa 3", "Programa 4"],
   day: ["Día 1", "Día 2", "Día 3", "Día 4", "Día 5", "Día 6"]
 };
 
@@ -35,8 +32,6 @@ function IndexProgram(props) {
   const [loading, setLoading] = useState(false);
   const [programs, setPrograms] = useState(null);
   const [ready, setReady] = useState(false);
-  const [loadingExtra, setLoadingExtra] = useState(false);
-  const [deleteItem, setDeleteItem] = useState(-1);
   const { getFieldDecorator } = props.form;
 
   function showModal() {
@@ -91,105 +86,17 @@ function IndexProgram(props) {
       });
   }
 
-  function deleteProgram(e, id) {
-    e.stopPropagation();
-    setLoadingExtra(true);
-    setDeleteItem(id);
-    console.log("Eliminar el programa seleccionado", id);
-    const csrftoken = Cookies.get("csrftoken");
-
-    api
-      .delete(`/api/programs/${id}`, {
-        headers: {
-          "X-CSRFToken": csrftoken
-        }
-      })
-      .then(res => {
-        loadData();
-        setLoadingExtra(false);
-      })
-      .catch(err => console.log(err));
-  }
-
   function daySelected(day) {
     Router.push("/programs/day/[day]", `/programs/day/${day}`);
   }
 
-  function toPrograms(e, id) {
-    e.stopPropagation();
-    Router.push("/programs/[id]", `/programs/${id}`);
-  }
-
-  const menu = id => (
-    <Menu>
-      <Menu.Item key="2">
-        <Popconfirm
-          title="¿Estás segura que deseas eliminar este programa?"
-          onConfirm={e => deleteProgram(e, id)}
-          onCancel={e => handleCancel(e)}
-          okText="Sí"
-          cancelText="No"
-        >
-          <Button
-            type="danger"
-            loading={loadingExtra && deleteItem == id}
-            onClick={event => {
-              event.stopPropagation();
-            }}
-          >
-            Eliminar
-          </Button>
-        </Popconfirm>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <Button type="primary" onClick={e => toPrograms(e, id)}>
-          Añadir día
-        </Button>
-      </Menu.Item>
-    </Menu>
-  );
-
-  const genExtra = id => (
-    <Dropdown
-      overlay={menu(id)}
-      trigger={["click"]}
-      onClick={event => {
-        // If you don't want click extra trigger collapse, you can prevent this:
-        event.stopPropagation();
-      }}
-    >
-      <span>
-        <Icon
-          type="setting"
-          style={{ fontSize: "23px", color: "#3949c6", marginRight: "3px" }}
-          theme="filled"
-        />
-        Opciones
-      </span>
-    </Dropdown>
-    // <Row gutter={[16, 16]}>
-    //   <Col span={12}>
-    //     <Button
-    //       type="primary"
-    //       onClick={e => Router.push("/programs/[id]", `/programs/${id}`)}
-    //     >
-    //       Añadir día
-    //     </Button>
-    //   </Col>
-    //   <Col span={1}>
-    //     <Popconfirm
-    //       title="¿Estás segura que deseas eliminar este programa?"
-    //       onConfirm={e => deleteProgram(e, id)}
-    //       onCancel={e => handleCancel(e)}
-    //       okText="Sí"
-    //       cancelText="No"
-    //     >
-    //       <Button type="danger" loading={loadingExtra && deleteItem == id}>
-    //         Eliminar
-    //       </Button>
-    //     </Popconfirm>
-    //   </Col>
-    // </Row>
+  const genExtra = (id, title) => (
+    <ProgramSettings
+      id={id}
+      loadData={loadData}
+      {...props}
+      title={title}
+    ></ProgramSettings>
   );
 
   return (
@@ -262,7 +169,7 @@ function IndexProgram(props) {
                 <Panel
                   header={`${data.title} `}
                   key={`${data.id}`}
-                  extra={user.is_admin ? genExtra(data.id) : null}
+                  extra={user.is_admin ? genExtra(data.id, data.title) : null}
                   className={user.is_admin ? style.panel : null}
                 >
                   {a.day.map(day => {
