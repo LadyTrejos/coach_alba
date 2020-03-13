@@ -37,7 +37,9 @@ function MyApp({ Component, pageProps, auth }) {
         />
       </Head>
       <Header user={user} />
-      <Component {...pageProps} user={user} />
+      <div style={{ paddingTop: "76px" }}>
+        <Component {...pageProps} user={user} />
+      </div>
     </div>
   );
 }

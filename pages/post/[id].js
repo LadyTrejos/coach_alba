@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Row, Typography, Col, Modal, Skeleton, Button, message } from "antd";
-const { Text, Title } = Typography;
+import React, { useState } from "react";
 import Router, { useRouter } from "next/router";
+import { Row, Typography, Col, Modal, Skeleton, Button } from "antd";
+import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
+
 import styles from "../../styles/styles.scss";
 import api from "../../api";
-import ReactHtmlParser from "react-html-parser";
+
+const { Text, Title } = Typography;
 
 export default function Post(props) {
   const { user } = props;
@@ -60,7 +62,7 @@ export default function Post(props) {
   }
 
   return title ? (
-    <div>
+    <div className="container">
       <Row justify="center" type="flex">
         <div
           style={{
@@ -74,6 +76,7 @@ export default function Post(props) {
           <img
             src={src}
             style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            alt="Imagen de la publicación"
           />
         </div>
       </Row>
@@ -81,12 +84,8 @@ export default function Post(props) {
         <Title>{title}</Title>
       </Row>
       <Row justify="center" style={{ fontSize: "17px" }}>
-        <Col
-          className="gutter-row"
-          className="offset-1 offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-10 col-sm-8 col-md-10 col-lg-10 col-xl-8"
-        >
+        <Col>
           <Text style={{ wordWrap: "break-word" }}>
-            {" "}
             {ReactHtmlParser(description)}
           </Text>
         </Col>
