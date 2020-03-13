@@ -26,11 +26,19 @@ export default function Post(props) {
     return newDate.getFullYear();
   }
 
-  function getVisibility() {
+  function getButton() {
     if (!props.demo && user.is_admin) {
-      return "visible";
+      return (
+        <Button
+          onClick={() => toCreate()}
+          className={styles.defaultButton}
+          loading={loading}
+        >
+          Nueva publicación
+        </Button>
+      );
     } else {
-      return "hidden";
+      return null;
     }
   }
 
@@ -40,16 +48,8 @@ export default function Post(props) {
   }
 
   return (
-    <div style={{ padding: "10px" }}>
-      <Button
-        onClick={() => toCreate()}
-        className={styles.defaultButton}
-        loading={loading}
-        style={{ visibility: getVisibility() }}
-      >
-        Nueva publicación
-      </Button>
-
+    <div>
+      {getButton()}
       <List
         itemLayout="horizontal"
         grid={{
@@ -81,15 +81,7 @@ export default function Post(props) {
             <Row className={`${styles.postcard} ${styles.card}`}>
               <div className={styles.wrapper}>
                 <Link href="/post/[id]" as={`/post/${item.id}`}>
-                  <div
-                    style={{
-                      minWidth: "250px",
-                      minHeight: "350px",
-                      height: "50vh",
-                      width: "45vh",
-                      margin: "1rem"
-                    }}
-                  >
+                  <div className={styles.imgWrapper}>
                     <a>
                       <img
                         style={{
@@ -117,12 +109,16 @@ export default function Post(props) {
                 <div className={styles.data}>
                   <div className={styles.content}>
                     <span className={styles.author}>Alba Nury Gonzalez L.</span>
-                    <h1 className={styles.postTitle}>
-                      <Link href="/post/[id]" as={`/post/${item.id}`}>
-                        <a>{item.title}</a>
-                      </Link>
-                    </h1>
-                    <div className={styles.text}>
+                    <br />
+                    <Link href="/post/[id]" as={`/post/${item.id}`}>
+                      <a className={styles.postTitle}>{item.title}</a>
+                    </Link>
+                    <div className={styles.blockWithText}>
+                      <p class={styles.readMore}>
+                        <Link href="/post/[id]" as={`/post/${item.id}`}>
+                          <a className={styles.readMoreButton}>Leer más</a>
+                        </Link>
+                      </p>
                       {ReactHtmlParser(item.description)}
                     </div>
                   </div>

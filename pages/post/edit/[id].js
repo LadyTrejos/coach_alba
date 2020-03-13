@@ -1,5 +1,6 @@
 import React, { Component, useRef, useState, useEffect } from "react";
 import Router, { useRouter } from "next/router";
+
 import Files from "../../../comps/Files";
 import api from "../../../api";
 import styles from "../../../styles/styles.scss";
@@ -41,7 +42,8 @@ function EditPost(props) {
   useEffect(() => {
     editorRef.current = {
       CKEditor: require("@ckeditor/ckeditor5-react"),
-      DecoupledEditor: require("@ckeditor/ckeditor5-build-decoupled-document")
+      DecoupledEditor: require("@ckeditor/ckeditor5-build-decoupled-document"),
+      spanish: require("@ckeditor/ckeditor5-build-decoupled-document/build/translations/es")
     };
 
     setEditorLoaded(true);
@@ -167,6 +169,7 @@ function EditPost(props) {
                     <div>
                       <div id="toolbar-container"></div>
                       <CKEditor
+                        style={{ border: "solid 1px #000" }}
                         onInit={editor => {
                           // Add the toolbar to the container
 
@@ -183,6 +186,7 @@ function EditPost(props) {
                           console.log("Editor is ready to use!", editor);
                         }}
                         config={{
+                          language: "es",
                           toolbar: [
                             "Heading",
                             "|",
@@ -208,34 +212,6 @@ function EditPost(props) {
                           fontSize: {
                             options: [9, 11, 13, "default", 17, 19, 21]
                           },
-                          heading: {
-                            options: [
-                              {
-                                model: "paragraph",
-                                title: "Párrafo",
-                                class: "ck-heading_paragraph"
-                              },
-                              {
-                                model: "heading1",
-                                view: "h1",
-                                title: "Título 1",
-                                class: "ck-heading_heading1"
-                              },
-                              {
-                                model: "heading2",
-                                view: "h2",
-                                title: "Titulo 2",
-                                class: "ck-heading_heading2"
-                              },
-                              {
-                                model: "heading3",
-                                view: "h3",
-                                title: "Titulo 3",
-                                class: "ck-heading_heading3"
-                              }
-                            ]
-                          },
-
                           removePlugins: [
                             "ImageUpload",
                             "MediaEmbed",

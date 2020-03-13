@@ -1,5 +1,5 @@
 import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 import { getServerSideToken, getUserScript } from "../utils/auth";
 
@@ -15,14 +15,14 @@ class MyDocument extends Document {
   render() {
     const { user = {} } = this.props.userData;
     return (
-      <html>
+      <Html lang="es">
         <Head />
         <body>
           <Main />
           <script dangerouslySetInnerHTML={{ __html: getUserScript(user) }} />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }
