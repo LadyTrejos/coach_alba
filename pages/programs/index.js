@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Router from "next/router";
 import style from "../../styles/styles.scss";
+import api from "../../api";
+import Cookies from "js-cookie";
 import {
   Collapse,
   Row,
@@ -9,92 +11,207 @@ import {
   Typography,
   Modal,
   Input,
+  Menu,
+  Dropdown,
   Form,
   Tooltip,
+  Skeleton,
+  Popconfirm,
   Icon
 } from "antd";
-const { Panel } = Collapse;
 
+const { Panel } = Collapse;
 const { Title } = Typography;
 
 let a = {
   title: ["Programa 1 ", "Programa 2", "Programa 3", "Programa 4"],
-  day: ["Día 1", "Día 2", "Día 3", "Día 4"]
+  day: ["Día 1", "Día 2", "Día 3", "Día 4", "Día 5", "Día 6"]
 };
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
 
 //funcion principal
 function IndexProgram(props) {
   const { user } = props;
   const [visible, setVisible] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [programs, setPrograms] = useState(null);
+  const [ready, setReady] = useState(false);
+  const [loadingExtra, setLoadingExtra] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(-1);
   const { getFieldDecorator } = props.form;
 
   function showModal() {
     setVisible(true);
   }
 
-  function handleOk(e) {
-    console.log("handle Ok: ", e);
-    setVisible(false);
-  }
-
   function handleCancel(e) {
+    e.stopPropagation();
     console.log("handle Cancel: ", e);
     setVisible(false);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
+    const csrftoken = Cookies.get("csrftoken");
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        //Hacer post a la base de datos
-        // const programData = JSON.stringify(values.title);
-        //     //console.log("programData: ", programData);
+        setLoading(true);
+        const programData = JSON.stringify(values);
+        console.log("programData: ", programData);
 
-        //     api
-        //       .post(``, programData, {
-        //         headers: { "Content-type": "application/json" }
-        //       })
+        api
+          .post(`/api/programs/`, programData, {
+            headers: {
+              "Content-type": "application/json",
+              "X-CSRFToken": csrftoken
+            }
+          })
 
-        //       .then((res) => {
-        // //mirar cómo trae el 'res' el título
-        //         Router.push("/programs/[title]", `/programs/${res.title}`);
-        //       })
-        //       .catch(err => {
-        //         console.log(err)
-        //         });
-        console.log("No hay errores ", values);
-        Router.push("/programs/[title]", `/programs/${values.title}`);
+          .then(res => {
+            //mirar cómo trae el 'res' el título
+            loadData();
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     });
   }
 
-  function deleteProgram(e) {
-    console.log("Eliminar el programa seleccionado");
+  function loadData() {
+    api
+      .get(`/api/programs/`)
+      .then(res => {
+        setPrograms(res);
+        setReady(true);
+      })
+      .then(res => {
+        setLoading(false);
+        setVisible(false);
+        props.form.resetFields();
+      });
   }
+
+  function deleteProgram(e, id) {
+    e.stopPropagation();
+    setLoadingExtra(true);
+    setDeleteItem(id);
+    console.log("Eliminar el programa seleccionado", id);
+    const csrftoken = Cookies.get("csrftoken");
+
+    api
+      .delete(`/api/programs/${id}`, {
+        headers: {
+          "X-CSRFToken": csrftoken
+        }
+      })
+      .then(res => {
+        loadData();
+        setLoadingExtra(false);
+      })
+      .catch(err => console.log(err));
+  }
+
   function daySelected(day) {
-    console.log(day);
     Router.push("/programs/day/[day]", `/programs/day/${day}`);
   }
 
-  const genExtra = () => (
-    <Button type="danger" onClick={deleteProgram}>
-      Eliminar
-    </Button>
+  function toPrograms(e, id) {
+    e.stopPropagation();
+    Router.push("/programs/[id]", `/programs/${id}`);
+  }
+
+  const menu = id => (
+    <Menu>
+      <Menu.Item key="2">
+        <Popconfirm
+          title="¿Estás segura que deseas eliminar este programa?"
+          onConfirm={e => deleteProgram(e, id)}
+          onCancel={e => handleCancel(e)}
+          okText="Sí"
+          cancelText="No"
+        >
+          <Button
+            type="danger"
+            loading={loadingExtra && deleteItem == id}
+            onClick={event => {
+              event.stopPropagation();
+            }}
+          >
+            Eliminar
+          </Button>
+        </Popconfirm>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <Button type="primary" onClick={e => toPrograms(e, id)}>
+          Añadir día
+        </Button>
+      </Menu.Item>
+    </Menu>
   );
+
+  const genExtra = id => (
+    <Dropdown
+      overlay={menu(id)}
+      trigger={["click"]}
+      onClick={event => {
+        // If you don't want click extra trigger collapse, you can prevent this:
+        event.stopPropagation();
+      }}
+    >
+      <span>
+        <Icon
+          type="setting"
+          style={{ fontSize: "23px", color: "#3949c6", marginRight: "3px" }}
+          theme="filled"
+        />
+        Opciones
+      </span>
+    </Dropdown>
+    // <Row gutter={[16, 16]}>
+    //   <Col span={12}>
+    //     <Button
+    //       type="primary"
+    //       onClick={e => Router.push("/programs/[id]", `/programs/${id}`)}
+    //     >
+    //       Añadir día
+    //     </Button>
+    //   </Col>
+    //   <Col span={1}>
+    //     <Popconfirm
+    //       title="¿Estás segura que deseas eliminar este programa?"
+    //       onConfirm={e => deleteProgram(e, id)}
+    //       onCancel={e => handleCancel(e)}
+    //       okText="Sí"
+    //       cancelText="No"
+    //     >
+    //       <Button type="danger" loading={loadingExtra && deleteItem == id}>
+    //         Eliminar
+    //       </Button>
+    //     </Popconfirm>
+    //   </Col>
+    // </Row>
+  );
+
   return (
     <Row style={{ padding: "20px 0" }}>
       <Modal
         title="Título del nuevo programa"
         visible={visible}
-        onOk={handleSubmit}
+        onOk={e => handleSubmit(e)}
         onCancel={handleCancel}
-        cancelText="Cancelar"
-        okText="Crear programa"
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancelar
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={e => handleSubmit(e)}
+          >
+            Crear programa
+          </Button>
+        ]}
       >
         <Form onSubmit={e => handleSubmit(e)}>
           <Form.Item
@@ -138,30 +255,36 @@ function IndexProgram(props) {
         ) : null}
         <br />
         <br />
-        <Collapse accordion style={{ wordWrap: "break-word" }}>
-          {a.title.map(title => {
-            return (
-              <Panel
-                header={`${title} `}
-                key={`${title}`}
-                extra={user.is_admin ? genExtra() : null}
-                className={user.is_admin ? style.panel : null}
-              >
-                {a.day.map(day => {
-                  return (
-                    <div>
-                      <Button type="primary" onClick={() => daySelected(day)}>
-                        {day}
-                      </Button>
-                      <br />
-                      <br />
-                    </div>
-                  );
-                })}
-              </Panel>
-            );
-          })}
-        </Collapse>
+        {ready ? (
+          <Collapse accordion style={{ wordWrap: "break-word" }}>
+            {programs.data.map(data => {
+              return (
+                <Panel
+                  header={`${data.title} `}
+                  key={`${data.id}`}
+                  extra={user.is_admin ? genExtra(data.id) : null}
+                  className={user.is_admin ? style.panel : null}
+                >
+                  {a.day.map(day => {
+                    return (
+                      <div>
+                        <Button type="primary" onClick={() => daySelected(day)}>
+                          {day}
+                        </Button>
+                        <br />
+                        <br />
+                      </div>
+                    );
+                  })}
+                </Panel>
+              );
+            })}
+          </Collapse>
+        ) : (
+          <div className="container">
+            <Skeleton active>{ready == false ? loadData() : null}</Skeleton>
+          </div>
+        )}
       </Col>
     </Row>
   );

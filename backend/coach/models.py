@@ -83,3 +83,11 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Program(models.Model):
+    title = models.CharField(max_length=120)
+    crated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

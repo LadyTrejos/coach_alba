@@ -32,7 +32,7 @@ function EditPost(props) {
   const [description, setDescription] = useState(null);
   const [error, setError] = useState(null);
   const [errorDescription, setErrorDescription] = useState(null);
-  const [first, setFirst] = useState(false);
+  const [ready, setReady] = useState(false);
   const [id, setId] = useState(null);
   const [loading, setLoading] = useState(false);
   const { CKEditor, DecoupledEditor } = editorRef.current || {};
@@ -96,16 +96,14 @@ function EditPost(props) {
 
   function loadData() {
     api.get(`/api/post/${router.query.id}`).then(res => {
-      // src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      // setSrc(res.data.picture);
       setTitle(res.data.title);
       setDescription(res.data.description);
       setId(res.data.id);
-      setFirst(true);
+      setReady(true);
     });
   }
 
-  return first ? (
+  return ready ? (
     <Form onSubmit={e => handleSubmit(e, fileRef)}>
       <Row>
         <Col className=" offset-sm-1 offset-md-1 offset-lg-1 offset-xl-1 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
@@ -310,7 +308,7 @@ function EditPost(props) {
     </Form>
   ) : (
     <div className="container">
-      <Skeleton active>{first == false ? loadData() : null}</Skeleton>
+      <Skeleton active>{ready == false ? loadData() : null}</Skeleton>
     </div>
   );
 }

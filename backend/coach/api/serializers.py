@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from allauth.account.utils import setup_user_email
 from rest_auth.registration.serializers import RegisterSerializer
-from coach.models import User, Post
+from coach.models import User, Post, Program
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth import get_user_model
 UserModel = get_user_model()
@@ -86,6 +86,12 @@ class UserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
+        fields = '__all__'
+
+
+class ProgramSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Program
         fields = '__all__'
 
 
