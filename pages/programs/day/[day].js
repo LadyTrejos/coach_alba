@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import ReactPlayer from "react-player";
 
-import { Row, Typography, List, Modal } from "antd";
+import { Row, Typography, List } from "antd";
 
 const { Title } = Typography;
 
@@ -21,11 +21,6 @@ function Day(props) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(null);
   console.log(router.query.day);
-
-  function openModal() {
-    console.log("open");
-    setIsOpen(true);
-  }
 
   return (
     <div>

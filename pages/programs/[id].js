@@ -11,7 +11,7 @@ function Program(props) {
   console.log(router.query.title);
   return (
     <Row justify="center" type="flex">
-      <Title> {router.query.title} </Title>;
+      <Title> {router.query.id} </Title>;
     </Row>
   );
 }

@@ -3,8 +3,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import (
     AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly, BasePermission, IsAuthenticated, SAFE_METHODS)
-from coach.models import (User, Post)
-from .serializers import (UserSerializer, PostSerializer)
+from coach.models import (User, Post, Program)
+from .serializers import (UserSerializer, PostSerializer, ProgramSerializer)
 
 
 class ReadOnly(BasePermission):
@@ -35,6 +35,15 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
+    filter_fields = ('title', 'id',)
+    ordering_fields = ('created_at',)
+    search_fields = ('title', 'id')
+
+
+class ProgramViewSet(viewsets.ModelViewSet):
+    queryset = Program.objects.all()
+    serializer_class = ProgramSerializer
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
     filter_fields = ('title', 'id',)
     ordering_fields = ('created_at',)
