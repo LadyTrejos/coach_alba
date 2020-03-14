@@ -130,7 +130,7 @@ function ModalProgramForm(props) {
             <Input
               type="text"
               size="large"
-              placeholder={props.typeModal}
+              placeholder="Título"
               onChange={e => e.stopPropagation()}
             />
           )}

@@ -97,7 +97,7 @@ class Module(models.Model):
     title = models.CharField(max_length=120)
     crated_at = models.DateTimeField(auto_now_add=True)
     father = models.ForeignKey(
-        Program, on_delete=models.CASCADE, related_name='program_module')
+        Program, on_delete=models.CASCADE, related_name='modules')
 
     def __str__(self):
         return self.title

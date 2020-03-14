@@ -89,15 +89,17 @@ class PostSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProgramSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Program
-        fields = '__all__'
-
-
 class ModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Module
+        fields = '__all__'
+
+
+class ProgramSerializer(serializers.ModelSerializer):
+    modules = ModuleSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Program
         fields = '__all__'
 
 

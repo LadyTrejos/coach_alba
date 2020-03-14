@@ -29,45 +29,12 @@ function IndexProgram(props) {
     setTypeModal(modal);
   }
 
-  function loadAllData(resData, res) {
-    console.log("res modules: ", res, "resData: ", resData);
-
-    resData.data.map(dataProgram =>
-      res.data.map(dataModule =>
-        dataProgram.id == dataModule.father
-          ? !Data[dataProgram.id]
-            ? (Data[dataProgram.id] = [])
-            : !Data[dataProgram.id].includes(dataModule.id)
-            ? Data[dataProgram.id].push(dataModule.id)
-            : null
-          : null
-      )
-    );
-    console.log("Data:", Data);
-    const keys = Object.keys(Data);
-
-    for (const data in Data) {
-      console.log("Programa: ", data, "modulos", Data[data]);
-    }
-    setReady(true);
-  }
-
-  function loadModules(resData) {
-    api
-      .get(`/api/modules/`)
-      .then(res => loadAllData(resData, res))
-      .catch(err => console.log("error al cargar los módulos ", err));
-  }
-
   function loadData() {
     api
       .get(`/api/programs/`)
       .then(res => {
-        loadModules(res);
         setPrograms(res);
-
-        setVisible(false);
-        props.form.resetFields();
+        setReady(true);
       })
       .then(res => {
         setVisible(false);
@@ -129,11 +96,14 @@ function IndexProgram(props) {
                   extra={user.is_admin ? genExtra(data.id, data.title) : null}
                   className={user.is_admin ? style.panel : null}
                 >
-                  {a.day.map(day => {
+                  {data.modules.map(module => {
                     return (
                       <div>
-                        <Button type="primary" onClick={() => daySelected(day)}>
-                          {day}
+                        <Button
+                          type="primary"
+                          onClick={() => daySelected(module.id)}
+                        >
+                          {module.title}
                         </Button>
                         <br />
                         <br />
