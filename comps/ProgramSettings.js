@@ -30,6 +30,7 @@ function ProgramSettingsForm(props) {
   }
 
   function showModalModule(e, modal) {
+    // e.stopPropagation();
     setVisibleModal(true);
     setTypeModal(modal);
   }
@@ -118,7 +119,7 @@ function ProgramSettingsForm(props) {
           onCancel={e => handleCancel(e)}
           okText="Sí"
           cancelText="No"
-          placement="bottom"
+          placement={"left" /*cambiar esto cuando se pone formato celular */}
         >
           <Button
             type="default"
@@ -178,7 +179,6 @@ function ProgramSettingsForm(props) {
                   message: "Título no válido"
                 }
               ]
-              // initialValue: props.title
             })(
               <Input
                 type="text"
@@ -197,6 +197,7 @@ function ProgramSettingsForm(props) {
           loadData={props.loadData}
           falseVisible={falseVisible}
           typeModal={typeModal}
+          id={props.id}
           {...props}
         ></ModalProgram>
       ) : null}

@@ -18,29 +18,56 @@ function ModalProgramForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    event.stopPropagation();
     const csrftoken = Cookies.get("csrftoken");
     props.form.validateFieldsAndScroll((err, values) => {
       console.log("values: ", values);
       if (!err) {
         setLoading(true);
-        const programData = JSON.stringify(values);
-        console.log("programData: ", programData);
 
-        api
-          .post(`/api/programs/`, programData, {
-            headers: {
-              "Content-type": "application/json",
-              "X-CSRFToken": csrftoken
-            }
-          })
+        if (props.typeModal == "program") {
+          const programData = JSON.stringify(values);
+          console.log("programData: ", programData);
 
-          .then(res => {
-            //mirar cómo trae el 'res' el título
-            props.loadData();
-          })
-          .catch(err => {
-            console.log(err);
+          api
+            .post(`/api/programs/`, programData, {
+              headers: {
+                "Content-type": "application/json",
+                "X-CSRFToken": csrftoken
+              }
+            })
+
+            .then(res => {
+              //mirar cómo trae el 'res' el título
+              props.loadData();
+              props.falseVisible();
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          const programData = JSON.stringify({
+            title: values.title,
+            father: props.id
           });
+          console.log("programData: ", programData);
+          api
+            .post(`/api/modules/`, programData, {
+              headers: {
+                "Content-type": "application/json",
+                "X-CSRFToken": csrftoken
+              }
+            })
+
+            .then(res => {
+              //mirar cómo trae el 'res' el título
+              props.loadData();
+              props.falseVisible();
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       }
     });
   }
@@ -99,7 +126,14 @@ function ModalProgramForm(props) {
                 message: "Título no válido"
               }
             ]
-          })(<Input type="text" size="large" placeholder={props.typeModal} />)}
+          })(
+            <Input
+              type="text"
+              size="large"
+              placeholder={props.typeModal}
+              onChange={e => e.stopPropagation()}
+            />
+          )}
         </Form.Item>
       </Form>
     </Modal>

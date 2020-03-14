@@ -13,6 +13,8 @@ let a = {
   day: ["Día 1", "Día 2"]
 };
 
+let Data = {};
+
 //funcion principal
 function IndexProgram(props) {
   const { user } = props;
@@ -27,17 +29,51 @@ function IndexProgram(props) {
     setTypeModal(modal);
   }
 
+  function loadAllData(resData, res) {
+    console.log("res modules: ", res, "resData: ", resData);
+
+    resData.data.map(dataProgram =>
+      res.data.map(dataModule =>
+        dataProgram.id == dataModule.father
+          ? !Data[dataProgram.id]
+            ? (Data[dataProgram.id] = [])
+            : !Data[dataProgram.id].includes(dataModule.id)
+            ? Data[dataProgram.id].push(dataModule.id)
+            : null
+          : null
+      )
+    );
+    console.log("Data:", Data);
+    const keys = Object.keys(Data);
+
+    for (const data in Data) {
+      console.log("Programa: ", data, "modulos", Data[data]);
+    }
+    setReady(true);
+  }
+
+  function loadModules(resData) {
+    api
+      .get(`/api/modules/`)
+      .then(res => loadAllData(resData, res))
+      .catch(err => console.log("error al cargar los módulos ", err));
+  }
+
   function loadData() {
     api
       .get(`/api/programs/`)
       .then(res => {
+        loadModules(res);
         setPrograms(res);
-        setReady(true);
+
+        setVisible(false);
+        props.form.resetFields();
       })
       .then(res => {
         setVisible(false);
         props.form.resetFields();
-      });
+      })
+      .catch(err => console.log("error al cargar los programas ", err));
   }
 
   function daySelected(day) {
