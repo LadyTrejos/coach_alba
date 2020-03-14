@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Router from "next/router";
 import api from "../api";
+import ModalProgram from "../comps/ModalProgram";
 import Cookies from "js-cookie";
 import {
   Button,
@@ -18,7 +19,9 @@ function ProgramSettingsForm(props) {
   const [loadingExtra, setLoadingExtra] = useState(false);
   const [deleteItem, setDeleteItem] = useState(-1);
   const [visible, setVisible] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [typeModal, setTypeModal] = useState(null);
   const { getFieldDecorator } = props.form;
 
   function toPrograms(e, id) {
@@ -26,10 +29,16 @@ function ProgramSettingsForm(props) {
     Router.push("/programs/[id]", `/programs/${id}`);
   }
 
+  function showModalModule(e, modal) {
+    setVisibleModal(true);
+    setTypeModal(modal);
+  }
+
   function handleCancel(e) {
     e.stopPropagation();
     console.log("handle Cancel: ", e);
     setVisible(false);
+    props.form.resetFields();
   }
 
   function deleteProgram(e, id) {
@@ -76,6 +85,7 @@ function ProgramSettingsForm(props) {
             setVisible(false);
             setLoading(false);
             props.loadData();
+            props.form.resetFields();
           })
           .catch(err => {
             console.log(err);
@@ -88,10 +98,14 @@ function ProgramSettingsForm(props) {
     setVisible(true);
   }
 
+  function falseVisible() {
+    setVisibleModal(false);
+  }
+
   const menu = id => (
     <Menu>
       <Menu.Item key="1">
-        <a onClick={e => toPrograms(e, id)}>Nuevo módulo</a>
+        <a onClick={e => showModalModule(e, "module")}>Nuevo módulo</a>
       </Menu.Item>
       <Menu.Item key="2">
         <a onClick={e => showModal(e)}>Cambiar nombre</a>
@@ -121,7 +135,6 @@ function ProgramSettingsForm(props) {
   );
   return (
     <div>
-      {console.log("programSettings")}
       <Modal
         title="Cambiar título del programa"
         visible={visible}
@@ -164,13 +177,13 @@ function ProgramSettingsForm(props) {
                   pattern: /^(?=.{1,1000}$)([a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.¿]+[\s(?!\s)]?)*[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.?]$/,
                   message: "Título no válido"
                 }
-              ],
-              initialValue: props.title
+              ]
+              // initialValue: props.title
             })(
               <Input
                 type="text"
                 size="large"
-                placeholder="Título"
+                placeholder={props.title}
                 onClick={e => e.stopPropagation()}
                 onChange={e => e.stopPropagation()}
               />
@@ -178,6 +191,15 @@ function ProgramSettingsForm(props) {
           </Form.Item>
         </Form>
       </Modal>
+      {visibleModal ? (
+        <ModalProgram
+          visible={visibleModal}
+          loadData={props.loadData}
+          falseVisible={falseVisible}
+          typeModal={typeModal}
+          {...props}
+        ></ModalProgram>
+      ) : null}
       <Dropdown
         overlay={menu(props.id)}
         trigger={["click"]}
