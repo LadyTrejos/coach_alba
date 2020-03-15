@@ -9,6 +9,7 @@ function ModalProgramForm(props) {
   const [visible, setVisible] = useState(props.visible);
   const [loading, setLoading] = useState(false);
   const { getFieldDecorator } = props.form;
+  const { type, postTo } = props;
 
   function handleCancel(e) {
     e.stopPropagation();
@@ -20,65 +21,43 @@ function ModalProgramForm(props) {
     event.preventDefault();
     event.stopPropagation();
     const csrftoken = Cookies.get("csrftoken");
+    let programData = {};
     props.form.validateFieldsAndScroll((err, values) => {
-      console.log("values: ", values);
       if (!err) {
         setLoading(true);
 
-        if (props.typeModal == "program") {
-          const programData = JSON.stringify(values);
-          console.log("programData: ", programData);
-
-          api
-            .post(`/api/programs/`, programData, {
-              headers: {
-                "Content-type": "application/json",
-                "X-CSRFToken": csrftoken
-              }
-            })
-
-            .then(res => {
-              //mirar cómo trae el 'res' el título
-              props.loadData();
-              props.falseVisible();
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        } else {
-          const programData = JSON.stringify({
+        if (postTo == "programs") {
+          programData = JSON.stringify(values);
+        } else if (postTo == "modules") {
+          programData = JSON.stringify({
             title: values.title,
             father: props.id
           });
-          console.log("programData: ", programData);
-          api
-            .post(`/api/modules/`, programData, {
-              headers: {
-                "Content-type": "application/json",
-                "X-CSRFToken": csrftoken
-              }
-            })
-
-            .then(res => {
-              //mirar cómo trae el 'res' el título
-              props.loadData();
-              props.falseVisible();
-            })
-            .catch(err => {
-              console.log(err);
-            });
         }
+
+        api
+          .post(`/api/${postTo}/`, programData, {
+            headers: {
+              "Content-type": "application/json",
+              "X-CSRFToken": csrftoken
+            }
+          })
+
+          .then(res => {
+            //mirar cómo trae el 'res' el título
+            props.loadData();
+            props.falseVisible();
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     });
   }
 
   return (
     <Modal
-      title={
-        props.typeModal == "program"
-          ? "Título del nuevo programa"
-          : "Título del nuevo módulo"
-      }
+      title={`Título del nuevo ${type}`}
       visible={visible}
       onOk={e => handleSubmit(e)}
       onCancel={handleCancel}
@@ -102,11 +81,7 @@ function ModalProgramForm(props) {
             <span>
               Título&nbsp;
               <Tooltip
-                title={
-                  props.typeModal == "program"
-                    ? "No uses dos espacios seguidos ni al final del título del programa"
-                    : "No uses dos espacios seguidos ni al final del título del módulo"
-                }
+                title={`No uses dos espacios seguidos ni al final del título del ${type}`}
               >
                 <Icon type="question-circle-o" />
               </Tooltip>
@@ -118,7 +93,7 @@ function ModalProgramForm(props) {
             rules: [
               {
                 required: true,
-                message: "Ingresa el título del programa",
+                message: `Ingresa el título`,
                 whitespace: true
               },
               {

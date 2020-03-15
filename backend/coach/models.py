@@ -101,3 +101,15 @@ class Module(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Video(models.Model):
+    title = models.CharField(max_length=120)
+    crated_at = models.DateTimeField(auto_now_add=True)
+    videofile = models.FileField(
+        upload_to='videos/', null=True, verbose_name="")
+    father = models.ForeignKey(
+        Module, on_delete=models.CASCADE, related_name='videos')
+
+    def __str__(self):
+        return self.title

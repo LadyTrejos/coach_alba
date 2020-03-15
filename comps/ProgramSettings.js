@@ -3,6 +3,7 @@ import Router from "next/router";
 import api from "../api";
 import ModalProgram from "../comps/ModalProgram";
 import Cookies from "js-cookie";
+import styles from "../styles/styles.scss";
 import {
   Button,
   Menu,
@@ -21,7 +22,6 @@ function ProgramSettingsForm(props) {
   const [visible, setVisible] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [typeModal, setTypeModal] = useState(null);
   const { getFieldDecorator } = props.form;
 
   function toPrograms(e, id) {
@@ -29,10 +29,9 @@ function ProgramSettingsForm(props) {
     Router.push("/programs/[id]", `/programs/${id}`);
   }
 
-  function showModalModule(e, modal) {
+  function showModalModule(e) {
     // e.stopPropagation();
     setVisibleModal(true);
-    setTypeModal(modal);
   }
 
   function handleCancel(e) {
@@ -106,7 +105,7 @@ function ProgramSettingsForm(props) {
   const menu = id => (
     <Menu>
       <Menu.Item key="1">
-        <a onClick={e => showModalModule(e, "module")}>Nuevo módulo</a>
+        <a onClick={e => showModalModule(e)}>Nuevo módulo</a>
       </Menu.Item>
       <Menu.Item key="2">
         <a onClick={e => showModal(e)}>Cambiar nombre</a>
@@ -114,7 +113,7 @@ function ProgramSettingsForm(props) {
       <Menu.Divider />
       <Menu.Item key="3">
         <Popconfirm
-          title="¿Estás segura que deseas eliminar este programa?"
+          title="¿Eliminar?"
           onConfirm={e => deleteProgram(e, id)}
           onCancel={e => handleCancel(e)}
           okText="Sí"
@@ -171,7 +170,7 @@ function ProgramSettingsForm(props) {
               rules: [
                 {
                   required: true,
-                  message: "Ingresa el título del programa",
+                  message: "Ingresa el título",
                   whitespace: true
                 },
                 {
@@ -196,8 +195,9 @@ function ProgramSettingsForm(props) {
           visible={visibleModal}
           loadData={props.loadData}
           falseVisible={falseVisible}
-          typeModal={typeModal}
+          postTo="modules"
           id={props.id}
+          type="módulo"
           {...props}
         ></ModalProgram>
       ) : null}
