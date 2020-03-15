@@ -588,3 +588,19 @@ label {
 .panel {
   display: grid;
 }
+
+//videos
+
+.videoWrapper {
+
+  box-shadow: 0px 7px 19px 3px rgba(102, 102, 102, 0.4);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+
+  &:hover {
+    box-shadow: 0px 7px 19px 3px rgba(102, 102, 102, 0.9);
+
+    .data {
+      transform: translateY(0);
+    }
+  }
+}

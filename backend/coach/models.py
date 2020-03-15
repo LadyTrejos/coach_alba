@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Post(models.Model):
     picture = models.ImageField(upload_to="post_img")
-    title = models.CharField(max_length=120)
+    title = models.CharField(max_length=400)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(
@@ -86,7 +86,7 @@ class Post(models.Model):
 
 
 class Program(models.Model):
-    title = models.CharField(max_length=120)
+    title = models.CharField(max_length=400)
     crated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -94,8 +94,8 @@ class Program(models.Model):
 
 
 class Module(models.Model):
-    title = models.CharField(max_length=120)
-    crated_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=400)
+    created_at = models.DateTimeField(auto_now_add=True)
     father = models.ForeignKey(
         Program, on_delete=models.CASCADE, related_name='modules')
 
@@ -104,8 +104,8 @@ class Module(models.Model):
 
 
 class Video(models.Model):
-    title = models.CharField(max_length=120)
-    crated_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=400)
+    created_at = models.DateTimeField(auto_now_add=True)
     videofile = models.FileField(
         upload_to='videos/', null=True, verbose_name="")
     father = models.ForeignKey(

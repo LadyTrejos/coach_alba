@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import api from "../../../api";
+import styles from "../../../styles/styles.scss";
 import ReactPlayer from "react-player";
 
 import { Row, Typography, List, Skeleton } from "antd";
@@ -11,14 +12,17 @@ function Module(props) {
   const router = useRouter();
   const [video, setVideo] = useState(null);
   const [ready, setReady] = useState(false);
+  const [title, setTitle] = useState(null);
   // console.log("router.query.id", router.query.day);
 
   function loadData() {
     api
-      .get(`/api/videos/`)
+      .get(`api/modules/${router.query.module}/`)
       .then(res => {
-        setVideo(res);
+        // console.log("res modules: ", res);
+        setVideo(res.data.videos);
         setReady(true);
+        setTitle(res.data.title);
       })
       .catch(err => console.log("error al cargar los programas ", err));
   }
@@ -26,9 +30,7 @@ function Module(props) {
   return (
     <div>
       <Row justify="center" type="flex">
-        <Title level={2}>
-          Bienvenid@ al {router.query.day} de este programa
-        </Title>
+        <Title level={2}>{title}</Title>
       </Row>
 
       {ready ? (
@@ -44,7 +46,7 @@ function Module(props) {
               xxl: 3
             }}
             pagination={{ pageSize: 3, position: "bottom" }}
-            dataSource={video.data}
+            dataSource={video}
             renderItem={item => (
               <List.Item
                 actions={[
@@ -60,10 +62,14 @@ function Module(props) {
                 ]}
               >
                 <div
+                  className={styles.videoWrapper}
                   style={{
                     display: "flex",
-
-                    margin: "1rem"
+                    margin: "0 0.5rem 1rem 0.5rem",
+                    minHeight: "350px",
+                    minWidth: "250px",
+                    height: "50vh",
+                    width: "auto"
                   }}
                 >
                   <ReactPlayer
@@ -71,6 +77,8 @@ function Module(props) {
                     controls
                     autopause="true"
                     style={{
+                      height: "100%",
+                      width: "100%",
                       objectFit: "contain"
                     }}
                   />
