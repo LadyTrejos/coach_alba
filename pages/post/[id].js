@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import Router, { useRouter } from "next/router";
-import { Row, Typography, Col, Modal, Skeleton, Button } from "antd";
+import { Row, Modal, Skeleton, Button } from "antd";
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
 
 import styles from "../../styles/styles.scss";
 import api from "../../api";
 
-const { Text, Title } = Typography;
-
-export default function Post(props) {
+const Post = props => {
+  console.log(props);
   const { user } = props;
   const router = useRouter();
   const [visible, setVisible] = useState(null);
@@ -63,66 +62,59 @@ export default function Post(props) {
 
   return title ? (
     <div className="container">
-      <Row justify="center" type="flex">
-        <div
-          style={{
-            minWidth: "320px",
-            minHeight: "350px",
-            height: "40vh",
-            width: "auto",
-            margin: "1rem"
-          }}
-        >
-          <img
-            src={src}
-            style={{ width: "100%", height: "100%", objectFit: "contain" }}
-            alt="Imagen de la publicación"
-          />
+      <div className={styles.post}>
+        <div className={styles.post__img}>
+          <span className={styles.post__img__helper}></span>
+          <img src={src} alt="Imagen de la publicación" />
         </div>
-      </Row>
-      <Row justify="center" type="flex" style={{ paddingTop: "20px" }}>
-        <Title>{title}</Title>
-      </Row>
-      <Row justify="center" style={{ fontSize: "17px" }}>
-        <Col>
-          <Text style={{ wordWrap: "break-word" }}>
-            {ReactHtmlParser(description)}
-          </Text>
-        </Col>
-      </Row>
 
-      {user.is_admin ? (
-        <Row justify="center" type="flex" style={{ margin: "10px 0 20px 0" }}>
-          <Modal
-            title="Eliminar publicación"
-            visible={visible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            cancelText="Cancelar"
-            okText="Eliminar"
-          >
-            ¿Está segura que desea eliminar esta publicación?
-          </Modal>
-          <Button
-            type="danger"
-            onClick={() => showModal()}
-            loading={loadingDelete}
-          >
-            Eliminar publicación
-          </Button>
-          <Button
-            className={styles.defaultButton}
-            onClick={() => loadingEditFunct()}
-            loading={loadingEdit}
-          >
-            Editar publicación
-          </Button>
-        </Row>
-      ) : null}
+        <div className={styles.post__content}>
+          <h2 className={styles.post__title}>{title}</h2>
+          <div className={styles.post__text}>
+            {ReactHtmlParser(description)}
+          </div>
+        </div>
+
+        {user.is_admin ? (
+          <Row justify="center" type="flex" style={{ margin: "10px 0 20px 0" }}>
+            <Modal
+              title="Eliminar publicación"
+              visible={visible}
+              onOk={handleOk}
+              onCancel={handleCancel}
+              cancelText="Cancelar"
+              okText="Eliminar"
+            >
+              ¿Está segura que desea eliminar esta publicación?
+            </Modal>
+            <Button
+              type="danger"
+              onClick={() => showModal()}
+              loading={loadingDelete}
+            >
+              Eliminar publicación
+            </Button>
+            <Button
+              className={styles.defaultButton}
+              onClick={() => loadingEditFunct()}
+              loading={loadingEdit}
+            >
+              Editar publicación
+            </Button>
+          </Row>
+        ) : null}
+      </div>
     </div>
   ) : (
     <div className="container">
       <Skeleton active>{description == null ? loadData() : null} </Skeleton>
     </div>
   );
-}
+};
+
+Post.getInitialProps = async ({ query }) => {
+  const res = await api.get(`/api/post/${query.id}`);
+  return { data: res.data };
+};
+
+export default Post;

@@ -31,7 +31,7 @@ export default function Post(props) {
       return (
         <Button
           onClick={() => toCreate()}
-          className={styles.defaultButton}
+          className={`${styles.defaultButton} ml-4`}
           loading={loading}
         >
           Nueva publicación
