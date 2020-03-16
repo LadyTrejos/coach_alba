@@ -10,6 +10,12 @@ from django.contrib.auth import get_user_model
 UserModel = get_user_model()
 
 
+class VideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = '__all__'
+
+
 class CustomRegisterSerializer(RegisterSerializer):
     username = None
     email = serializers.EmailField(required=True)
@@ -76,6 +82,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={'input_type': 'password'})
+    # videos = VideoSerializer(many=True, read_only=True)
 
     class Meta:
         model = User

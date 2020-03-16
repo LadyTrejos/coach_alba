@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Router from "next/router";
 import api from "../api";
 import ModalProgram from "../comps/ModalProgram";
+import Delete from "../comps/Delete";
 import Cookies from "js-cookie";
 import styles from "../styles/styles.scss";
 import {
   Button,
   Menu,
   Dropdown,
-  Popconfirm,
   Icon,
   Form,
   Tooltip,
@@ -17,17 +17,10 @@ import {
 } from "antd";
 
 function ProgramSettingsForm(props) {
-  const [loadingExtra, setLoadingExtra] = useState(false);
-  const [deleteItem, setDeleteItem] = useState(-1);
   const [visible, setVisible] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const { getFieldDecorator } = props.form;
-
-  function toPrograms(e, id) {
-    e.stopPropagation();
-    Router.push("/programs/[id]", `/programs/${id}`);
-  }
 
   function showModalModule(e) {
     // e.stopPropagation();
@@ -39,28 +32,6 @@ function ProgramSettingsForm(props) {
     console.log("handle Cancel: ", e);
     setVisible(false);
     props.form.resetFields();
-  }
-
-  function deleteProgram(e, id) {
-    e.stopPropagation();
-    setLoadingExtra(true);
-    setDeleteItem(id);
-    console.log("Eliminar el programa seleccionado", id);
-    const csrftoken = Cookies.get("csrftoken");
-
-    api
-      .delete(`/api/programs/${id}`, {
-        headers: {
-          "X-CSRFToken": csrftoken
-        }
-      })
-      .then(res => {
-        props.loadData();
-        // Router.push("/programs");
-        setLoadingExtra(false);
-        setLoading(true);
-      })
-      .catch(err => console.log(err));
   }
 
   function handleEdit(event, id) {
@@ -112,24 +83,12 @@ function ProgramSettingsForm(props) {
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3">
-        <Popconfirm
-          title="¿Eliminar?"
-          onConfirm={e => deleteProgram(e, id)}
-          onCancel={e => handleCancel(e)}
-          okText="Sí"
-          cancelText="No"
-          placement={"left" /*cambiar esto cuando se pone formato celular */}
-        >
-          <Button
-            type="default"
-            loading={loadingExtra && deleteItem == id}
-            onClick={event => {
-              event.stopPropagation();
-            }}
-          >
-            Eliminar
-          </Button>
-        </Popconfirm>
+        <Delete
+          type="programs"
+          handleCancel={handleCancel}
+          loadData={props.loadData}
+          id={id}
+        />
       </Menu.Item>
     </Menu>
   );
