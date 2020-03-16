@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import Router from "next/router";
+import Link from "next/link";
 import style from "../../styles/styles.scss";
 import api from "../../api";
 import ProgramSettings from "../../comps/ProgramSettings";
 import ModalProgram from "../../comps/ModalProgram";
-import { Collapse, Row, Button, Col, Typography, Form, Skeleton } from "antd";
+import {
+  Collapse,
+  Row,
+  Button,
+  Col,
+  Typography,
+  Form,
+  Skeleton,
+  Divider
+} from "antd";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-let a = {
-  day: ["Día 1", "Día 2"]
-};
+let cont = 0;
 
 let Data = {};
 
@@ -19,14 +26,12 @@ let Data = {};
 function IndexProgram(props) {
   const { user } = props;
   const [visible, setVisible] = useState(false);
-  const [typeModal, setTypeModal] = useState(null);
 
   const [programs, setPrograms] = useState(null);
   const [ready, setReady] = useState(false);
 
-  function showModal(e, modal) {
+  function showModal(e) {
     setVisible(true);
-    setTypeModal(modal);
   }
 
   function loadData() {
@@ -41,10 +46,6 @@ function IndexProgram(props) {
         props.form.resetFields();
       })
       .catch(err => console.log("error al cargar los programas ", err));
-  }
-
-  function daySelected(day) {
-    Router.push("/programs/day/[day]", `/programs/day/${day}`);
   }
 
   const genExtra = (id, title) => (
@@ -67,7 +68,8 @@ function IndexProgram(props) {
           visible={visible}
           loadData={loadData}
           falseVisible={falseVisible}
-          typeModal={typeModal}
+          type="programa"
+          postTo="programs"
           {...props}
         ></ModalProgram>
       ) : null}
@@ -80,33 +82,36 @@ function IndexProgram(props) {
           <Title> Programas</Title>
         </Row>
         {user.is_admin ? (
-          <Button type="primary" onClick={e => showModal(e, "program")}>
+          <Button type="primary" onClick={e => showModal(e)}>
             Nuevo programa
           </Button>
         ) : null}
         <br />
         <br />
         {ready ? (
-          <Collapse accordion style={{ wordWrap: "break-word" }}>
-            {programs.data.map(data => {
+          <Collapse
+            accordion
+            style={{ wordWrap: "break-word" }}
+            defaultActiveKey={["0"]}
+          >
+            {programs.data.map((data, idx) => {
               return (
                 <Panel
                   header={`${data.title} `}
-                  key={`${data.id}`}
+                  key={idx}
                   extra={user.is_admin ? genExtra(data.id, data.title) : null}
                   className={user.is_admin ? style.panel : null}
                 >
-                  {data.modules.map(module => {
+                  {data.modules.map((module, index) => {
                     return (
-                      <div>
-                        <Button
-                          type="primary"
-                          onClick={() => daySelected(module.id)}
+                      <div key={module.id}>
+                        <Link
+                          href="/programs/module/[module]"
+                          as={`/programs/module/${module.id}`}
                         >
-                          {module.title}
-                        </Button>
-                        <br />
-                        <br />
+                          <a>{module.title}</a>
+                        </Link>
+                        {index < data.modules.length - 1 ? <hr /> : null}
                       </div>
                     );
                   })}

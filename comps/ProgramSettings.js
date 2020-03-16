@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import Router from "next/router";
 import api from "../api";
 import ModalProgram from "../comps/ModalProgram";
+import Delete from "../comps/Delete";
 import Cookies from "js-cookie";
+import styles from "../styles/styles.scss";
 import {
   Button,
   Menu,
   Dropdown,
-  Popconfirm,
   Icon,
   Form,
   Tooltip,
@@ -16,23 +17,14 @@ import {
 } from "antd";
 
 function ProgramSettingsForm(props) {
-  const [loadingExtra, setLoadingExtra] = useState(false);
-  const [deleteItem, setDeleteItem] = useState(-1);
   const [visible, setVisible] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [typeModal, setTypeModal] = useState(null);
   const { getFieldDecorator } = props.form;
 
-  function toPrograms(e, id) {
-    e.stopPropagation();
-    Router.push("/programs/[id]", `/programs/${id}`);
-  }
-
-  function showModalModule(e, modal) {
+  function showModalModule(e) {
     // e.stopPropagation();
     setVisibleModal(true);
-    setTypeModal(modal);
   }
 
   function handleCancel(e) {
@@ -40,28 +32,6 @@ function ProgramSettingsForm(props) {
     console.log("handle Cancel: ", e);
     setVisible(false);
     props.form.resetFields();
-  }
-
-  function deleteProgram(e, id) {
-    e.stopPropagation();
-    setLoadingExtra(true);
-    setDeleteItem(id);
-    console.log("Eliminar el programa seleccionado", id);
-    const csrftoken = Cookies.get("csrftoken");
-
-    api
-      .delete(`/api/programs/${id}`, {
-        headers: {
-          "X-CSRFToken": csrftoken
-        }
-      })
-      .then(res => {
-        props.loadData();
-        // Router.push("/programs");
-        setLoadingExtra(false);
-        setLoading(true);
-      })
-      .catch(err => console.log(err));
   }
 
   function handleEdit(event, id) {
@@ -106,31 +76,19 @@ function ProgramSettingsForm(props) {
   const menu = id => (
     <Menu>
       <Menu.Item key="1">
-        <a onClick={e => showModalModule(e, "module")}>Nuevo módulo</a>
+        <a onClick={e => showModalModule(e)}>Nuevo módulo</a>
       </Menu.Item>
       <Menu.Item key="2">
         <a onClick={e => showModal(e)}>Cambiar nombre</a>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3">
-        <Popconfirm
-          title="¿Estás segura que deseas eliminar este programa?"
-          onConfirm={e => deleteProgram(e, id)}
-          onCancel={e => handleCancel(e)}
-          okText="Sí"
-          cancelText="No"
-          placement={"left" /*cambiar esto cuando se pone formato celular */}
-        >
-          <Button
-            type="default"
-            loading={loadingExtra && deleteItem == id}
-            onClick={event => {
-              event.stopPropagation();
-            }}
-          >
-            Eliminar
-          </Button>
-        </Popconfirm>
+        <Delete
+          type="programs"
+          handleCancel={handleCancel}
+          loadData={props.loadData}
+          id={id}
+        />
       </Menu.Item>
     </Menu>
   );
@@ -171,7 +129,7 @@ function ProgramSettingsForm(props) {
               rules: [
                 {
                   required: true,
-                  message: "Ingresa el título del programa",
+                  message: "Ingresa el título",
                   whitespace: true
                 },
                 {
@@ -196,8 +154,9 @@ function ProgramSettingsForm(props) {
           visible={visibleModal}
           loadData={props.loadData}
           falseVisible={falseVisible}
-          typeModal={typeModal}
+          postTo="modules"
           id={props.id}
+          type="módulo"
           {...props}
         ></ModalProgram>
       ) : null}
