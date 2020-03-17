@@ -11,9 +11,13 @@ function Header(props) {
   const { user } = props;
   const [loading, setLoading] = useState(false);
 
+  function falseLoading() {
+    setLoading(false);
+  }
+
   function logoutUserFunct() {
     setLoading(true);
-    logoutUser();
+    logoutUser(falseLoading);
   }
   return (
     <Navbar

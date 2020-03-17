@@ -46,7 +46,7 @@ function CreatePost(props) {
 
   function handleSubmit(event, fileRef) {
     const file = fileRef.current.state.selectedFile;
-    !file ? setError("Ingresa un archivo") : setError(null);
+    !file ? setError("Ingresa una imagen") : setError(null);
     !description
       ? setErrorDescription("Ingresa el enunciado del post")
       : setErrorDescription(null);
@@ -111,7 +111,7 @@ function CreatePost(props) {
 
             <Row justify="center" type="flex">
               <Form.Item>
-                <Files ref={fileRef}></Files>
+                <Files ref={fileRef} upload="image"></Files>
                 {error ? (
                   <Alert
                     message={error}

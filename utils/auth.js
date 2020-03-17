@@ -51,7 +51,8 @@ export const authInitialProps = () => ({ ctx }) => {
   return { auth };
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async loading => {
+  loading();
   if (typeof window !== "undefined") {
     window[WINDOW_USER_SCRIPT_VARIABLE] = {};
   }

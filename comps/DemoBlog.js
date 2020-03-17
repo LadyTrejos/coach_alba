@@ -61,11 +61,13 @@ export default function Post(props) {
           xxl: 3
         }}
         pagination={
-          props.pagination
-            ? {
-                pageSize: 6,
-                position: null
-              }
+          props.post.length > 6
+            ? props.pagination
+              ? {
+                  pageSize: 6,
+                  position: null
+                }
+              : null
             : null
         }
         dataSource={props.demo ? props.post.slice(0, 3) : props.post}
@@ -114,7 +116,7 @@ export default function Post(props) {
                       <a className={styles.postTitle}>{item.title}</a>
                     </Link>
                     <div className={styles.blockWithText}>
-                      <p class={styles.readMore}>
+                      <p className={styles.readMore}>
                         <Link href="/post/[id]" as={`/post/${item.id}`}>
                           <a className={styles.readMoreButton}>Leer más</a>
                         </Link>
