@@ -21,7 +21,6 @@ class File extends Component {
     const { upload } = this.props;
     return (
       <div>
-        {console.log("--")}
         <input
           title="Subir imagen"
           type="file"

@@ -40,7 +40,7 @@ export default function Delete(props) {
       onCancel={e => props.handleCancel(e)}
       okText="Sí"
       cancelText="No"
-      placement={"left" /*cambiar esto cuando se pone formato celular */}
+      placement={"left"}
     >
       <Button
         type="default"

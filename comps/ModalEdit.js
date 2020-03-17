@@ -28,17 +28,13 @@ function Edit(props) {
 
         editTo == "programs"
           ? (programData = JSON.stringify(values))
-          : editTo == "modules"
-          ? (programData = JSON.stringify({
+          : (programData = JSON.stringify({
               title: values.title,
               father: props.father
-            }))
-          : null;
-
-        console.log("programData: ", programData);
+            }));
 
         api
-          .put(`/api/${editTo}/${id}/`, programData, {
+          .patch(`/api/${editTo}/${id}/`, programData, {
             headers: {
               "Content-type": "application/json",
               "X-CSRFToken": csrftoken
