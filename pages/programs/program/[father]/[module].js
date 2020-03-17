@@ -22,7 +22,7 @@ function Module(props) {
   const [visible, setVisible] = useState(false);
 
   function handleCancel(e) {
-    console.log("handle Cancel: ", e);
+    console.log("handleCancel: ", e);
   }
 
   function loadData() {

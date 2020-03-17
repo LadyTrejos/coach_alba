@@ -16,7 +16,6 @@ function ProgramSettingsForm(props) {
 
   function handleCancel(e) {
     e.stopPropagation();
-    console.log("handle Cancel: ", e);
     setVisible(false);
     props.form.resetFields();
   }

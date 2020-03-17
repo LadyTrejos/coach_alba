@@ -27,7 +27,6 @@ class CountrySelector extends React.Component {
     let data = country.getAllCountries();
 
     this.countryData.countries = data;
-    // console.log("countryData: ", this.countryData.countries);
 
     let c = data.map(x => {
       return x.phonecode;
@@ -84,7 +83,6 @@ class CountrySelector extends React.Component {
   };
 
   render() {
-    // console.log("CS phoneCodeItems", this.state.phonecodeItems);
     let countryItems = this.countryData.countries.map(count => (
       <Option key={count.id} value={`${count.id}>${count.name}`}>
         {" "}

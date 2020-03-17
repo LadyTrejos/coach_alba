@@ -8,7 +8,6 @@ import styles from "../../styles/styles.scss";
 import api from "../../api";
 
 const Post = props => {
-  console.log(props);
   const { user } = props;
   const router = useRouter();
   const [visible, setVisible] = useState(null);

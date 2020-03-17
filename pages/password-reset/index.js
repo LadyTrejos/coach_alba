@@ -15,7 +15,6 @@ function ForgotPasswordForm(props) {
     const csrftoken = Cookies.get("csrftoken");
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         api
           .post(`/rest-auth/password/reset/`, JSON.stringify(values), {
             headers: {

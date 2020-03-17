@@ -53,7 +53,6 @@ function CreatePost(props) {
 
     event.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
-      console.log(values);
       if (!err && file && description) {
         setLoading(true);
         let postData = new FormData();

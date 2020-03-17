@@ -31,7 +31,6 @@ function EditPost(props) {
   const [editorLoaded, setEditorLoaded] = useState(false);
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
-  const [error, setError] = useState(null);
   const [errorDescription, setErrorDescription] = useState(null);
   const [ready, setReady] = useState(false);
   const [id, setId] = useState(null);
@@ -51,24 +50,22 @@ function EditPost(props) {
 
   function handleSubmit(event, fileRef) {
     const file = fileRef.current.state.selectedFile;
-    !file ? setError("Ingresa un archivo") : setError(null);
     !description
       ? setErrorDescription("Ingresa el enunciado del post")
       : setErrorDescription(null);
 
     event.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
-      if (!err && file && description) {
+      if (!err && description) {
         setLoading(true);
         let postData = new FormData();
-        postData.append("picture", file);
+        file ? postData.append("picture", file) : null;
         postData.append("title", values.title);
-        console.log("postData: ", postData.get("title"));
         postData.append("description", description);
         postData.append("owner", user.id);
         const csrftoken = Cookies.get("csrftoken");
         api
-          .put(`/api/post/${id}/`, postData, {
+          .patch(`/api/post/${id}/`, postData, {
             headers: {
               "Content-type": "multipart/form-data",
               "X-CSRFToken": csrftoken
@@ -125,14 +122,6 @@ function EditPost(props) {
             <Row justify="center" type="flex">
               <Form.Item>
                 <Files ref={fileRef}></Files>
-                {error ? (
-                  <Alert
-                    message={error}
-                    type="error"
-                    closable
-                    onClose={() => onClose()}
-                  />
-                ) : null}
               </Form.Item>
             </Row>
             <Row>

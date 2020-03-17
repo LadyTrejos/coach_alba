@@ -19,7 +19,6 @@ function ModalCreateForm(props) {
 
   function handleCancel(e) {
     e.stopPropagation();
-    console.log("props: ", props);
     props.falseVisibleModal();
   }
   function onClose() {

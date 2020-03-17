@@ -11,7 +11,6 @@ class File extends Component {
   }
 
   fileSelectedHandler = event => {
-    console.log(event.target.files);
     this.setState({
       selectedFile: event.target.files[0]
     });

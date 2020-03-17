@@ -10,7 +10,6 @@ export default function Delete(props) {
   const [deleteItem, setDeleteItem] = useState(-1);
 
   function deleteElement(e, id) {
-    console.log(`Eliminar el ${type} seleccionado`, id);
     e.stopPropagation();
     setLoading(true);
     setDeleteItem(id);
