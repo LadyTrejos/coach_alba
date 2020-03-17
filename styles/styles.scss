@@ -415,9 +415,6 @@ body {
   }
 }
 
-
-
-
 // End DemoBlog styles
 
 // Footer
@@ -435,6 +432,91 @@ body {
   letter-spacing: 1px;
   background: rgba($color: white, $alpha: 0.2);
   border-radius: 10px;
+}
+
+// Blog post styles
+
+.post {
+  position: relative;
+  max-width: 800px;
+  margin: 20px auto;
+  background: #fff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  padding: 25px;
+  border-radius: 25px;
+  height: fit-content;
+  transition: all .3s;
+
+  @media screen and (max-width: 992px) {
+    max-width: 680px;
+    height: fit-content;
+  }
+
+  @media screen and (max-width: 768px) {
+    min-height: 500px;
+    height: fit-content;
+    margin: 80px auto;
+  }
+
+
+  @media screen and (max-height: 500px) and (min-width: 992px) {
+    height: fit-content;
+  }
+
+  &__img {
+    // width: 40%;
+    background-color: white;
+    min-width: 250px;
+    min-height: 250px;
+    height: 40vh;
+    width: auto;
+    margin: 1rem;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+
+    &__helper {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      border-radius: 20px;
+      transition: all .3s;
+      vertical-align: middle;
+    }
+  }
+
+  &__content {
+    // width: 60%;
+    margin: 0 2rem;
+
+    @media screen and (max-width: 992px) {
+      // width: 55%;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 0 30px;
+    }
+
+    @media screen and (max-width: 576px) {
+      padding: 0
+    }
+
+    >* {
+      // transform: translateY(25px);
+    }
+  }
+
+  &__title {
+    color: $indigo;
+    text-align: center;
+  }
+
 }
 
 //login

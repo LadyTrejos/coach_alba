@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BackTop, Skeleton } from "antd";
+import { BackTop, Skeleton, Row } from "antd";
 
 import api from "../api";
 import DemoBlog from "../comps/DemoBlog";
@@ -15,9 +15,11 @@ export default function Blog(props) {
   }
 
   return (
-    <div style={{ padding: "10px 0 50px 0" }}>
+    <div className="container">
       <BackTop />
-      <h1 className={styles.sectionTitle}>Blog</h1>
+      <Row justify="center" type="flex" style={{ paddingTop: "20px" }}>
+        <h1 className={styles.sectionTitle}>Blog</h1>
+      </Row>
       {data ? (
         <DemoBlog post={data} demo={false} pagination={true} {...props} />
       ) : (
