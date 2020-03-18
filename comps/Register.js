@@ -80,7 +80,6 @@ class Component_register extends React.Component {
     const { country, state, city } = this.selector.state;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        //console.log("values: ", values);
         this.setState(
           {
             register: {
@@ -93,7 +92,6 @@ class Component_register extends React.Component {
           () => {
             const userData = JSON.stringify(this.state.register);
             const csrftoken = Cookies.get("csrftoken");
-            console.log("userData: ", userData);
 
             api
               .post(`/rest-auth/registration/`, userData, {
@@ -111,7 +109,6 @@ class Component_register extends React.Component {
                   var [key, value] = Object.entries(item)[0];
                   return value;
                 });
-                console.log("ErrorsRegister: ", errorsRegister);
                 this.setState(
                   {
                     ...this.state,
@@ -174,7 +171,6 @@ class Component_register extends React.Component {
   };
   validateResidence = (rule, value, callback) => {
     const selector = this.countryRef.current;
-    console.log("rule: ", rule, " ,value: ", value);
 
     if (
       selector.state.city === "" ||

@@ -28,7 +28,6 @@ function PasswordResetForm(props) {
           uid: router.query.uid,
           token: router.query.token
         });
-        console.log("newData: ", newData);
         const csrftoken = Cookies.get("csrftoken");
         api
           .post(`/rest-auth/password/reset/confirm/`, newData, {
@@ -81,7 +80,6 @@ function PasswordResetForm(props) {
 
   return (
     <div className="row">
-      {console.log("--> ", router.query)}
       <div className={`offset-md-3 col-md-6 ${styles.container}`}>
         <div className="row">
           <div className={`col-md-12 ${styles.login_form}`}>

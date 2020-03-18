@@ -3,7 +3,7 @@ import Link from "next/link";
 import style from "../../styles/styles.scss";
 import api from "../../api";
 import ProgramSettings from "../../comps/ProgramSettings";
-import ModalProgram from "../../comps/ModalProgram";
+import ModalCreate from "../../comps/ModalCreate";
 import {
   Collapse,
   Row,
@@ -54,24 +54,28 @@ function IndexProgram(props) {
       loadData={loadData}
       {...props}
       title={title}
+      editTo="programs"
+      create="modules"
+      type="programa"
+      newSon="módulo"
     ></ProgramSettings>
   );
 
-  function falseVisible() {
+  function falseVisibleModal() {
     setVisible(false);
   }
 
   return (
     <Row style={{ padding: "20px 0" }}>
       {visible ? (
-        <ModalProgram
+        <ModalCreate
           visible={visible}
           loadData={loadData}
-          falseVisible={falseVisible}
-          type="programa"
+          falseVisibleModal={falseVisibleModal}
+          newSon="programa"
           postTo="programs"
           {...props}
-        ></ModalProgram>
+        ></ModalCreate>
       ) : null}
 
       <Col
@@ -106,8 +110,8 @@ function IndexProgram(props) {
                     return (
                       <div key={module.id}>
                         <Link
-                          href="/programs/module/[module]"
-                          as={`/programs/module/${module.id}`}
+                          href="/programs/program/[father]/[module]"
+                          as={`/programs/program/${data.id}/${module.id}`}
                         >
                           <a>{module.title}</a>
                         </Link>

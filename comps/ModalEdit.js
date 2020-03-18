@@ -1,42 +1,40 @@
 import React, { useState } from "react";
-
-import Cookies from "js-cookie";
 import api from "../api";
+import Cookies from "js-cookie";
 
-import { Modal, Button, Form, Tooltip, Icon, Input } from "antd";
+import { Modal, Input, Button, Form, Tooltip, Icon } from "antd";
 
-function ModalProgramForm(props) {
+function Edit(props) {
   const [visible, setVisible] = useState(props.visible);
   const [loading, setLoading] = useState(false);
+
+  const { id, title, editTo, type } = props;
   const { getFieldDecorator } = props.form;
-  const { type, postTo } = props;
 
   function handleCancel(e) {
     e.stopPropagation();
     props.falseVisible();
-    setVisible(false);
   }
 
-  function handleSubmit(event) {
+  function handleEdit(event, id) {
     event.preventDefault();
     event.stopPropagation();
+
+    let programData = null;
     const csrftoken = Cookies.get("csrftoken");
-    let programData = {};
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         setLoading(true);
 
-        if (postTo == "programs") {
-          programData = JSON.stringify(values);
-        } else if (postTo == "modules") {
-          programData = JSON.stringify({
-            title: values.title,
-            father: props.id
-          });
-        }
+        editTo == "programs"
+          ? (programData = JSON.stringify(values))
+          : (programData = JSON.stringify({
+              title: values.title,
+              father: props.father
+            }));
 
         api
-          .post(`/api/${postTo}/`, programData, {
+          .patch(`/api/${editTo}/${id}/`, programData, {
             headers: {
               "Content-type": "application/json",
               "X-CSRFToken": csrftoken
@@ -44,9 +42,11 @@ function ModalProgramForm(props) {
           })
 
           .then(res => {
-            //mirar cómo trae el 'res' el título
-            props.loadData();
+            setVisible(false);
+            setLoading(false);
             props.falseVisible();
+            props.loadData();
+            props.form.resetFields();
           })
           .catch(err => {
             console.log(err);
@@ -57,32 +57,30 @@ function ModalProgramForm(props) {
 
   return (
     <Modal
-      title={`Título del nuevo ${type}`}
+      title={`Cambiar título del ${type}`}
       visible={visible}
-      onOk={e => handleSubmit(e)}
-      onCancel={handleCancel}
+      onOk={e => handleEdit(e, props.id)}
+      onCancel={e => handleCancel(e)}
       footer={[
-        <Button key="back" onClick={handleCancel}>
+        <Button key="back" onClick={e => handleCancel(e)}>
           Cancelar
         </Button>,
         <Button
           key="submit"
           type="primary"
           loading={loading}
-          onClick={e => handleSubmit(e)}
+          onClick={e => handleEdit(e, id)}
         >
           Aceptar
         </Button>
       ]}
     >
-      <Form onSubmit={e => handleSubmit(e)}>
+      <Form>
         <Form.Item
           label={
             <span>
               Título&nbsp;
-              <Tooltip
-                title={`No uses dos espacios seguidos ni al final del título del ${type}`}
-              >
+              <Tooltip title="No uses dos espacios seguidos ni al final del título">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
@@ -93,7 +91,7 @@ function ModalProgramForm(props) {
             rules: [
               {
                 required: true,
-                message: `Ingresa el título`,
+                message: "Ingresa el título",
                 whitespace: true
               },
               {
@@ -105,7 +103,8 @@ function ModalProgramForm(props) {
             <Input
               type="text"
               size="large"
-              placeholder="Título"
+              placeholder={title}
+              onClick={e => e.stopPropagation()}
               onChange={e => e.stopPropagation()}
             />
           )}
@@ -115,5 +114,5 @@ function ModalProgramForm(props) {
   );
 }
 
-const ModalProgram = Form.create({ name: "ModalProgram" })(ModalProgramForm);
-export default ModalProgram;
+const ModalEdit = Form.create({ name: "ModalEdit" })(Edit);
+export default ModalEdit;

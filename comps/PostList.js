@@ -61,11 +61,13 @@ export default function PostList(props) {
           xxl: 3
         }}
         pagination={
-          props.pagination
-            ? {
-                pageSize: 6,
-                position: null
-              }
+          props.post.length > 6
+            ? props.pagination
+              ? {
+                  pageSize: 6,
+                  position: null
+                }
+              : null
             : null
         }
         dataSource={props.demo ? props.post.slice(0, 3) : props.post}

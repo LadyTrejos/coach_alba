@@ -1,26 +1,13 @@
 import React, { useState } from "react";
-import Router from "next/router";
-import api from "../api";
-import ModalProgram from "../comps/ModalProgram";
+import ModalCreate from "./ModalCreate";
+import ModalEdit from "./ModalEdit";
 import Delete from "../comps/Delete";
-import Cookies from "js-cookie";
-import styles from "../styles/styles.scss";
-import {
-  Button,
-  Menu,
-  Dropdown,
-  Icon,
-  Form,
-  Tooltip,
-  Modal,
-  Input
-} from "antd";
+import { Menu, Dropdown, Icon, Form } from "antd";
 
 function ProgramSettingsForm(props) {
   const [visible, setVisible] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { getFieldDecorator } = props.form;
+  const { editTo, type, newSon, create } = props;
 
   function showModalModule(e) {
     // e.stopPropagation();
@@ -29,54 +16,26 @@ function ProgramSettingsForm(props) {
 
   function handleCancel(e) {
     e.stopPropagation();
-    console.log("handle Cancel: ", e);
     setVisible(false);
     props.form.resetFields();
-  }
-
-  function handleEdit(event, id) {
-    event.preventDefault();
-    event.stopPropagation();
-    const csrftoken = Cookies.get("csrftoken");
-    props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        setLoading(true);
-        const programData = JSON.stringify(values);
-        console.log("programData: ", programData);
-
-        api
-          .put(`/api/programs/${id}/`, programData, {
-            headers: {
-              "Content-type": "application/json",
-              "X-CSRFToken": csrftoken
-            }
-          })
-
-          .then(res => {
-            setVisible(false);
-            setLoading(false);
-            props.loadData();
-            props.form.resetFields();
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-    });
   }
 
   function showModal() {
     setVisible(true);
   }
 
-  function falseVisible() {
+  function falseVisibleModal() {
     setVisibleModal(false);
+  }
+
+  function falseVisible() {
+    setVisible(false);
   }
 
   const menu = id => (
     <Menu>
       <Menu.Item key="1">
-        <a onClick={e => showModalModule(e)}>Nuevo módulo</a>
+        <a onClick={e => showModalModule(e)}>{`Nuevo ${newSon}`}</a>
       </Menu.Item>
       <Menu.Item key="2">
         <a onClick={e => showModal(e)}>Cambiar nombre</a>
@@ -84,7 +43,7 @@ function ProgramSettingsForm(props) {
       <Menu.Divider />
       <Menu.Item key="3">
         <Delete
-          type="programs"
+          type={editTo}
           handleCancel={handleCancel}
           loadData={props.loadData}
           id={id}
@@ -94,71 +53,28 @@ function ProgramSettingsForm(props) {
   );
   return (
     <div>
-      <Modal
-        title="Cambiar título del programa"
-        visible={visible}
-        onOk={e => handleEdit(e, props.id)}
-        onCancel={e => handleCancel(e)}
-        footer={[
-          <Button key="back" onClick={e => handleCancel(e)}>
-            Cancelar
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={e => handleEdit(e, props.id)}
-          >
-            Aceptar
-          </Button>
-        ]}
-      >
-        <Form>
-          <Form.Item
-            label={
-              <span>
-                Título&nbsp;
-                <Tooltip title="No uses dos espacios seguidos ni al final del título">
-                  <Icon type="question-circle-o" />
-                </Tooltip>
-              </span>
-            }
-            hasFeedback
-          >
-            {getFieldDecorator("title", {
-              rules: [
-                {
-                  required: true,
-                  message: "Ingresa el título",
-                  whitespace: true
-                },
-                {
-                  pattern: /^(?=.{1,1000}$)([a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.¿]+[\s(?!\s)]?)*[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.?]$/,
-                  message: "Título no válido"
-                }
-              ]
-            })(
-              <Input
-                type="text"
-                size="large"
-                placeholder={props.title}
-                onClick={e => e.stopPropagation()}
-                onChange={e => e.stopPropagation()}
-              />
-            )}
-          </Form.Item>
-        </Form>
-      </Modal>
+      {visible ? (
+        <ModalEdit
+          visible={visible}
+          editTo={editTo}
+          id={props.id}
+          title={props.title}
+          falseVisible={falseVisible}
+          loadData={props.loadData}
+          type={type}
+          father={props.father}
+        />
+      ) : null}
       {visibleModal ? (
-        <ModalProgram
+        <ModalCreate
           visible={visibleModal}
           loadData={props.loadData}
-          falseVisible={falseVisible}
-          postTo="modules"
+          falseVisibleModal={falseVisibleModal}
+          postTo={create}
           id={props.id}
-          type="módulo"
+          newSon={newSon}
           {...props}
-        ></ModalProgram>
+        ></ModalCreate>
       ) : null}
       <Dropdown
         overlay={menu(props.id)}

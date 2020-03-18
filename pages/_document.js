@@ -7,9 +7,6 @@ class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const props = await Document.getInitialProps(ctx);
     const userData = await getServerSideToken(ctx);
-    // const { inspect } = require("util");
-    // console.log(inspect(ctx));
-    // console.log(ctx.req.headers.cookie);
     return { ...props, userData };
   }
   render() {

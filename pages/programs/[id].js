@@ -8,7 +8,6 @@ const { Title } = Typography;
 
 function Program(props) {
   const router = useRouter();
-  console.log(router.query.title);
   return (
     <Row justify="center" type="flex">
       <Title> {router.query.id} </Title>;

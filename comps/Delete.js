@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Button, Popconfirm } from "antd";
+import Router from "next/router";
 import Cookies from "js-cookie";
 import api from "../api";
 
 export default function Delete(props) {
   const { type, id } = props;
-  const [loadingExtra, setLoadingExtra] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [deleteItem, setDeleteItem] = useState(-1);
 
   function deleteElement(e, id) {
-    console.log(`Eliminar el ${type} seleccionado`, id);
     e.stopPropagation();
-    setLoadingExtra(true);
+    setLoading(true);
     setDeleteItem(id);
     const csrftoken = Cookies.get("csrftoken");
 
@@ -22,8 +22,12 @@ export default function Delete(props) {
         }
       })
       .then(res => {
-        props.loadData();
-        setLoadingExtra(false);
+        if (type == "modules") {
+          Router.push("/programs");
+        } else {
+          props.loadData();
+        }
+        setLoading(false);
       })
       .catch(err => console.log(err));
   }
@@ -35,11 +39,11 @@ export default function Delete(props) {
       onCancel={e => props.handleCancel(e)}
       okText="Sí"
       cancelText="No"
-      placement={"left" /*cambiar esto cuando se pone formato celular */}
+      placement={"left"}
     >
       <Button
         type="default"
-        loading={loadingExtra && deleteItem == id}
+        loading={loading && deleteItem == id}
         onClick={event => {
           event.stopPropagation();
         }}
