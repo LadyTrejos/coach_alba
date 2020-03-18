@@ -47,6 +47,7 @@ export const getUserScript = user => {
 };
 
 export const authInitialProps = isProtectedRoute => isAdminRoute => ctx => {
+  console.log("entra a auth");
   const { req = {} } = ctx;
   // const { inspect } = require("util");
   // console.log(inspect(ctx));
@@ -54,21 +55,29 @@ export const authInitialProps = isProtectedRoute => isAdminRoute => ctx => {
   const currentPath = req ? req.url : window.location.pathname;
   const user = auth.user;
   const isAnonymous = !user;
+
   if (isProtectedRoute && isAnonymous && currentPath !== "/ingresar") {
-    return redirectUser(ctx.res, "/login");
+    console.log("ingresar");
+    return redirectUser(ctx.res, "/ingresar");
   } else if (isProtectedRoute && isAdminRoute && !user.is_admin) {
+    console.log("programs");
     return redirectUser(ctx.res, "/programs");
   }
+
+  console.log("ninguno");
   return { auth };
 };
 
 export const redirectUser = (res, path) => {
   if (res) {
-    console.log("res ---->", res);
-    res.redirect(302, path);
-    res.finished = true;
+    console.log(path);
+    res.writeHead(302, {
+      Location: path
+    });
+    res.end();
     return {};
   }
+  console.log(path);
   Router.replace(path);
   return {};
 };
