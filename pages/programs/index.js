@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import Header from "../../comps/Header";
 import style from "../../styles/styles.scss";
 import api from "../../api";
 import ProgramSettings from "../../comps/ProgramSettings";
 import ModalCreate from "../../comps/ModalCreate";
+import { authInitialProps } from "../../utils/auth";
 import {
   Collapse,
   Row,
@@ -18,17 +20,12 @@ import {
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-let cont = 0;
-
-let Data = {};
-
 //funcion principal
 function IndexProgram(props) {
-  const { user } = props;
+  const { user = {} } = props.auth || {};
+  const { data } = props;
   const [visible, setVisible] = useState(false);
-
-  const [programs, setPrograms] = useState(null);
-  const [ready, setReady] = useState(false);
+  const [programs, setPrograms] = useState(data);
 
   function showModal(e) {
     setVisible(true);
@@ -38,8 +35,7 @@ function IndexProgram(props) {
     api
       .get(`/api/programs/`)
       .then(res => {
-        setPrograms(res);
-        setReady(true);
+        setPrograms(res.data);
       })
       .then(res => {
         setVisible(false);
@@ -67,6 +63,7 @@ function IndexProgram(props) {
 
   return (
     <Row style={{ padding: "20px 0" }}>
+      <Header user={user} />
       {visible ? (
         <ModalCreate
           visible={visible}
@@ -92,46 +89,48 @@ function IndexProgram(props) {
         ) : null}
         <br />
         <br />
-        {ready ? (
-          <Collapse
-            accordion
-            style={{ wordWrap: "break-word" }}
-            defaultActiveKey={["0"]}
-          >
-            {programs.data.map((data, idx) => {
-              return (
-                <Panel
-                  header={`${data.title} `}
-                  key={idx}
-                  extra={user.is_admin ? genExtra(data.id, data.title) : null}
-                  className={user.is_admin ? style.panel : null}
-                >
-                  {data.modules.map((module, index) => {
-                    return (
-                      <div key={module.id}>
-                        <Link
-                          href="/programs/program/[father]/[module]"
-                          as={`/programs/program/${data.id}/${module.id}`}
-                        >
-                          <a>{module.title}</a>
-                        </Link>
-                        {index < data.modules.length - 1 ? <hr /> : null}
-                      </div>
-                    );
-                  })}
-                </Panel>
-              );
-            })}
-          </Collapse>
-        ) : (
-          <div className="container">
-            <Skeleton active>{ready == false ? loadData() : null}</Skeleton>
-          </div>
-        )}
+
+        <Collapse
+          accordion
+          style={{ wordWrap: "break-word" }}
+          defaultActiveKey={["0"]}
+        >
+          {programs.map((data, idx) => {
+            return (
+              <Panel
+                header={`${data.title} `}
+                key={idx}
+                extra={user.is_admin ? genExtra(data.id, data.title) : null}
+                className={user.is_admin ? style.panel : null}
+              >
+                {data.modules.map((module, index) => {
+                  return (
+                    <div key={module.id}>
+                      <Link
+                        href="/programs/program/[father]/[module]"
+                        as={`/programs/program/${data.id}/${module.id}`}
+                      >
+                        <a>{module.title}</a>
+                      </Link>
+                      {index < data.modules.length - 1 ? <hr /> : null}
+                    </div>
+                  );
+                })}
+              </Panel>
+            );
+          })}
+        </Collapse>
       </Col>
     </Row>
   );
 }
+
+IndexProgram.getInitialProps = async ctx => {
+  const { auth } = authInitialProps(true)(false)(ctx);
+  const res = await api.get(`/api/programs/`);
+
+  return { auth, data: res.data };
+};
 
 const Index = Form.create({ name: "Index" })(IndexProgram);
 export default Index;

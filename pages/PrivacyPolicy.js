@@ -1,11 +1,16 @@
 import React from "react";
 import { Card, Typography } from "antd";
+import Header from "../comps/Header";
+import { authInitialProps } from "../utils/auth";
 
 const { Text, Title } = Typography;
 
-class PrivacyPolicy extends React.Component {
-  render() {
-    return (
+function PrivacyPolicy(props) {
+  const { user = {} } = props.auth || {};
+
+  return (
+    <div>
+      <Header user={user} />
       <Card
         style={{
           margin: "1rem",
@@ -66,8 +71,14 @@ class PrivacyPolicy extends React.Component {
         <br />
         <br />
       </Card>
-    );
-  }
+    </div>
+  );
 }
+
+PrivacyPolicy.getInitialProps = async ctx => {
+  const { auth } = authInitialProps(false)(false)(ctx);
+
+  return { auth };
+};
 
 export default PrivacyPolicy;

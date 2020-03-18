@@ -5,6 +5,8 @@ import styles from "../../../../styles/styles.scss";
 import Delete from "../../../../comps/Delete";
 import ProgramSettings from "../../../../comps/ProgramSettings";
 import ModalEdit from "../../../../comps/ModalEdit";
+import Header from "../../../../comps/Header";
+import { authInitialProps } from "../../../../utils/auth";
 import ReactPlayer from "react-player";
 
 import { Row, Col, Typography, List, Skeleton, Icon, Button } from "antd";
@@ -13,11 +15,11 @@ const { Title } = Typography;
 
 function Module(props) {
   const router = useRouter();
-  const { user } = props;
-  const [video, setVideo] = useState(null);
-  const [ready, setReady] = useState(false);
-  const [title, setTitle] = useState(null);
-  const [id, setId] = useState(null);
+  const { user = {} } = props.auth || {};
+  const { data } = props;
+  const [video, setVideo] = useState(data.videos);
+  const [title, setTitle] = useState(data.title);
+  const [id, setId] = useState(data.id);
   const [videoTitle, setVideoTitle] = useState(null);
   const [visible, setVisible] = useState(false);
 
@@ -30,7 +32,6 @@ function Module(props) {
       .get(`api/modules/${router.query.module}/`)
       .then(res => {
         setVideo(res.data.videos);
-        setReady(true);
         setTitle(res.data.title);
       })
       .catch(err => console.log("error al cargar los programas ", err));
@@ -59,8 +60,9 @@ function Module(props) {
     ></ProgramSettings>
   );
 
-  return ready ? (
+  return (
     <div className={`container `}>
+      <Header user={user} />
       <Row justify="center" type="flex">
         <Title level={2}>{title}</Title>
       </Row>
@@ -159,11 +161,14 @@ function Module(props) {
         />
       </Row>
     </div>
-  ) : (
-    <div className="container">
-      <Skeleton active>{ready == false ? loadData() : null} </Skeleton>
-    </div>
   );
 }
+
+Module.getInitialProps = async ctx => {
+  const { auth } = authInitialProps(true)(false)(ctx);
+  const res = await api.get(`api/modules/${ctx.query.module}/`);
+
+  return { auth, data: res.data };
+};
 
 export default Module;

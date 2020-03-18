@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Router, { useRouter } from "next/router";
+import Header from "../../comps/Header";
 import { Row, Modal, Skeleton, Button, Col } from "antd";
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
@@ -7,16 +8,17 @@ import Cookies from "js-cookie";
 import styles from "../../styles/styles.scss";
 import api from "../../api";
 
+import { authInitialProps } from "../../utils/auth";
+
 const Post = props => {
-  const { user } = props;
+  const { user = {} } = props.auth || {};
+  const { data } = props;
   const router = useRouter();
   const [visible, setVisible] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [src, setSrc] = useState(
-    "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-  );
-  const [id, setId] = useState(null);
-  const [description, setDescription] = useState(null);
+  const [title, setTitle] = useState(data.title);
+  const [src, setSrc] = useState(data.picture);
+  const [id, setId] = useState(data.id);
+  const [description, setDescription] = useState(data.description);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
 
@@ -49,71 +51,66 @@ const Post = props => {
     Router.push("/post/edit/[id]", `/post/edit/${id}`);
   }
 
-  function loadData() {
-    api.get(`/api/post/${router.query.id}`).then(res => {
-      // src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      setSrc(res.data.picture);
-      setTitle(res.data.title);
-      setDescription(res.data.description);
-      setId(res.data.id);
-    });
-  }
+  return (
+    <div>
+      <Header user={user} />
 
-  return title ? (
-    <div className="container">
-      <div className={styles.post}>
-        <div className={styles.post__img}>
-          <span className={styles.post__img__helper}></span>
-          <img src={src} alt="Imagen de la publicación" />
-        </div>
-
-        <div className={styles.post__content}>
-          <h2 className={styles.post__title}>{title}</h2>
-          <div className={styles.post__text}>
-            {ReactHtmlParser(description)}
+      <div className="container">
+        <div className={styles.post}>
+          <div className={styles.post__img}>
+            <span className={styles.post__img__helper}></span>
+            <img src={src} alt="Imagen de la publicación" />
           </div>
-        </div>
 
-        {user.is_admin ? (
-          <Row justify="center" type="flex" style={{ margin: "10px 0 20px 0" }}>
-            <Modal
-              title="Eliminar publicación"
-              visible={visible}
-              onOk={handleOk}
-              onCancel={handleCancel}
-              cancelText="Cancelar"
-              okText="Eliminar"
+          <div className={styles.post__content}>
+            <h2 className={styles.post__title}>{title}</h2>
+            <div className={styles.post__text}>
+              {ReactHtmlParser(description)}
+            </div>
+          </div>
+
+          {user.is_admin ? (
+            <Row
+              justify="center"
+              type="flex"
+              style={{ margin: "10px 0 20px 0" }}
             >
-              ¿Está segura que desea eliminar esta publicación?
-            </Modal>
-            <div className="  col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              <Button
-                className={styles.defaultButton}
-                onClick={() => loadingEditFunct()}
-                loading={loadingEdit}
+              <Modal
+                title="Eliminar publicación"
+                visible={visible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                cancelText="Cancelar"
+                okText="Eliminar"
               >
-                Editar
-              </Button>
-            </div>
-            <div className=" col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              <Button onClick={() => showModal()} loading={loadingDelete}>
-                Eliminar
-              </Button>
-            </div>
-          </Row>
-        ) : null}
+                ¿Está segura que desea eliminar esta publicación?
+              </Modal>
+              <div className="  col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                <Button
+                  className={styles.defaultButton}
+                  onClick={() => loadingEditFunct()}
+                  loading={loadingEdit}
+                >
+                  Editar
+                </Button>
+              </div>
+              <div className=" col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                <Button onClick={() => showModal()} loading={loadingDelete}>
+                  Eliminar
+                </Button>
+              </div>
+            </Row>
+          ) : null}
+        </div>
       </div>
-    </div>
-  ) : (
-    <div className="container">
-      <Skeleton active>{description == null ? loadData() : null} </Skeleton>
     </div>
   );
 };
 
-Post.getInitialProps = async ({ query }) => {
-  const res = await api.get(`/api/post/${query.id}`);
-  return { data: res.data };
+Post.getInitialProps = async ctx => {
+  const { auth } = authInitialProps(false)(false)(ctx);
+  const res = await api.get(`/api/post/${ctx.query.id}`);
+  return { auth, data: res.data };
 };
 
 export default Post;
