@@ -1,11 +1,8 @@
 import React from "react";
 import Head from "next/head";
 import Header from "../comps/Header";
-import { authInitialProps } from "../utils/auth";
 
-function MyApp({ Component, pageProps, auth }) {
-  const { user = {} } = auth || {};
-
+function MyApp({ Component, pageProps }) {
   return (
     <div>
       <Head>
@@ -36,13 +33,12 @@ function MyApp({ Component, pageProps, auth }) {
           rel="stylesheet"
         />
       </Head>
-      <Header user={user} />
+      {/* <Header /> */}
       <div style={{ paddingTop: "76px" }}>
-        <Component {...pageProps} user={user} />
+        <Component {...pageProps} />
       </div>
     </div>
   );
 }
 
-MyApp.getInitialProps = authInitialProps();
 export default MyApp;

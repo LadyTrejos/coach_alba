@@ -6,7 +6,7 @@ import ReactHtmlParser from "react-html-parser";
 
 import styles from "../styles/styles.scss";
 
-export default function Post(props) {
+export default function PostList(props) {
   const { user } = props;
   const [loading, setLoading] = useState(false);
 
