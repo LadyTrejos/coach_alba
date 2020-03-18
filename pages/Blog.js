@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BackTop, Skeleton, Row } from "antd";
 
 import api from "../api";

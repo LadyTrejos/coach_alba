@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Router, { useRouter } from "next/router";
-import { Row, Modal, Skeleton, Button } from "antd";
+import { Row, Modal, Skeleton, Button, Col } from "antd";
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
 
@@ -86,20 +86,20 @@ const Post = props => {
             >
               ¿Está segura que desea eliminar esta publicación?
             </Modal>
-            <Button
-              type="danger"
-              onClick={() => showModal()}
-              loading={loadingDelete}
-            >
-              Eliminar publicación
-            </Button>
-            <Button
-              className={styles.defaultButton}
-              onClick={() => loadingEditFunct()}
-              loading={loadingEdit}
-            >
-              Editar publicación
-            </Button>
+            <div className="  col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+              <Button
+                className={styles.defaultButton}
+                onClick={() => loadingEditFunct()}
+                loading={loadingEdit}
+              >
+                Editar
+              </Button>
+            </div>
+            <div className=" col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+              <Button onClick={() => showModal()} loading={loadingDelete}>
+                Eliminar
+              </Button>
+            </div>
           </Row>
         ) : null}
       </div>

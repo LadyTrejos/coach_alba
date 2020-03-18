@@ -52,12 +52,13 @@ export const authInitialProps = () => ({ ctx }) => {
 };
 
 export const logoutUser = async loading => {
-  loading();
   if (typeof window !== "undefined") {
     window[WINDOW_USER_SCRIPT_VARIABLE] = {};
   }
   const csrftoken = cookie.get("csrftoken");
   api.post("/rest-auth/logout/", {}, { headers: { "X-CSRFToken": csrftoken } });
   cookie.remove("userdata");
+  loading();
+
   Router.push("/ingresar");
 };
