@@ -80,10 +80,18 @@ export default function PostList(props) {
               margin: " 5px"
             }}
           >
-            <Row className={`${styles.postcard} ${styles.card}`}>
+            <div className={`${styles.postcard} ${styles.card}`}>
               <div className={styles.wrapper}>
                 <Link href="/post/[id]" as={`/post/${item.id}`}>
-                  <div className={styles.imgWrapper}>
+                  <div
+                    style={{
+                      display: "flex",
+                      minHeight: "350px",
+                      minWidth: "250px",
+                      height: "100%",
+                      width: "auto"
+                    }}
+                  >
                     <a>
                       <img
                         style={{
@@ -126,7 +134,7 @@ export default function PostList(props) {
                   </div>
                 </div>
               </div>
-            </Row>
+            </div>
           </List.Item>
         )}
       />
