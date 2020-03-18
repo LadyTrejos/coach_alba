@@ -35,7 +35,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
               >
                 <i
-                  class="fa fa-facebook"
+                  className="fa fa-facebook"
                   aria-hidden="true"
                   style={{
                     fontSize: "40px",
@@ -65,19 +65,19 @@ export default function Footer() {
           <ul style={{ listStyleType: "none" }}>
             <li>
               <span>
-                <i class="fa fa-whatsapp mr-2" aria-hidden="true"></i> +57 323
-                3396771
+                <i className="fa fa-whatsapp mr-2" aria-hidden="true"></i> +57
+                323 3396771
               </span>
             </li>
             <li>
               <span>
-                <i class="fa fa-envelope mr-2" aria-hidden="true"></i>{" "}
+                <i className="fa fa-envelope mr-2" aria-hidden="true"></i>{" "}
                 albanurycoach@gmail.com
               </span>
             </li>
             <li>
               <span>
-                <i class="fa fa-map-marker mr-3" aria-hidden="true"></i>{" "}
+                <i className="fa fa-map-marker mr-3" aria-hidden="true"></i>{" "}
                 Pereira, Risaralda, Colombia
               </span>
             </li>

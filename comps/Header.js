@@ -62,11 +62,11 @@ function Header(props) {
               </Nav.Link>
             </React.Fragment>
           ) : null}
-          {/* {user.is_admin ? (
+          {user.is_admin ? (
             <Nav.Link className={styles.navlink} href="/users">
               Usuarios
             </Nav.Link>
-          ) : null} */}
+          ) : null}
         </Nav>
         <Nav>
           <Text className={styles.signature}>Coach Alba Nury</Text>

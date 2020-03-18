@@ -1,32 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { BackTop, Skeleton, Row } from "antd";
+import React, { useState } from "react";
+import { BackTop, Row } from "antd";
 
+import PostList from "../comps/PostList";
 import api from "../api";
-import DemoBlog from "../comps/DemoBlog";
 import styles from "../styles/styles.scss";
+import { authInitialProps } from "../utils/auth";
+import Header from "../comps/Header";
 
-export default function Blog(props) {
-  const [data, setData] = useState(null);
-
-  function loadData() {
-    api.get(`/api/post/?ordering=-created_at`).then(res => {
-      setData(res.data);
-    });
-  }
-
+function Blog(props) {
+  const { user = {} } = props.auth || {};
   return (
     <div className="container">
+      <Header user={user} />
       <BackTop />
       <Row justify="center" type="flex" style={{ paddingTop: "20px" }}>
         <h1 className={styles.sectionTitle}>Blog</h1>
       </Row>
-      {data ? (
-        <DemoBlog post={data} demo={false} pagination={true} {...props} />
-      ) : (
-        <div className="container">
-          <Skeleton active>{data == null ? loadData() : null} </Skeleton>
-        </div>
-      )}
+      <PostList post={props.data} demo={false} pagination={true} user={user} />
     </div>
   );
 }
+
+Blog.getInitialProps = async ctx => {
+  const { auth } = authInitialProps(false)(false)(ctx);
+  const res = await api.get(`/api/post/?ordering=-created_at`);
+  return { auth, data: res.data };
+};
+
+export default Blog;

@@ -46,9 +46,31 @@ export const getUserScript = user => {
   return `${WINDOW_USER_SCRIPT_VARIABLE} = ${JSON.stringify(user)}`;
 };
 
-export const authInitialProps = () => ({ ctx }) => {
-  const auth = ctx.req ? getServerSideToken(ctx) : getClientSideToken();
+export const authInitialProps = isProtectedRoute => isAdminRoute => ctx => {
+  const { req = {} } = ctx;
+  // const { inspect } = require("util");
+  // console.log(inspect(ctx));
+  const auth = req ? getServerSideToken(ctx) : getClientSideToken();
+  const currentPath = req ? req.url : window.location.pathname;
+  const user = auth.user;
+  const isAnonymous = !user;
+  if (isProtectedRoute && isAnonymous && currentPath !== "/ingresar") {
+    return redirectUser(ctx.res, "/login");
+  } else if (isProtectedRoute && isAdminRoute && !user.is_admin) {
+    return redirectUser(ctx.res, "/programs");
+  }
   return { auth };
+};
+
+export const redirectUser = (res, path) => {
+  if (res) {
+    console.log("res ---->", res);
+    res.redirect(302, path);
+    res.finished = true;
+    return {};
+  }
+  Router.replace(path);
+  return {};
 };
 
 export const logoutUser = async loading => {
