@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Form, Icon, Input, Button, notification, Tooltip } from "antd";
+import Header from "../../../comps/Header";
 import Router from "next/router";
 import api from "../../../api";
 import styles from "../../../styles/styles.scss";
 import Cookies from "js-cookie";
+import { authInitialProps } from "../../../utils/auth";
 import { useRouter } from "next/router";
 
 function PasswordResetForm(props) {
+  const { user = {} } = props.auth || {};
   const { getFieldDecorator } = props.form;
   const [email, setEmail] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -80,6 +83,7 @@ function PasswordResetForm(props) {
 
   return (
     <div className="row">
+      <Header user={user} />
       <div className={`offset-md-3 col-md-6 ${styles.container}`}>
         <div className="row">
           <div className={`col-md-12 ${styles.login_form}`}>
@@ -168,6 +172,11 @@ function PasswordResetForm(props) {
     </div>
   );
 }
+
+PasswordResetForm.getInitialProps = async ctx => {
+  const { auth } = authInitialProps(false)(false)(ctx);
+  return { auth };
+};
 
 const PasswordReset = Form.create({ name: "password_reset_form" })(
   PasswordResetForm

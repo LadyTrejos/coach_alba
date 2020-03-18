@@ -47,7 +47,6 @@ export const getUserScript = user => {
 };
 
 export const authInitialProps = isProtectedRoute => isAdminRoute => ctx => {
-  console.log("entra a auth");
   const { req = {} } = ctx;
   // const { inspect } = require("util");
   // console.log(inspect(ctx));
@@ -64,7 +63,6 @@ export const authInitialProps = isProtectedRoute => isAdminRoute => ctx => {
     return redirectUser(ctx.res, "/programs");
   }
 
-  console.log("ninguno");
   return { auth };
 };
 
