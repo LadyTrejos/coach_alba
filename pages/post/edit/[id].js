@@ -1,9 +1,5 @@
-import React, { Component, useRef, useState, useEffect } from "react";
-import Router, { useRouter } from "next/router";
-import Header from "../../../comps/Header";
-import Files from "../../../comps/Files";
-import api from "../../../api";
-import styles from "../../../styles/styles.scss";
+import React, { useRef, useState, useEffect } from "react";
+import Router from "next/router";
 import {
   Collapse,
   Button,
@@ -14,11 +10,16 @@ import {
   Card,
   Typography,
   Alert,
-  message
+  message,
+  Skeleton
 } from "antd";
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
 import { authInitialProps } from "../../../utils/auth";
+import Header from "../../../comps/Header";
+import Files from "../../../comps/Files";
+import api from "../../../api";
+import styles from "../../../styles/styles.scss";
 
 const { Text, Title } = Typography;
 const { Panel } = Collapse;
@@ -29,14 +30,16 @@ function EditPost(props) {
   const [id, setId] = useState(data.id);
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
-  const router = useRouter();
+
   const fileRef = useRef(null);
   const editorRef = useRef();
-  const [editorLoaded, setEditorLoaded] = useState(false);
+
   const [errorDescription, setErrorDescription] = useState(null);
-  const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingCancel, setLoadingCancel] = useState(false);
   const { CKEditor, DecoupledEditor } = editorRef.current || {};
+  const [editorLoaded, setEditorLoaded] = useState(false);
+
   const { getFieldDecorator } = props.form;
 
   useEffect(() => {
@@ -45,14 +48,13 @@ function EditPost(props) {
       DecoupledEditor: require("@ckeditor/ckeditor5-build-decoupled-document"),
       spanish: require("@ckeditor/ckeditor5-build-decoupled-document/build/translations/es")
     };
-
     setEditorLoaded(true);
   }, []);
 
   function handleSubmit(event, fileRef) {
     const file = fileRef.current.state.selectedFile;
     !description
-      ? setErrorDescription("Ingresa el enunciado del post")
+      ? setErrorDescription("Escribe algo en la publicación.")
       : setErrorDescription(null);
 
     event.preventDefault();
@@ -60,11 +62,15 @@ function EditPost(props) {
       if (!err && description) {
         setLoading(true);
         let postData = new FormData();
-        file ? postData.append("picture", file) : null;
-        postData.append("title", values.title);
+        if (file) {
+          postData.append("picture", file);
+        }
+        postData.append("title", title);
         postData.append("description", description);
         postData.append("owner", user.id);
+
         const csrftoken = Cookies.get("csrftoken");
+
         api
           .patch(`/api/post/${id}/`, postData, {
             headers: {
@@ -81,7 +87,7 @@ function EditPost(props) {
             Router.push("/post/[id]", `/post/${res.data.id}`);
           })
           .catch(err => {
-            setError(err);
+            console.log(err);
           });
       }
     });
@@ -92,175 +98,160 @@ function EditPost(props) {
   }
 
   return (
-    <div>
+    <div className="container">
       <Header user={user} />
+      <div className={`${styles.wrapper_card} pl-4`}>
+        <Form onSubmit={e => handleSubmit(e, fileRef)} colon={false}>
+          <Row justify="center" type="flex">
+            <h1 className={styles.sectionTitle}>Editar publicación</h1>
+          </Row>
 
-      <Form onSubmit={e => handleSubmit(e, fileRef)}>
-        <Row>
-          <Col className=" offset-sm-1 offset-md-1 offset-lg-1 offset-xl-1 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
-            <Card
-              style={{
-                marginTop: "2rem",
-                marginBottom: "2rem",
-                boxShadow:
-                  " 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.9)",
-                borderRadius: "10px"
-              }}
-            >
-              <Row justify="center" type="flex">
-                <Title level={2}>Publicación</Title>
-              </Row>
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Form.Item label="Imagen de la publicación:">
+                <Files ref={fileRef} upload="image"></Files>
+              </Form.Item>
+            </Col>
+          </Row>
 
-              <Row justify="center" type="flex">
-                <Form.Item>
-                  <Files ref={fileRef}></Files>
-                </Form.Item>
-              </Row>
-              <Row>
-                <Col
-                  className="gutter-row"
-                  className="offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-5 col-md-7 col-lg-5 col-xl-5"
-                >
-                  <Form.Item label="Título de la publicación">
-                    {getFieldDecorator("title", {
-                      rules: [
-                        {
-                          required: true,
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Form.Item label="Título de la publicación:">
+                {getFieldDecorator("title", {
+                  rules: [
+                    {
+                      required: true,
+                      message: "Ponle un título a tu publicación",
+                      type: "string"
+                    }
+                  ],
+                  initialValue: title
+                })(<Input placeholder="Título" size="large" />)}
+              </Form.Item>
+            </Col>
+          </Row>
 
-                          message: "Ponle un título a tu publicación",
-                          type: "string"
-                        },
-                        {
-                          pattern: /^(?=.{1,1000}$)([a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.¿]+[\s(?!\s)]?)*[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.?]$/,
-                          message: "Título no válido"
-                        }
-                      ],
-                      initialValue: title
-                    })(<Input placeholder="Título" size="large"></Input>)}
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  className="gutter-row"
-                  className="offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-8 col-md-10 col-lg-10 col-xl-8"
-                >
-                  <Form.Item label="Descripción de la publicación">
-                    {editorLoaded ? (
-                      <div>
-                        <div id="toolbar-container"></div>
-                        <CKEditor
-                          style={{ border: "solid 1px #000" }}
-                          onInit={editor => {
-                            // Add the toolbar to the container
-
-                            const toolbarContainer = document.querySelector(
-                              "#toolbar-container"
-                            );
-                            toolbarContainer.appendChild(
-                              editor.ui.view.toolbar.element,
-                              editor.ui.view.editable.element
-                            );
-
-                            window.editor = editor;
-                            // You can store the "editor" and use when it is needed.
-                            console.log("Editor is ready to use!", editor);
-                          }}
-                          config={{
-                            language: "es",
-                            toolbar: [
-                              "Heading",
-                              "|",
-                              "fontFamily",
-                              "fontSize",
-                              "fontColor",
-                              "fontBackgroundColor",
-                              "|",
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strikethrough",
-                              "|",
-                              "bulletedList",
-
-                              "numberedList",
-                              "|",
-                              "alignment",
-                              "link"
-                            ],
-                            fontSize: {
-                              options: [9, 11, 13, "default", 17, 19, 21]
-                            },
-                            removePlugins: [
-                              "ImageUpload",
-                              "MediaEmbed",
-                              "BlockQuote",
-                              "IncreaseIndent"
-                            ],
-
-                            isReadOnly: true
-                          }}
-                          onChange={(event, editor) => {
-                            const data = editor.getData();
-                            setDescription(data);
-                            setErrorDescription(null);
-                          }}
-                          data={description}
-                          editor={DecoupledEditor}
-                        />
-                      </div>
-                    ) : (
-                      <div>Cargando... </div>
-                    )}
-                    {errorDescription ? (
-                      <Alert
-                        message={errorDescription}
-                        type="error"
-                        closable
-                        onClose={() => onCloseDescription()}
-                      />
-                    ) : null}
-                  </Form.Item>
-
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Form.Item label="Descripción de la publicación:">
+                {editorLoaded ? (
                   <div>
-                    <Collapse accordion style={{ wordWrap: "break-word" }}>
-                      <Panel
-                        header={`Vista previa del texto`}
-                        key={`Vista previa`}
-                        className={styles.panel}
-                      >
-                        <Row
-                          justify="center"
-                          type="flex"
-                          style={{ paddingTop: "20px" }}
-                        >
-                          <Title>{props.form.getFieldValue("title")}</Title>
-                        </Row>
+                    <div id="toolbar-container"></div>
+                    <CKEditor
+                      onInit={editor => {
+                        // Add the toolbar to the container
+                        const toolbarContainer = document.querySelector(
+                          "#toolbar-container"
+                        );
+                        toolbarContainer.appendChild(
+                          editor.ui.view.toolbar.element,
+                          editor.ui.view.editable.element
+                        );
 
-                        <Row justify="center">
-                          <Col
-                            className="gutter-row"
-                            // className="offset-1 offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-10 col-sm-8 col-md-10 col-lg-10 col-xl-8"
-                          >
-                            <Text>{ReactHtmlParser(description)}</Text>
-                          </Col>
-                        </Row>
-                      </Panel>
-                    </Collapse>
+                        window.editor = editor;
+                      }}
+                      config={{
+                        language: "es",
+                        toolbar: [
+                          "Heading",
+                          "|",
+                          "fontFamily",
+                          "fontSize",
+                          "fontColor",
+                          "fontBackgroundColor",
+                          "|",
+                          "bold",
+                          "italic",
+                          "underline",
+                          "strikethrough",
+                          "|",
+                          "bulletedList",
+                          "numberedList",
+                          "|",
+                          "alignment",
+                          "link"
+                        ],
+                        fontSize: {
+                          options: [9, 11, 13, "default", 17, 19, 21]
+                        },
+                        removePlugins: [
+                          "ImageUpload",
+                          "MediaEmbed",
+                          "BlockQuote",
+                          "IncreaseIndent"
+                        ],
+                        isReadOnly: true
+                      }}
+                      onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setDescription(data);
+                        setErrorDescription(null);
+                      }}
+                      data={description}
+                      editor={DecoupledEditor}
+                    />
                   </div>
-                </Col>
-              </Row>
-              <br />
+                ) : (
+                  <Skeleton active />
+                )}
+                {errorDescription ? (
+                  <Alert
+                    message={errorDescription}
+                    type="error"
+                    closable
+                    onClose={() => onCloseDescription()}
+                  />
+                ) : null}
+              </Form.Item>
+            </Col>
+          </Row>
 
-              <Row justify="center" type="flex">
-                <Button htmlType="submit" type="primary" loading={loading}>
-                  Subir publicación
-                </Button>
-              </Row>
-            </Card>
-          </Col>
-        </Row>
-      </Form>
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Collapse accordion style={{ wordWrap: "break-word" }}>
+                <Panel
+                  header="Vista previa de la publicación"
+                  key="Preview"
+                  className={styles.panel}
+                >
+                  <h3 className={styles.post__title}>
+                    {props.form.getFieldValue("title")}
+                  </h3>
+
+                  <Text>{ReactHtmlParser(description)}</Text>
+                </Panel>
+              </Collapse>
+            </Col>
+          </Row>
+
+          <br />
+
+          <Row justify="center" type="flex">
+            <Col xs={20} sm={12} md={10} lg={6} xl={6} xxl={5}>
+              <Button
+                htmlType="submit"
+                loading={loading}
+                block
+                className={styles.defaultButton}
+              >
+                Guardar cambios
+              </Button>
+            </Col>
+            <Col xs={20} sm={12} md={10} lg={6} xl={6} xxl={5}>
+              <Button
+                block
+                loading={loadingCancel}
+                onClick={() => {
+                  setLoadingCancel(true);
+                  Router.push("/post/[id]", `/post/${id}`);
+                }}
+              >
+                Cancelar
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </div>
     </div>
   );
 }

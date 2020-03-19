@@ -87,9 +87,9 @@ export default function PostList(props) {
                     style={{
                       display: "flex",
                       minHeight: "350px",
-                      minWidth: "250px",
-                      height: "100%",
-                      width: "auto"
+                      maxHeight: "350px",
+                      minWidth: "300px",
+                      maxWidth: "340px"
                     }}
                   >
                     <a>
