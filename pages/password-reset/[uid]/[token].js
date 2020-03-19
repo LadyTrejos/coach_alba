@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 function PasswordResetForm(props) {
   const { user = {} } = props.auth || {};
   const { getFieldDecorator } = props.form;
-  const [email, setEmail] = useState(null);
   const [loading, setLoading] = useState(false);
   const [confirmDirty, setConfirmDirty] = useState(null);
   const [password1, setPassword1] = useState(null);
@@ -44,7 +43,8 @@ function PasswordResetForm(props) {
             notification.success({
               message: "Contraseña restablecida",
               description: "La contraseña se ha actualizado correctamente.",
-              duration: 0
+              duration: 0,
+              top: 80
             });
             Router.push("/ingresar");
           })

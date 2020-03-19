@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import api from "../../api";
 import Router from "next/router";
 import styles from "../../styles/styles.scss";
@@ -11,10 +11,12 @@ import Header from "../../comps/Header";
 const { Text, Title } = Typography;
 
 function ForgotPasswordForm(props) {
+  const [loading, setLoading] = useState(false);
   const { getFieldDecorator } = props.form;
   const { user = {} } = props.auth || {};
 
   function handleSubmit(e) {
+    setLoading(true);
     e.preventDefault();
     const csrftoken = Cookies.get("csrftoken");
     props.form.validateFields((err, values) => {
@@ -35,6 +37,7 @@ function ForgotPasswordForm(props) {
               duration: 0,
               top: 80
             });
+            setLoading(false);
             Router.push("/ingresar");
           })
           .catch(err => console.log(err.message));
@@ -86,7 +89,12 @@ function ForgotPasswordForm(props) {
                 </Form.Item>
 
                 <Form.Item>
-                  <Button type="primary" htmlType="submit" size="large">
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    size="large"
+                    loading={loading}
+                  >
                     Enviar
                   </Button>
                 </Form.Item>

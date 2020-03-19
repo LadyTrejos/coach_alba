@@ -26,7 +26,6 @@ class File extends Component {
           onChange={this.fileSelectedHandler}
           className={styles.custom_file_input}
           accept={upload == "image" ? "image/*" : "video/*"}
-          multiple
         />
       </div>
     );
