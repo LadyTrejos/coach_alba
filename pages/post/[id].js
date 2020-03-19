@@ -19,6 +19,7 @@ const Post = props => {
   const [src, setSrc] = useState(data.picture);
   const [id, setId] = useState(data.id);
   const [description, setDescription] = useState(data.description);
+  const [created_at, setCreated_at] = useState(data.created_at);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
 
@@ -51,9 +52,36 @@ const Post = props => {
     Router.push("/post/edit/[id]", `/post/edit/${id}`);
   }
 
+  function getDay(date) {
+    const newDate = new Date(date);
+    return newDate.getDate();
+  }
+
+  function getMonth(date) {
+    const newDate = new Date(date);
+    const month = newDate.toLocaleString("es-co", { month: "short" });
+    return month;
+  }
+
+  function getYear(date) {
+    const newDate = new Date(date);
+    return newDate.getFullYear();
+  }
+
   return (
     <div>
       <Header user={user} />
+
+      <Modal
+        title="Eliminar publicación"
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        cancelText="Cancelar"
+        okText="Eliminar"
+      >
+        ¿Está segura que desea eliminar esta publicación?
+      </Modal>
 
       <div className="container">
         <div className={styles.post}>
@@ -61,44 +89,42 @@ const Post = props => {
             <span className={styles.post__img__helper}></span>
             <img src={src} alt="Imagen de la publicación" />
           </div>
+          <div className={styles.postcard}>
+            <div className={styles.date}>
+              <span className={styles.day}>{getDay(created_at)}</span>
+              <span className={styles.month}>{getMonth(created_at)}</span>
+              <span className={styles.year}>{getYear(created_at)}</span>
+            </div>
+          </div>
 
           <div className={styles.post__content}>
-            <h2 className={styles.post__title}>{title}</h2>
+            <h3 className={styles.post__title}>{title}</h3>
             <div className={styles.post__text}>
               {ReactHtmlParser(description)}
             </div>
           </div>
 
           {user.is_admin ? (
-            <Row
-              justify="center"
-              type="flex"
-              style={{ margin: "10px 0 20px 0" }}
-            >
-              <Modal
-                title="Eliminar publicación"
-                visible={visible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                cancelText="Cancelar"
-                okText="Eliminar"
-              >
-                ¿Está segura que desea eliminar esta publicación?
-              </Modal>
-              <div className="  col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+            <Row justify="center" type="flex" gutter={20}>
+              <Col xs={20} sm={15} md={10} lg={6} xl={6} xxl={5}>
                 <Button
                   className={styles.defaultButton}
                   onClick={() => loadingEditFunct()}
                   loading={loadingEdit}
+                  block
                 >
                   Editar
                 </Button>
-              </div>
-              <div className=" col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                <Button onClick={() => showModal()} loading={loadingDelete}>
+              </Col>
+              <Col xs={20} sm={15} md={10} lg={6} xl={6} xxl={5}>
+                <Button
+                  onClick={() => showModal()}
+                  loading={loadingDelete}
+                  block
+                >
                   Eliminar
                 </Button>
-              </div>
+              </Col>
             </Row>
           ) : null}
         </div>

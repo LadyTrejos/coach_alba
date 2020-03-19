@@ -14,7 +14,7 @@ export const loginUser = async (email, password) => {
       if (typeof window !== "undefined") {
         window[WINDOW_USER_SCRIPT_VARIABLE] = res.data.user || {};
       }
-      Router.push("/Blog");
+      Router.push("/blog", "/blog", { shallow: true });
     })
     .catch(err => {
       console.log(err);
