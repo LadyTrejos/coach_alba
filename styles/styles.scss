@@ -253,7 +253,7 @@ body {
     height: fit-content;
     position: relative;
     overflow: hidden;
-    border-radius: 5px;
+    border-radius: 10px;
 
     box-shadow: 0px 7px 19px 3px rgba(102, 102, 102, 0.4);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
@@ -431,14 +431,6 @@ body {
 
 .post {
   position: relative;
-  max-width: 800px;
-  height: fit-content;
-  background: #fff;
-  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-  margin: 20px auto;
-  padding: 25px;
-  border-radius: 25px;
-  transition: all .3s;
 
   @media screen and (max-width: 992px) {
     max-width: 680px;
@@ -632,31 +624,52 @@ label {
 
 //upload images
 
+.custom_file_input {}
+
 .custom_file_input::-webkit-file-upload-button {
   visibility: hidden;
 }
 
 .custom_file_input::before {
   content: "Sube un archivo";
-  display: inline-block;
-  background-color: #06f7ff;
-  border: 1px solid #999;
-  border-radius: 5px;
   outline: none;
-  white-space: nowrap;
+  word-wrap: break-word;
   -webkit-user-select: none;
   cursor: pointer;
-  text-shadow: 1px 1px #fff;
   font-weight: 700;
-  font-size: 10pt;
+
+  background: $indigo;
+  background-color: $indigo;
+  border-radius: 10px;
+  border: 1px solid $indigo;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 0 15px;
+  text-decoration: none;
 }
 
 .custom_file_input:hover::before {
-  border-color: rgb(255, 255, 255);
+  color: white;
+  background-color: lighten($indigo, 10);
+}
+
+.custom_file_input::after {
+  color: white;
+  background-color: lighten($indigo, 10);
 }
 
 .custom_file_input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+.selected_file {
+  line-height: 20px !important;
+
+  @media screen and (max-width: 768px) {
+    padding-top: 15px;
+  }
 }
 
 .panel {
@@ -714,4 +727,15 @@ label {
     background: white;
     padding: 1.2rem;
   }
+}
+
+.wrapper_card {
+  background: #fff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  margin: 20px auto;
+  padding: 1.5rem;
+  border-radius: 10px;
+  transition: all .3s;
+  max-width: 900px;
+  height: fit-content;
 }

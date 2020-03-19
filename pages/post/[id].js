@@ -84,7 +84,7 @@ const Post = props => {
       </Modal>
 
       <div className="container">
-        <div className={styles.post}>
+        <div className={`${styles.post} ${styles.wrapper_card}`}>
           <div className={styles.post__img}>
             <span className={styles.post__img__helper}></span>
             <img src={src} alt="Imagen de la publicación" />
