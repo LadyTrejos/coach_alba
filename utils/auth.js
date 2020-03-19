@@ -4,17 +4,18 @@ import nextCookie from "next-cookies";
 import Router from "next/router";
 
 export const loginUser = async (email, password) => {
+  console.log("loginUser");
   const csrftoken = cookie.get("csrftoken");
   api
     .post(`/rest-auth/login/`, JSON.stringify({ email, password }), {
       headers: { "Content-type": "application/json", "X-CSRFToken": csrftoken }
     })
     .then(res => {
+      Router.push("/blog", "/blog", { shallow: true });
       cookie.set("userdata", res.data);
       if (typeof window !== "undefined") {
         window[WINDOW_USER_SCRIPT_VARIABLE] = res.data.user || {};
       }
-      Router.push("/Blog");
     })
     .catch(err => {
       console.log(err);
@@ -59,7 +60,7 @@ export const authInitialProps = isProtectedRoute => isAdminRoute => ctx => {
     console.log("ingresar");
     return redirectUser(ctx.res, "/ingresar");
   } else if (isProtectedRoute && isAdminRoute && !user.is_admin) {
-    console.log("programs");
+    console.log("programs: ", ctx.res);
     return redirectUser(ctx.res, "/programs");
   }
 
@@ -89,5 +90,5 @@ export const logoutUser = async loading => {
   cookie.remove("userdata");
   loading();
 
-  Router.push("/ingresar");
+  Router.push("/ingresar", "/ingresar", { shallow: true });
 };

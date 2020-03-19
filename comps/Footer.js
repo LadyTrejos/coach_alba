@@ -33,6 +33,7 @@ export default function Footer() {
                 href="https://www.facebook.com/AlbaNuryCoach/"
                 target="_blank"
                 rel="noopener noreferrer"
+                title="www.facebook.com/AlbaNuryCoach/"
               >
                 <i
                   className="fa fa-facebook"
