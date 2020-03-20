@@ -33,14 +33,24 @@ function ForgotPasswordForm(props) {
             notification.info({
               message: "Las instrucciones se han enviado",
               description:
-                "Revisa tu correo electrónico y sigue las instrucciones para restablecer tu contraseña. Si no recibes el correo, asegúrate de que el correo que ingresaste es correcto.",
-              duration: 0,
+                "Revisa tu correo electrónico y sigue las instrucciones para restablecer tu contraseña.",
+              duration: 10,
               top: 80
             });
             setLoading(false);
             Router.push("/ingresar");
           })
-          .catch(err => console.log(err.message));
+          .catch(err => {
+            console.log(err.message);
+            notification.error({
+              message: "Correo electrónico no registrado",
+              description:
+                "El correo que ingresaste no se encuentra registrado, revisa si está escrito correctamente.",
+              duration: 5,
+              top: 80
+            });
+            setLoading(false);
+          });
       }
     });
   }

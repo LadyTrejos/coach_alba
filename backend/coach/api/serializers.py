@@ -143,6 +143,7 @@ class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
     password_reset_form_class = PasswordResetForm
+    subject_template_name = 'password_reset_subject.txt'
 
     def validate_email(self, value):
         # Create PasswordResetForm with the serializer
@@ -164,6 +165,7 @@ class PasswordResetSerializer(serializers.Serializer):
             'from_email': getattr(settings, 'DEFAULT_FROM_EMAIL'),
             'email_template_name': '../templates/password_reset_email.html',
             'html_email_template_name': '../templates/password_reset_email.html',
+            'subject_template_name': self.subject_template_name,
             'request': request,
         }
         self.reset_form.save(**opts)

@@ -43,12 +43,24 @@ function PasswordResetForm(props) {
             notification.success({
               message: "Contraseña restablecida",
               description: "La contraseña se ha actualizado correctamente.",
-              duration: 0,
+              duration: 5,
               top: 80
             });
+            setLoading(false);
             Router.push("/ingresar");
           })
-          .catch(err => console.log(err.message));
+          .catch(err => {
+            console.log(err.message);
+            notification.error({
+              message: "Este link ha caducado",
+              description:
+                "Vuelve a ingresar tu correo electrónico para recibir de nuevo las instrucciones para restablecer tu contraseña.",
+              duration: 10,
+              top: 80
+            });
+            Router.push("/password-reset");
+            setLoading(false);
+          });
       }
     });
   }
