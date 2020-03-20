@@ -738,4 +738,22 @@ label {
   transition: all .3s;
   max-width: 900px;
   height: fit-content;
+  min-height: 80vh;
+}
+
+// Programs styles
+
+.config_icon {
+  color: $indigo;
+  font-size: 20px;
+
+  @media screen and (min-width: 768px) {
+    &::after {
+      content: "Opciones";
+      font-family: $font-text;
+      font-size: 14px;
+      margin-left: 4px;
+    }
+  }
+
 }
