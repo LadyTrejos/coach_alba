@@ -6,17 +6,28 @@ import Delete from "../../../../comps/Delete";
 import ProgramSettings from "../../../../comps/ProgramSettings";
 import ModalEdit from "../../../../comps/ModalEdit";
 import Header from "../../../../comps/Header";
+import CheckVideo from "../../../../comps/CheckVideo";
 import { authInitialProps } from "../../../../utils/auth";
 import ReactPlayer from "react-player";
+import nextCookie from "next-cookies";
 
-import { Row, Col, Typography, List, Skeleton, Icon, Button } from "antd";
+import {
+  Row,
+  Col,
+  Typography,
+  List,
+  Skeleton,
+  Icon,
+  Button,
+  Checkbox
+} from "antd";
 
 const { Title } = Typography;
 
 function Module(props) {
   const router = useRouter();
   const { user = {} } = props.auth || {};
-  const { data } = props;
+  const { data, watched_videos } = props;
   const [video, setVideo] = useState(data.videos);
   const [title, setTitle] = useState(data.title);
   const [id, setId] = useState(data.id);
@@ -125,9 +136,17 @@ function Module(props) {
                     {item.title}
                   </div>
                 </Row>
+                <Row>
+                  <CheckVideo
+                    id={item.id}
+                    title={item.title}
+                    checked={watched_videos.includes(item.id)}
+                    {...props}
+                  ></CheckVideo>
+                </Row>
 
                 {user.is_admin ? (
-                  <Row>
+                  <Row style={{ paddingTop: "10px" }}>
                     <Col style={{ margin: "0 1rem 0 1rem" }} span={3}>
                       {visible ? (
                         <ModalEdit
@@ -166,9 +185,17 @@ function Module(props) {
 
 Module.getInitialProps = async ctx => {
   const { auth } = authInitialProps(true)(false)(ctx);
+  const { csrftoken, userdata } = nextCookie(ctx);
   const res = await api.get(`api/modules/${ctx.query.module}/`);
+  const dataUser = await api.get(`api/users/${auth.user.id}/`, {
+    withCredentials: true,
+    headers: {
+      "X-CSRFToken": csrftoken,
+      Authorization: `Token ${userdata.key}`
+    }
+  });
 
-  return { auth, data: res.data };
+  return { auth, data: res.data, watched_videos: dataUser.data.watched_videos };
 };
 
 export default Module;

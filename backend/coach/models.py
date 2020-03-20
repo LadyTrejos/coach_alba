@@ -46,6 +46,36 @@ class MyUserManager(BaseUserManager):
         return user
 
 
+class Program(models.Model):
+    title = models.CharField(max_length=400)
+    crated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Module(models.Model):
+    title = models.CharField(max_length=400)
+    created_at = models.DateTimeField(auto_now_add=True)
+    father = models.ForeignKey(
+        Program, on_delete=models.CASCADE, related_name='modules')
+
+    def __str__(self):
+        return self.title
+
+
+class Video(models.Model):
+    title = models.CharField(max_length=400)
+    created_at = models.DateTimeField(auto_now_add=True)
+    videofile = models.FileField(
+        upload_to='videos/', null=True, verbose_name="")
+    father = models.ForeignKey(
+        Module, on_delete=models.CASCADE, related_name='videos')
+
+    def __str__(self):
+        return self.title
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=140)
@@ -54,6 +84,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=100, blank=True)
+    watched_videos = models.ManyToManyField(
+        Video, related_name='videos', blank=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -84,32 +116,3 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-
-class Program(models.Model):
-    title = models.CharField(max_length=400)
-    crated_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-
-
-class Module(models.Model):
-    title = models.CharField(max_length=400)
-    created_at = models.DateTimeField(auto_now_add=True)
-    father = models.ForeignKey(
-        Program, on_delete=models.CASCADE, related_name='modules')
-
-    def __str__(self):
-        return self.title
-
-
-class Video(models.Model):
-    title = models.CharField(max_length=400)
-    created_at = models.DateTimeField(auto_now_add=True)
-    videofile = models.FileField(
-        upload_to='videos/', null=True, verbose_name="")
-    father = models.ForeignKey(
-        Module, on_delete=models.CASCADE, related_name='videos')
-
-    def __str__(self):
-        return self.title
