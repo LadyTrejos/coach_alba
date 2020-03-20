@@ -49,6 +49,7 @@ function ProgramSettingsForm(props) {
           handleCancel={handleCancel}
           loadData={props.loadData}
           id={id}
+          block={false}
         />
       </Menu.Item>
     </Menu>

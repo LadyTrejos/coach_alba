@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import api from "../../../../api";
-import styles from "../../../../styles/styles.scss";
+import { Row, Col, Typography, List, Button } from "antd";
+import ReactPlayer from "react-player";
+
 import Delete from "../../../../comps/Delete";
 import ProgramSettings from "../../../../comps/ProgramSettings";
 import ModalEdit from "../../../../comps/ModalEdit";
 import Header from "../../../../comps/Header";
-import { authInitialProps } from "../../../../utils/auth";
-import ReactPlayer from "react-player";
 
-import { Row, Col, Typography, List, Skeleton, Icon, Button } from "antd";
+import api from "../../../../api";
+import styles from "../../../../styles/styles.scss";
+import { authInitialProps } from "../../../../utils/auth";
 
 const { Title } = Typography;
 
@@ -17,9 +18,9 @@ function Module(props) {
   const router = useRouter();
   const { user = {} } = props.auth || {};
   const { data } = props;
-  const [video, setVideo] = useState(data.videos);
-  const [title, setTitle] = useState(data.title);
   const [id, setId] = useState(data.id);
+  const [moduleTitle, setModuleTitle] = useState(data.title);
+  const [videos, setVideos] = useState(data.videos);
   const [videoTitle, setVideoTitle] = useState(null);
   const [visible, setVisible] = useState(false);
 
@@ -29,12 +30,12 @@ function Module(props) {
 
   function loadData() {
     api
-      .get(`api/modules/${router.query.module}/`)
+      .get(`api/modules/${router.query.module}`)
       .then(res => {
-        setVideo(res.data.videos);
-        setTitle(res.data.title);
+        setVideos(res.data.videos);
+        setModuleTitle(res.data.title);
       })
-      .catch(err => console.log("error al cargar los programas ", err));
+      .catch(err => console.log("Error al cargar el módulo. ", err));
   }
 
   function showModal(e, item) {
@@ -42,7 +43,8 @@ function Module(props) {
     setId(item.id);
     setVideoTitle(item.title);
   }
-  function falseVisible() {
+
+  function closeModal() {
     setVisible(false);
   }
 
@@ -50,116 +52,114 @@ function Module(props) {
     <ProgramSettings
       id={id}
       loadData={loadData}
-      {...props}
       title={title}
+      type="módulo"
       editTo="modules"
       create="videos"
-      type="módulo"
-      newSon="video"
       father={router.query.father}
+      newSon="video"
+      {...props}
     ></ProgramSettings>
   );
 
   return (
-    <div className={`container `}>
+    <div className="container">
       <Header user={user} />
-      <Row justify="center" type="flex">
-        <Title level={2}>{title}</Title>
-      </Row>
 
-      <Row style={{ margin: "0 0 3rem 0" }}>
-        {user.is_admin ? options(router.query.module, title) : null}
-      </Row>
-
-      <Row>
-        <List
-          itemLayout="horizontal"
-          grid={{
-            xs: 1,
-            sm: 1,
-            md: 2,
-            lg: 2,
-            xl: 2,
-            xxl: 2
-          }}
-          pagination={
-            video.length > 2 ? { pageSize: 2, position: "bottom" } : null
-          }
-          dataSource={video}
-          renderItem={item => (
-            <List.Item>
-              <Row>
-                <Row>
-                  <div
-                    className={styles.videoWrapper}
-                    style={{
-                      display: "flex",
-                      margin: "0 1.5rem 1rem 1.5rem",
-                      minHeight: "350px",
-                      minWidth: "250px",
-                      height: "30%",
-                      width: "auto"
-                    }}
-                  >
-                    <ReactPlayer
-                      url={item.videofile}
-                      controls
-                      autopause="true"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "contain"
-                      }}
-                    />
-                  </div>
-                </Row>
-                <Row>
-                  <div
-                    style={{
-                      textAlign: "justify",
-                      wordBreak: "break-word",
-                      fontSize: "20px",
-                      padding: "0 1rem 0 1rem"
-                    }}
-                  >
-                    {item.title}
-                  </div>
-                </Row>
-
-                {user.is_admin ? (
-                  <Row>
-                    <Col style={{ margin: "0 1rem 0 1rem" }} span={3}>
-                      {visible ? (
-                        <ModalEdit
-                          visible={visible}
-                          editTo="videos"
-                          id={id}
-                          title={videoTitle}
-                          falseVisible={falseVisible}
-                          loadData={loadData}
-                          type="video"
-                          father={router.query.module}
-                        />
-                      ) : null}
-                      <Button onClick={e => showModal(e, item)} type="primary">
-                        Editar
-                      </Button>
-                    </Col>
-                    <Col style={{ margin: "0 1rem 0 1rem" }} span={3}>
-                      <Delete
-                        type="videos"
-                        handleCancel={handleCancel}
-                        loadData={loadData}
-                        id={item.id}
-                      />
-                    </Col>
-                  </Row>
-                ) : null}
-              </Row>
-            </List.Item>
-          )}
+      {visible ? (
+        <ModalEdit
+          visible={visible}
+          editTo="videos"
+          id={id}
+          title={videoTitle}
+          closeModal={closeModal}
+          loadData={loadData}
+          type="video"
+          father={router.query.module}
         />
-      </Row>
+      ) : null}
+
+      <div className={styles.wrapper_card}>
+        <Row justify="center" type="flex" gutter={30}>
+          <Col offset={2} xs={18} sm={17} md={17} lg={17} xl={19} xxl={19}>
+            <h1 className={styles.sectionSubtitle}>{moduleTitle}</h1>
+          </Col>
+          <Col
+            xs={4}
+            sm={5}
+            md={5}
+            lg={5}
+            xl={3}
+            xxl={3}
+            style={{ paddingTop: "0.8rem" }}
+          >
+            {user.is_admin ? options(router.query.module, moduleTitle) : null}
+          </Col>
+        </Row>
+
+        <Row>
+          <List
+            itemLayout="horizontal"
+            grid={{
+              xs: 1,
+              sm: 1,
+              md: 2,
+              lg: 2,
+              xl: 2,
+              xxl: 2
+            }}
+            pagination={
+              videos.length > 2 ? { pageSize: 2, position: "bottom" } : null
+            }
+            dataSource={videos}
+            renderItem={item => (
+              <List.Item>
+                <div className={styles.video_card}>
+                  <Row>
+                    <div className={styles.videoWrapper}>
+                      <ReactPlayer
+                        url={item.videofile}
+                        controls
+                        autopause="true"
+                        width="100%"
+                        height="100%"
+                        className={styles.react_player}
+                      />
+                    </div>
+                  </Row>
+
+                  <Row>
+                    <div className={styles.video_card__title}>{item.title}</div>
+                  </Row>
+
+                  {user.is_admin ? (
+                    <Row justify="center" type="flex" gutter={25}>
+                      <Col xs={20} sm={20} md={15} lg={10} xl={10} xxl={8}>
+                        <Button
+                          onClick={e => showModal(e, item)}
+                          className={styles.defaultButton}
+                          block
+                        >
+                          Editar
+                        </Button>
+                      </Col>
+                      <Col xs={20} sm={20} md={15} lg={10} xl={10} xxl={8}>
+                        <Delete
+                          type="videos"
+                          handleCancel={handleCancel}
+                          loadData={loadData}
+                          id={item.id}
+                          block={true}
+                        />
+                      </Col>
+                    </Row>
+                  ) : null}
+                </div>
+              </List.Item>
+            )}
+          />
+        </Row>
+      </div>
     </div>
   );
 }

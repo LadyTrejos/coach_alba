@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import api from "../api";
 
 export default function Delete(props) {
-  const { type, id } = props;
+  const { type, id, block } = props;
   const [loading, setLoading] = useState(false);
   const [deleteItem, setDeleteItem] = useState(-1);
 
@@ -43,6 +43,7 @@ export default function Delete(props) {
     >
       <Button
         type="default"
+        block={block}
         loading={loading && deleteItem === id}
         onClick={event => {
           event.stopPropagation();
