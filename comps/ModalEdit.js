@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import api from "../api";
+import { Modal, Input, Button, Form } from "antd";
 import Cookies from "js-cookie";
-
-import { Modal, Input, Button, Form, Tooltip, Icon } from "antd";
+import api from "../api";
 
 function Edit(props) {
   const [visible, setVisible] = useState(props.visible);
@@ -13,7 +12,7 @@ function Edit(props) {
 
   function handleCancel(e) {
     e.stopPropagation();
-    props.falseVisible();
+    props.closeModal();
   }
 
   function handleEdit(event, id) {
@@ -22,16 +21,21 @@ function Edit(props) {
 
     let programData = null;
     const csrftoken = Cookies.get("csrftoken");
+
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         setLoading(true);
 
-        editTo == "programs"
-          ? (programData = JSON.stringify(values))
-          : (programData = JSON.stringify({
-              title: values.title,
-              father: props.father
-            }));
+        if (editTo === "programs") {
+          // Send title only
+          programData = JSON.stringify(values);
+        } else {
+          // Modules and videos needs title and father's id
+          programData = JSON.stringify({
+            title: values.title,
+            father: props.father
+          });
+        }
 
         api
           .patch(`/api/${editTo}/${id}/`, programData, {
@@ -41,10 +45,10 @@ function Edit(props) {
             }
           })
 
-          .then(res => {
+          .then(() => {
             setVisible(false);
             setLoading(false);
-            props.falseVisible();
+            props.closeModal();
             props.loadData();
             props.form.resetFields();
           })
@@ -67,6 +71,7 @@ function Edit(props) {
         </Button>,
         <Button
           key="submit"
+          htmlType="submit"
           type="primary"
           loading={loading}
           onClick={e => handleEdit(e, id)}
@@ -75,30 +80,17 @@ function Edit(props) {
         </Button>
       ]}
     >
-      <Form>
-        <Form.Item
-          label={
-            <span>
-              Título&nbsp;
-              <Tooltip title="No uses dos espacios seguidos ni al final del título">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-          }
-          hasFeedback
-        >
+      <Form onSubmit={e => handleEdit(e, id)}>
+        <Form.Item label="Título" hasFeedback>
           {getFieldDecorator("title", {
             rules: [
               {
                 required: true,
                 message: "Ingresa el título",
                 whitespace: true
-              },
-              {
-                pattern: /^(?=.{1,1000}$)([a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.¿]+[\s(?!\s)]?)*[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.?]$/,
-                message: "Título no válido"
               }
-            ]
+            ],
+            initialValue: title
           })(
             <Input
               type="text"

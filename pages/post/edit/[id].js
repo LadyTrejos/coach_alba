@@ -226,7 +226,7 @@ function EditPost(props) {
 
           <br />
 
-          <Row justify="center" type="flex">
+          <Row justify="center" type="flex" gutter={20}>
             <Col xs={20} sm={12} md={10} lg={6} xl={6} xxl={5}>
               <Button
                 htmlType="submit"

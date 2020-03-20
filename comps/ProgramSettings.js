@@ -1,44 +1,46 @@
 import React, { useState } from "react";
+import { Menu, Dropdown, Icon, Form } from "antd";
+
 import ModalCreate from "./ModalCreate";
 import ModalEdit from "./ModalEdit";
 import Delete from "../comps/Delete";
-import { Menu, Dropdown, Icon, Form } from "antd";
+import styles from "../styles/styles.scss";
 
 function ProgramSettingsForm(props) {
-  const [visible, setVisible] = useState(false);
-  const [visibleModal, setVisibleModal] = useState(false);
   const { editTo, type, newSon, create } = props;
-
-  function showModalModule(e) {
-    // e.stopPropagation();
-    setVisibleModal(true);
-  }
+  const [visibleEditModal, setVisibleEditModal] = useState(false);
+  const [visibleCreateModal, setVisibleCreateModal] = useState(false);
 
   function handleCancel(e) {
     e.stopPropagation();
-    setVisible(false);
+    setVisibleEditModal(false);
     props.form.resetFields();
   }
 
-  function showModal() {
-    setVisible(true);
+  function showEditModal() {
+    setVisibleEditModal(true);
   }
 
-  function falseVisibleModal() {
-    setVisibleModal(false);
+  function showCreateModal(e) {
+    // e.stopPropagation();
+    setVisibleCreateModal(true);
   }
 
-  function falseVisible() {
-    setVisible(false);
+  function closeEditModal() {
+    setVisibleEditModal(false);
+  }
+
+  function closeCreateModal() {
+    setVisibleCreateModal(false);
   }
 
   const menu = id => (
     <Menu>
       <Menu.Item key="1">
-        <a onClick={e => showModalModule(e)}>{`Nuevo ${newSon}`}</a>
+        <a onClick={e => showCreateModal(e)}>{`Nuevo ${newSon}`}</a>
       </Menu.Item>
       <Menu.Item key="2">
-        <a onClick={e => showModal(e)}>Cambiar nombre</a>
+        <a onClick={e => showEditModal(e)}>Cambiar nombre</a>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3">
@@ -51,30 +53,31 @@ function ProgramSettingsForm(props) {
       </Menu.Item>
     </Menu>
   );
+
   return (
     <div>
-      {visible ? (
+      {visibleEditModal ? (
         <ModalEdit
-          visible={visible}
-          editTo={editTo}
           id={props.id}
-          title={props.title}
-          falseVisible={falseVisible}
-          loadData={props.loadData}
+          editTo={editTo}
           type={type}
           father={props.father}
+          loadData={props.loadData}
+          title={props.title}
+          closeModal={closeEditModal}
+          visible={visibleEditModal}
         />
       ) : null}
-      {visibleModal ? (
+      {visibleCreateModal ? (
         <ModalCreate
-          visible={visibleModal}
-          loadData={props.loadData}
-          falseVisibleModal={falseVisibleModal}
-          postTo={create}
           id={props.id}
+          postTo={create}
           newSon={newSon}
+          loadData={props.loadData}
+          closeModal={closeCreateModal}
+          visible={visibleCreateModal}
           {...props}
-        ></ModalCreate>
+        />
       ) : null}
       <Dropdown
         overlay={menu(props.id)}
@@ -84,14 +87,10 @@ function ProgramSettingsForm(props) {
           event.stopPropagation();
         }}
       >
-        <span>
-          <Icon
-            type="setting"
-            style={{ fontSize: "23px", color: "#3949c6", marginRight: "3px" }}
-            theme="filled"
-          />
-          Opciones
-        </span>
+        <i
+          className={`fa fa-cogs ${styles.config_icon}`}
+          aria-hidden="true"
+        ></i>
       </Dropdown>
     </div>
   );

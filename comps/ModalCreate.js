@@ -1,26 +1,24 @@
 import React, { useState, useRef } from "react";
-
+import { Modal, Button, Form, Input, Alert, Row } from "antd";
 import Cookies from "js-cookie";
+
 import api from "../api";
 import Files from "../comps/Files";
 
-import { Modal, Button, Form, Tooltip, Icon, Input, Alert, Row } from "antd";
-
 function ModalCreateForm(props) {
-  //video
+  // Video
   const fileRef = useRef(null);
   const [error, setError] = useState(null);
-  //video
 
-  const [visible, setVisible] = useState(props.visible);
   const [loading, setLoading] = useState(false);
   const { getFieldDecorator } = props.form;
-  const { newSon, postTo } = props;
+  const { visible, newSon, postTo } = props;
 
   function handleCancel(e) {
     e.stopPropagation();
     props.falseVisibleModal();
   }
+
   function onClose() {
     setError(null);
   }
@@ -28,7 +26,7 @@ function ModalCreateForm(props) {
   function validateFile() {
     let file = null;
     let fileError = false;
-    if (postTo == "videos") {
+    if (postTo === "videos") {
       file = fileRef.current.state.selectedFile;
       fileError = !file;
     }
@@ -40,17 +38,18 @@ function ModalCreateForm(props) {
   function handleSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
+
     const csrftoken = Cookies.get("csrftoken");
     let programData = {};
-
     const { file, fileError } = validateFile();
+
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err && !fileError) {
         setLoading(true);
 
-        if (postTo == "programs") {
+        if (postTo === "programs") {
           programData = JSON.stringify(values);
-        } else if (postTo == "modules") {
+        } else if (postTo === "modules") {
           programData = JSON.stringify({
             title: values.title,
             father: props.id
@@ -70,10 +69,9 @@ function ModalCreateForm(props) {
             }
           })
 
-          .then(res => {
-            //mirar cómo trae el 'res' el título
+          .then(() => {
             props.loadData();
-            props.falseVisibleModal();
+            props.closeModal();
             setLoading(false);
           })
           .catch(err => {
@@ -88,9 +86,9 @@ function ModalCreateForm(props) {
       title={`Título del nuevo ${newSon}`}
       visible={visible}
       onOk={e => handleSubmit(e)}
-      onCancel={handleCancel}
+      onCancel={e => handleCancel(e)}
       footer={[
-        <Button key="back" onClick={handleCancel}>
+        <Button key="back" onClick={e => handleCancel(e)}>
           Cancelar
         </Button>,
         <Button
@@ -104,10 +102,10 @@ function ModalCreateForm(props) {
       ]}
     >
       <Form onSubmit={e => handleSubmit(e)}>
-        {postTo == "videos" ? (
+        {postTo === "videos" ? (
           <Row justify="center" type="flex">
             <Form.Item>
-              <Files ref={fileRef} upload="video"></Files>
+              <Files ref={fileRef} upload="video" />
               {error ? (
                 <Alert
                   message={error}
@@ -119,29 +117,14 @@ function ModalCreateForm(props) {
             </Form.Item>
           </Row>
         ) : null}
-        <Form.Item
-          label={
-            <span>
-              Título&nbsp;
-              <Tooltip
-                title={`No uses dos espacios seguidos ni al final del título del ${newSon}`}
-              >
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-          }
-          hasFeedback
-        >
+
+        <Form.Item label="Título" hasFeedback>
           {getFieldDecorator("title", {
             rules: [
               {
                 required: true,
                 message: `Ingresa el título`,
                 whitespace: true
-              },
-              {
-                pattern: /^(?=.{1,1000}$)([a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.¿]+[\s(?!\s)]?)*[a-zA-Z0-9äáàëéèíìïöóòúüùñçÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ,.?]$/,
-                message: "Título no válido"
               }
             ]
           })(

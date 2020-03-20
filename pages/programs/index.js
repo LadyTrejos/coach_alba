@@ -1,33 +1,23 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { Button, Collapse, Row, Col, Form, Empty } from "antd";
+
 import Header from "../../comps/Header";
-import style from "../../styles/styles.scss";
+import styles from "../../styles/styles.scss";
 import api from "../../api";
 import ProgramSettings from "../../comps/ProgramSettings";
 import ModalCreate from "../../comps/ModalCreate";
 import { authInitialProps } from "../../utils/auth";
-import {
-  Collapse,
-  Row,
-  Button,
-  Col,
-  Typography,
-  Form,
-  Skeleton,
-  Divider
-} from "antd";
 
 const { Panel } = Collapse;
-const { Title } = Typography;
 
-//funcion principal
 function IndexProgram(props) {
   const { user = {} } = props.auth || {};
   const { data } = props;
   const [visible, setVisible] = useState(false);
   const [programs, setPrograms] = useState(data);
 
-  function showModal(e) {
+  function showModal() {
     setVisible(true);
   }
 
@@ -36,33 +26,105 @@ function IndexProgram(props) {
       .get(`/api/programs/`)
       .then(res => {
         setPrograms(res.data);
-      })
-      .then(res => {
         setVisible(false);
         props.form.resetFields();
       })
-      .catch(err => console.log("error al cargar los programas ", err));
+      .catch(err => console.log("Error al cargar los programas.", err));
   }
 
   const genExtra = (id, title) => (
     <ProgramSettings
       id={id}
       loadData={loadData}
-      {...props}
       title={title}
       editTo="programs"
       create="modules"
       type="programa"
       newSon="módulo"
-    ></ProgramSettings>
+      {...props}
+    />
   );
 
   function falseVisibleModal() {
     setVisible(false);
   }
 
+  function getModules(modules, father) {
+    if (modules.length > 0) {
+      const moduleList = modules.map((module, index) => {
+        return (
+          <div key={module.id}>
+            <Link
+              href="/programs/program/[father]/[module]"
+              as={`/programs/program/${father}/${module.id}`}
+            >
+              <a>{module.title}</a>
+            </Link>
+            {index < modules.length - 1 ? <hr /> : null}
+          </div>
+        );
+      });
+      return moduleList;
+    } else {
+      return (
+        <Empty
+          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+          imageStyle={{
+            height: 60
+          }}
+          description={
+            <span>Aún no se han creado módulos para este programa.</span>
+          }
+        ></Empty>
+      );
+    }
+  }
+
+  function getPrograms() {
+    if (programs.length > 0) {
+      const programList = programs.map((data, idx) => {
+        return (
+          <Panel
+            header={data.title}
+            key={idx}
+            extra={user.is_admin ? genExtra(data.id, data.title) : null}
+            className={styles.panel}
+            style={{
+              background: "rgba(220, 79, 128, 0.1)"
+            }}
+          >
+            {getModules(data.modules, data.id)}
+          </Panel>
+        );
+      });
+
+      return (
+        <Collapse
+          accordion
+          style={{
+            wordWrap: "break-word",
+            border: "1px solid rgba(220, 79, 128, 0.1)"
+          }}
+          defaultActiveKey={["0"]}
+        >
+          {programList}
+        </Collapse>
+      );
+    } else {
+      return (
+        <Empty
+          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+          imageStyle={{
+            height: 60
+          }}
+          description={<span>Aún no se han creado programas.</span>}
+        ></Empty>
+      );
+    }
+  }
+
   return (
-    <Row style={{ padding: "20px 0" }}>
+    <div className="container">
       <Header user={user} />
       {visible ? (
         <ModalCreate
@@ -72,56 +134,32 @@ function IndexProgram(props) {
           newSon="programa"
           postTo="programs"
           {...props}
-        ></ModalCreate>
+        />
       ) : null}
-
-      <Col
-        className="gutter-row"
-        className="offset-sm-3 offset-md-2 offset-lg-2 offset-xl-2 col-12 col-sm-6 col-md-8 col-lg-8 col-xl-8"
-      >
+      <div className={styles.wrapper_card}>
         <Row justify="center" type="flex">
-          <Title> Programas</Title>
+          <h1 className={styles.sectionTitle}>Programas</h1>
         </Row>
+
         {user.is_admin ? (
-          <Button type="primary" onClick={e => showModal(e)}>
-            Nuevo programa
-          </Button>
+          <Row>
+            <Col xs={20} sm={12} md={10} lg={6} xl={6} xxl={5}>
+              <Button
+                block
+                className={styles.defaultButton}
+                onClick={() => showModal()}
+              >
+                Nuevo programa
+              </Button>
+            </Col>
+          </Row>
         ) : null}
         <br />
         <br />
 
-        <Collapse
-          accordion
-          style={{ wordWrap: "break-word" }}
-          defaultActiveKey={["0"]}
-        >
-          {programs.map((data, idx) => {
-            return (
-              <Panel
-                header={`${data.title} `}
-                key={idx}
-                extra={user.is_admin ? genExtra(data.id, data.title) : null}
-                className={user.is_admin ? style.panel : null}
-              >
-                {data.modules.map((module, index) => {
-                  return (
-                    <div key={module.id}>
-                      <Link
-                        href="/programs/program/[father]/[module]"
-                        as={`/programs/program/${data.id}/${module.id}`}
-                      >
-                        <a>{module.title}</a>
-                      </Link>
-                      {index < data.modules.length - 1 ? <hr /> : null}
-                    </div>
-                  );
-                })}
-              </Panel>
-            );
-          })}
-        </Collapse>
-      </Col>
-    </Row>
+        {getPrograms()}
+      </div>
+    </div>
   );
 }
 

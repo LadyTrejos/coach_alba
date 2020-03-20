@@ -1,10 +1,5 @@
-import React, { Component, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Router from "next/router";
-import Header from "../../comps/Header";
-import Files from "../../comps/Files";
-import api from "../../api";
-import styles from "../../styles/styles.scss";
-import { authInitialProps } from "../../utils/auth";
 import {
   Collapse,
   Button,
@@ -20,6 +15,12 @@ import {
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
 
+import Header from "../../comps/Header";
+import Files from "../../comps/Files";
+import api from "../../api";
+import styles from "../../styles/styles.scss";
+import { authInitialProps } from "../../utils/auth";
+
 const { Text, Title } = Typography;
 const { Panel } = Collapse;
 
@@ -32,6 +33,7 @@ function CreatePost(props) {
   const [error, setError] = useState(null);
   const [errorDescription, setErrorDescription] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingCancel, setLoadingCancel] = useState(false);
   const { CKEditor, DecoupledEditor } = editorRef.current || {};
   const { getFieldDecorator } = props.form;
 
@@ -92,169 +94,170 @@ function CreatePost(props) {
   }
 
   return (
-    <div>
+    <div className="container">
       <Header user={user} />
-      <Form onSubmit={e => handleSubmit(e, fileRef)}>
-        <Row>
-          <Col className=" offset-sm-1 offset-md-1 offset-lg-1 offset-xl-1 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
-            <Card
-              style={{
-                marginTop: "2rem",
-                marginBottom: "2rem",
-                boxShadow:
-                  " 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.9)",
-                borderRadius: "10px"
-              }}
-            >
-              <Row justify="center" type="flex">
-                <Title level={2}>Publicación</Title>
-              </Row>
+      <div className={`${styles.wrapper_card}`}>
+        <Form onSubmit={e => handleSubmit(e, fileRef)}>
+          <Row justify="center" type="flex">
+            <h1 className={styles.sectionTitle}>Nueva publicación</h1>
+          </Row>
 
-              <Row justify="center" type="flex">
-                <Form.Item>
-                  <Files ref={fileRef} upload="image"></Files>
-                  {error ? (
-                    <Alert
-                      message={error}
-                      type="error"
-                      closable
-                      onClose={() => onClose()}
-                    />
-                  ) : null}
-                </Form.Item>
-              </Row>
-              <Row>
-                <Col className="gutter-row offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-5 col-md-7 col-lg-5 col-xl-5">
-                  <Form.Item label="Título de la publicación">
-                    {getFieldDecorator("title", {
-                      rules: [
-                        {
-                          required: true,
-                          message: "Ponle un título a tu publicación",
-                          type: "string"
-                        }
-                      ]
-                    })(<Input placeholder="Título" size="large"></Input>)}
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="gutter-row offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-12 col-sm-8 col-md-10 col-lg-10 col-xl-8">
-                  <Form.Item label="Descripción de la publicación">
-                    {editorLoaded ? (
-                      <div>
-                        <div id="toolbar-container"></div>
-                        <CKEditor
-                          onInit={editor => {
-                            // Add the toolbar to the container
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Form.Item label="Imagen de la publicación:">
+                <Files ref={fileRef} upload="image"></Files>
+                {error ? (
+                  <Alert
+                    message={error}
+                    type="error"
+                    closable
+                    onClose={() => onClose()}
+                  />
+                ) : null}
+              </Form.Item>
+            </Col>
+          </Row>
 
-                            const toolbarContainer = document.querySelector(
-                              "#toolbar-container"
-                            );
-                            toolbarContainer.appendChild(
-                              editor.ui.view.toolbar.element,
-                              editor.ui.view.editable.element
-                            );
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Form.Item label="Título de la publicación">
+                {getFieldDecorator("title", {
+                  rules: [
+                    {
+                      required: true,
+                      message: "Ponle un título a tu publicación",
+                      type: "string"
+                    }
+                  ]
+                })(<Input placeholder="Título" size="large" />)}
+              </Form.Item>
+            </Col>
+          </Row>
 
-                            window.editor = editor;
-                            // You can store the "editor" and use when it is needed.
-                            console.log("Editor is ready to use!", editor);
-                          }}
-                          config={{
-                            language: "es",
-                            toolbar: [
-                              "Heading",
-                              "|",
-                              "fontFamily",
-                              "fontSize",
-                              "fontColor",
-                              "fontBackgroundColor",
-                              "|",
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strikethrough",
-                              "|",
-                              "bulletedList",
-
-                              "numberedList",
-                              "|",
-                              "alignment",
-                              "link"
-                              // "undo",
-                              // "redo"
-                            ],
-                            fontSize: {
-                              options: [9, 11, 13, "default", 17, 19, 21]
-                            },
-                            removePlugins: [
-                              "ImageUpload",
-                              "MediaEmbed",
-                              "BlockQuote",
-                              "IncreaseIndent"
-                            ],
-                            isReadOnly: true
-                          }}
-                          onChange={(event, editor) => {
-                            const data = editor.getData();
-                            setDescription(data);
-                            setErrorDescription(null);
-                          }}
-                          editor={DecoupledEditor}
-                        />
-                      </div>
-                    ) : (
-                      <div>Cargando... </div>
-                    )}
-                    {errorDescription ? (
-                      <Alert
-                        message={errorDescription}
-                        type="error"
-                        closable
-                        onClose={() => onCloseDescription()}
-                      />
-                    ) : null}
-                  </Form.Item>
-
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Form.Item label="Descripción de la publicación">
+                {editorLoaded ? (
                   <div>
-                    <Collapse accordion style={{ wordWrap: "break-word" }}>
-                      <Panel
-                        header={`Vista previa del texto`}
-                        key={`Vista previa`}
-                        className={styles.panel}
-                      >
-                        <Row
-                          justify="center"
-                          type="flex"
-                          style={{ paddingTop: "20px" }}
-                        >
-                          <Title>{props.form.getFieldValue("title")}</Title>
-                        </Row>
+                    <div id="toolbar-container"></div>
+                    <CKEditor
+                      onInit={editor => {
+                        // Add the toolbar to the container
 
-                        <Row justify="center">
-                          <Col
-                            className="gutter-row"
-                            // className="offset-1 offset-sm-1 offset-md-1 offset-lg-1 offset-xl-2 col-10 col-sm-8 col-md-10 col-lg-10 col-xl-8"
-                          >
-                            <Text>{ReactHtmlParser(description)}</Text>
-                          </Col>
-                        </Row>
-                      </Panel>
-                    </Collapse>
+                        const toolbarContainer = document.querySelector(
+                          "#toolbar-container"
+                        );
+                        toolbarContainer.appendChild(
+                          editor.ui.view.toolbar.element,
+                          editor.ui.view.editable.element
+                        );
+
+                        window.editor = editor;
+                        // You can store the "editor" and use when it is needed.
+                        console.log("Editor is ready to use!", editor);
+                      }}
+                      config={{
+                        language: "es",
+                        toolbar: [
+                          "Heading",
+                          "|",
+                          "fontFamily",
+                          "fontSize",
+                          "fontColor",
+                          "fontBackgroundColor",
+                          "|",
+                          "bold",
+                          "italic",
+                          "underline",
+                          "strikethrough",
+                          "|",
+                          "bulletedList",
+
+                          "numberedList",
+                          "|",
+                          "alignment",
+                          "link"
+                          // "undo",
+                          // "redo"
+                        ],
+                        fontSize: {
+                          options: [9, 11, 13, "default", 17, 19, 21]
+                        },
+                        removePlugins: [
+                          "ImageUpload",
+                          "MediaEmbed",
+                          "BlockQuote",
+                          "IncreaseIndent"
+                        ],
+                        isReadOnly: true
+                      }}
+                      onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setDescription(data);
+                        setErrorDescription(null);
+                      }}
+                      editor={DecoupledEditor}
+                    />
                   </div>
-                </Col>
-              </Row>
-              <br />
+                ) : (
+                  <div>Cargando... </div>
+                )}
+                {errorDescription ? (
+                  <Alert
+                    message={errorDescription}
+                    type="error"
+                    closable
+                    onClose={() => onCloseDescription()}
+                  />
+                ) : null}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row justify="center" type="flex">
+            <Col xs={24} sm={24} md={20} lg={15} xl={17} xxl={15}>
+              <Collapse accordion style={{ wordWrap: "break-word" }}>
+                <Panel
+                  header="Vista previa de la publicación"
+                  key="PreviewCreate"
+                  className={styles.panel}
+                >
+                  <h3 className={styles.post__title}>
+                    {props.form.getFieldValue("title")}
+                  </h3>
 
-              <Row justify="center" type="flex">
-                <Button htmlType="submit" type="primary" loading={loading}>
-                  Subir publicación
-                </Button>
-              </Row>
-            </Card>
-          </Col>
-        </Row>
-      </Form>
+                  <Text>{ReactHtmlParser(description)}</Text>
+                </Panel>
+              </Collapse>
+            </Col>
+          </Row>
+          <br />
+
+          <Row justify="center" type="flex" gutter={20}>
+            <Col xs={20} sm={12} md={10} lg={6} xl={6} xxl={5}>
+              <Button
+                htmlType="submit"
+                className={styles.defaultButton}
+                loading={loading}
+                block
+              >
+                Crear publicación
+              </Button>
+            </Col>
+            <Col xs={20} sm={12} md={10} lg={6} xl={6} xxl={5}>
+              <Button
+                block
+                loading={loadingCancel}
+                onClick={() => {
+                  setLoadingCancel(true);
+                  Router.push("/blog");
+                }}
+              >
+                Cancelar
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </div>
     </div>
   );
 }

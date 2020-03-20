@@ -21,8 +21,8 @@ export default function Delete(props) {
           "X-CSRFToken": csrftoken
         }
       })
-      .then(res => {
-        if (type == "modules") {
+      .then(() => {
+        if (type === "modules") {
           Router.push("/programs");
         } else {
           props.loadData();
@@ -43,7 +43,7 @@ export default function Delete(props) {
     >
       <Button
         type="default"
-        loading={loading && deleteItem == id}
+        loading={loading && deleteItem === id}
         onClick={event => {
           event.stopPropagation();
         }}

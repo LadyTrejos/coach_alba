@@ -8,7 +8,7 @@ import styles from "../styles/styles.scss";
 import api from "../api";
 import { authInitialProps } from "../utils/auth";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 let a = [
   {
@@ -105,8 +105,8 @@ let a = [
 
 function Users(props) {
   const { user = {} } = props.auth || {};
-  // const data = props.data.filter(user => !user.is_admin);
-  const data = a;
+  const data = props.data.filter(user => !user.is_admin);
+  // const data = a;
   return (
     <div className="container pb-3">
       <Header user={user} />
@@ -205,6 +205,19 @@ Users.getInitialProps = async ctx => {
       Authorization: `Token ${userdata.key}`
     }
   });
+
+  // api
+  //   .get(`/api/users/`, {
+  //     withCredentials: true,
+  //     headers: {
+  //       "X-CSRFToken": csrftoken,
+  //       Authorization: `Token ${userdata.key}`
+  //     }
+  //   })
+  //   .then(res => {
+  //     console.log(res);
+  //   })
+  //   .catch(res => console.log(res));
 
   return { auth, data: res.data };
 };
