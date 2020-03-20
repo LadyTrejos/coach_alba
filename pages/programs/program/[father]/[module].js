@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Row, Col, Typography, List, Button } from "antd";
 import ReactPlayer from "react-player";
+import nextCookie from "next-cookies";
 
 import Delete from "../../../../comps/Delete";
 import ProgramSettings from "../../../../comps/ProgramSettings";
 import ModalEdit from "../../../../comps/ModalEdit";
 import Header from "../../../../comps/Header";
+import CheckVideo from "../../../../comps/CheckVideo";
 
 import api from "../../../../api";
 import styles from "../../../../styles/styles.scss";
 import { authInitialProps } from "../../../../utils/auth";
 
-const { Title } = Typography;
-
 function Module(props) {
   const router = useRouter();
   const { user = {} } = props.auth || {};
-  const { data } = props;
+  const { data, watched_videos } = props;
   const [id, setId] = useState(data.id);
   const [moduleTitle, setModuleTitle] = useState(data.title);
   const [videos, setVideos] = useState(data.videos);
@@ -132,8 +132,22 @@ function Module(props) {
                     <div className={styles.video_card__title}>{item.title}</div>
                   </Row>
 
+                  <Row>
+                    <CheckVideo
+                      id={item.id}
+                      title={item.title}
+                      checked={watched_videos.includes(item.id)}
+                      {...props}
+                    ></CheckVideo>
+                  </Row>
+
                   {user.is_admin ? (
-                    <Row justify="center" type="flex" gutter={25}>
+                    <Row
+                      justify="center"
+                      type="flex"
+                      gutter={25}
+                      style={{ paddingTop: "1rem" }}
+                    >
                       <Col xs={20} sm={20} md={15} lg={10} xl={10} xxl={8}>
                         <Button
                           onClick={e => showModal(e, item)}
@@ -166,9 +180,17 @@ function Module(props) {
 
 Module.getInitialProps = async ctx => {
   const { auth } = authInitialProps(true)(false)(ctx);
+  const { csrftoken, userdata } = nextCookie(ctx);
   const res = await api.get(`api/modules/${ctx.query.module}/`);
+  const dataUser = await api.get(`api/users/${auth.user.id}/`, {
+    withCredentials: true,
+    headers: {
+      "X-CSRFToken": csrftoken,
+      Authorization: `Token ${userdata.key}`
+    }
+  });
 
-  return { auth, data: res.data };
+  return { auth, data: res.data, watched_videos: dataUser.data.watched_videos };
 };
 
 export default Module;
