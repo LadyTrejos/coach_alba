@@ -163,10 +163,21 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #enviar correo al email
 # enviar correo a consola
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-DEFAULT_FROM_EMAIL = 'Alba Nury <emailexample@gmail.com>'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'AlbaNuryCoach'
+EMAIL_HOST_PASSWORD = 'Michelle2020*'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+SEND_GRID_API_KEY = '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'
+DEFAULT_FROM_EMAIL = 'Alba Nury <albanurygonzalez2020@gmail.com>'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = 1025
+# DEFAULT_FROM_EMAIL = 'Alba Nury <emailexample@gmail.com>'
 
 # Django All-Auth config
 ACCOUNT_AUTHENTICATION_METHOD = "email"
