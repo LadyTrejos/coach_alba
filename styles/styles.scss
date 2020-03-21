@@ -34,6 +34,19 @@ body {
   font-weight: bold;
 }
 
+.sectionSubtitle {
+  text-align: center;
+  font-size: 1.5rem;
+  color: $section-title;
+  font-family: $font-handwritten;
+  font-weight: bold;
+
+  @media screen and (min-width: 768px) {
+    font-size: 2rem;
+  }
+
+}
+
 .defaultButton {
   border-color: blue;
   color: black;
@@ -676,20 +689,43 @@ label {
   display: grid;
 }
 
-//videos
+// Videos styles
+
+.video_card {
+  padding: 1.5rem 1.5rem 0 1.5rem;
+
+  @media screen and (max-width: 576px) {
+    padding: 1.5rem 0;
+    border-top: solid 2px rgba($color: $pink, $alpha: 0.4);
+    border-bottom: solid 2px rgba($color: $pink, $alpha: 0.4);
+    border-radius: 10px;
+    // background-color: rgba($color: $pink, $alpha: 0.1);
+  }
+
+  &__title {
+    word-wrap: break-word;
+    text-align: justify;
+    font-size: 1rem;
+    color: darken($color: $pink, $amount: 3);
+    margin: 1rem 0;
+  }
+}
 
 .videoWrapper {
-
-  box-shadow: 0px 7px 19px 3px rgba(102, 102, 102, 0.4);
+  position: relative;
+  padding-top: 56.25%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 
   &:hover {
-    box-shadow: 0px 7px 19px 3px rgba(102, 102, 102, 0.9);
-
-    .data {
-      transform: translateY(0);
-    }
+    box-shadow: 0px 7px 15px 3px rgba(102, 102, 102, 0.4);
   }
+}
+
+.react_player {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 // User page styles
@@ -736,7 +772,7 @@ label {
   padding: 1.5rem;
   border-radius: 10px;
   transition: all .3s;
-  max-width: 900px;
+  max-width: 1000px;
   height: fit-content;
   min-height: 80vh;
 }
