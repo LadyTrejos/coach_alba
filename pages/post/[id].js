@@ -83,7 +83,7 @@ const Post = props => {
         ¿Está segura que desea eliminar esta publicación?
       </Modal>
 
-      <div className="container">
+      <div className="container-fluid">
         <div className={`${styles.post} ${styles.wrapper_card}`}>
           <div className={styles.post__img}>
             <span className={styles.post__img__helper}></span>

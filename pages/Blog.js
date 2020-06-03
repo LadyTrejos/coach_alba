@@ -10,7 +10,7 @@ import Header from "../comps/Header";
 function Blog(props) {
   const { user = {} } = props.auth || {};
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Header user={user} />
       <BackTop />
       <Row justify="center" type="flex" style={{ paddingTop: "20px" }}>

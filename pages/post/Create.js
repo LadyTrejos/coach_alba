@@ -94,7 +94,7 @@ function CreatePost(props) {
   }
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Header user={user} />
       <div className={`${styles.wrapper_card}`}>
         <Form onSubmit={e => handleSubmit(e, fileRef)}>

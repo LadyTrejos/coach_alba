@@ -98,7 +98,7 @@ function EditPost(props) {
   }
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Header user={user} />
       <div className={`${styles.wrapper_card} pl-4`}>
         <Form onSubmit={e => handleSubmit(e, fileRef)} colon={false}>

@@ -30,82 +30,84 @@ function LoginComponent(props) {
   }
 
   return (
-    <Form className={`${styles.login_container}`} onSubmit={handleSubmit}>
-      <h3>Inicio de sesión</h3>
-      {errors ? (
-        <Alert
-          message="Correo electrónico y/o contraseña incorrecto(a)"
-          type="error"
-          closable
-          onClose={() => onClose()}
-        />
-      ) : null}
-
-      <Form.Item label="Correo electrónico" hasFeedback>
-        {getFieldDecorator("email", {
-          getValueFromEvent: noSpaces,
-          rules: [
-            {
-              type: "email",
-              pattern: /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/,
-              message:
-                "Ingresa tu correo electrónico con el siguiente formato: nombre@ejemplo.com",
-              whitespace: true
-            },
-            {
-              required: true,
-              message: "Ingresa tu correo electrónico"
-            }
-            // {validator:this.handleSearch, validationTrigger:'onBlur'}
-          ]
-        })(<Input placeholder="Correo electrónico" size="large" />)}
-      </Form.Item>
-      <Form.Item
-        label={
-          <span>
-            Contraseña&nbsp;
-            <Tooltip title="Utiliza al menos 6 caracteres">
-              <Icon type="question-circle-o" />
-            </Tooltip>
-          </span>
-        }
-        hasFeedback
-      >
-        {getFieldDecorator("password", {
-          rules: [
-            {
-              required: true,
-              message: "Ingresa tu contraseña",
-              whitespace: true
-            }
-          ]
-        })(
-          <Input.Password
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="password"
-            size="large"
-            placeholder="Contraseña"
+    <div className={styles.loginContainer}>
+      <Form onSubmit={handleSubmit}>
+        <h3>Inicio de sesión</h3>
+        {errors ? (
+          <Alert
+            message="Correo electrónico y/o contraseña incorrecto(a)"
+            type="error"
+            closable
+            onClose={() => onClose()}
           />
-        )}
-      </Form.Item>
+        ) : null}
 
-      <Button
-        type="primary"
-        htmlType="submit"
-        block
-        size="large"
-        className={styles.btnSubmit}
-        loading={loading}
-      >
-        Iniciar sesión
-      </Button>
+        <Form.Item label="Correo electrónico" hasFeedback>
+          {getFieldDecorator("email", {
+            getValueFromEvent: noSpaces,
+            rules: [
+              {
+                type: "email",
+                pattern: /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/,
+                message:
+                  "Ingresa tu correo electrónico con el siguiente formato: nombre@ejemplo.com",
+                whitespace: true
+              },
+              {
+                required: true,
+                message: "Ingresa tu correo electrónico"
+              }
+              // {validator:this.handleSearch, validationTrigger:'onBlur'}
+            ]
+          })(<Input placeholder="Correo electrónico" size="large" />)}
+        </Form.Item>
+        <Form.Item
+          label={
+            <span>
+              Contraseña&nbsp;
+              <Tooltip title="Utiliza al menos 6 caracteres">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+            </span>
+          }
+          hasFeedback
+        >
+          {getFieldDecorator("password", {
+            rules: [
+              {
+                required: true,
+                message: "Ingresa tu contraseña",
+                whitespace: true
+              }
+            ]
+          })(
+            <Input.Password
+              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              type="password"
+              size="large"
+              placeholder="Contraseña"
+            />
+          )}
+        </Form.Item>
 
-      <div className="form-group">
-        <a href="/password-reset" className={styles.ForgetPwd}>
-          ¿Olvidaste tu contraseña?
-        </a>
-      </div>
-    </Form>
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+          size="large"
+          className={styles.btnSubmit}
+          loading={loading}
+        >
+          Iniciar sesión
+        </Button>
+
+        <div className="form-group">
+          <a href="/password-reset" className={styles.ForgetPwd}>
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+      </Form>
+    </div>
   );
 }
 

@@ -10,7 +10,7 @@
 /backend/coach/migrations
 /backend/coach/api/__pycache__
 /backend/post_img
-
+/backend/backend/.env
 # testing
 /coverage
 

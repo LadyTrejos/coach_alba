@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,16 +77,21 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+MONGO_USER = os.getenv('MONGO_USER')
+MONGO_HOST = os.getenv('MONGO_HOST')
+MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+MONGO_DB = os.getenv('MONGO_DB')
+
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'coach',
+        'NAME': MONGO_DB,
         'CLIENT': {
-                'host': 'mongodb://admin:adminpass@cluster0-shard-00-00-buiih.mongodb.net:27017,cluster0-shard-00-01-buiih.mongodb.net:27017,cluster0-shard-00-02-buiih.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority',
-                'port': 27017,
-                'username': 'admin',
-                'password': 'adminpass',
-                'authSource': 'admin',
+            'host': f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}",
+            'port': 27017,
+            'username': MONGO_USER,
+            'password': MONGO_PASSWORD,
+            'authSource': 'admin',
         }
 
     }
@@ -166,12 +173,12 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'AlbaNuryCoach'
-EMAIL_HOST_PASSWORD = 'Michelle2020*'
-EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = True
-SEND_GRID_API_KEY = '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'
-DEFAULT_FROM_EMAIL = 'Alba Nury <albanurygonzalez2020@gmail.com>'
+SEND_GRID_API_KEY = os.getenv('SEND_GRID_API_KEY')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -192,9 +199,9 @@ EMAIL_REQUIRED = True
 # AWS storage
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_ACCESS_KEY_ID = 'AKIASNWJXNEZETRBGCCM'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'alba-nury'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 
 AWS_DEFAULT_ACL = None
 AWS_S3_FILE_OVERWRITE = False

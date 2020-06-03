@@ -63,7 +63,7 @@ function Module(props) {
   );
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Header user={user} />
 
       {visible ? (

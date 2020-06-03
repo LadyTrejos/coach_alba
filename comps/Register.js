@@ -283,7 +283,7 @@ class Component_register extends React.Component {
             <div style={{ color: "red" }}>{this.state.errorsRegister}</div>
           ) : null}
         </Form.Item>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             <Form.Item
               className={`col-md-3 col-sm-1`}
