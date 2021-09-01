@@ -14,7 +14,7 @@ function Ingresar({ auth }) {
       <Header user={user} />
       <BackTop />
       {/* quitar esto cuando sea necesario registrarse*/}
-      <div className={`offset-md-3 col-md-7 ${styles.container}`}>
+      {/* <div className={`offset-md-3 col-md-7 ${styles.container}`}>
         <div className="row">
           <div className={styles.login_form}>
             <Row justify="center" type="flex">
@@ -24,9 +24,9 @@ function Ingresar({ auth }) {
             </Row>
           </div>
         </div>
-      </div>
-      {/*
-      //activar esto cuando sea necesario registrarse
+      </div> */}
+      
+      {/* //activar esto cuando sea necesario registrarse */}
       <div className="row">
         <div className={`col-md-6 ${styles.container}`}>
           <div className="row">
@@ -43,7 +43,7 @@ function Ingresar({ auth }) {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

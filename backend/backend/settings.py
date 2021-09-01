@@ -15,7 +15,7 @@ SECRET_KEY = 'f5xh0eca#5)4eb4e1uf8wky9%ac=e2bcds6b76+cfafztq-5q)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 SITE_ID = 1
 # Application definition
@@ -134,9 +134,30 @@ USE_L10N = True
 USE_TZ = True
 
 # CORS
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:3000',
+    ]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -168,23 +189,23 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 }
 
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #enviar correo al email
+#enviar correo al email
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+# EMAIL_PORT = os.getenv('EMAIL_PORT')
+# EMAIL_USE_TLS = True
+# SEND_GRID_API_KEY = os.getenv('SEND_GRID_API_KEY')
+# DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+
+
 # enviar correo a consola
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_USE_TLS = True
-SEND_GRID_API_KEY = os.getenv('SEND_GRID_API_KEY')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
-
-
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = 1025
-# DEFAULT_FROM_EMAIL = 'Alba Nury <emailexample@gmail.com>'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+DEFAULT_FROM_EMAIL = 'Alba Nury <emailexample@gmail.com>'
 
 # Django All-Auth config
 ACCOUNT_AUTHENTICATION_METHOD = "email"
